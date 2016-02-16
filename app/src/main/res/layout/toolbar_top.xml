@@ -14,20 +14,21 @@
         android:layout_gravity="right">
 
         <ImageView
-            android:id="@+id/toolbar_top_image_today"
+            android:id="@+id/toolbar_top_today_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="10dp"
             android:src="@drawable/icon_today_container" />
 
         <TextView
+            android:id="@+id/toolbar_top_today_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/toolbar_top_image_today"
-            android:layout_alignTop="@id/toolbar_top_image_today"
-            android:layout_alignRight="@id/toolbar_top_image_today"
-            android:layout_alignBottom="@id/toolbar_top_image_today"
+            android:layout_alignLeft="@id/toolbar_top_today_image"
+            android:layout_alignTop="@id/toolbar_top_today_image"
+            android:layout_alignRight="@id/toolbar_top_today_image"
+            android:layout_alignBottom="@id/toolbar_top_today_image"
             android:layout_marginTop="11dp"
             android:gravity="center"
             android:text="17"
