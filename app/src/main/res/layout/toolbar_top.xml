@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_top"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right">
+
+        <ImageView
+            android:id="@+id/toolbar_top_image_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/icon_today_container" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/toolbar_top_image_today"
+            android:layout_alignTop="@id/toolbar_top_image_today"
+            android:layout_alignRight="@id/toolbar_top_image_today"
+            android:layout_alignBottom="@id/toolbar_top_image_today"
+            android:layout_marginTop="11dp"
+            android:gravity="center"
+            android:text="17"
+            style="@style/TodayCalendarText" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.Toolbar>
