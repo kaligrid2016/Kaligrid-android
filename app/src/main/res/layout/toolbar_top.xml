@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar_top"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:layout_height="50dp"
     android:background="?attr/colorPrimary"
     app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -17,9 +17,10 @@
             android:id="@+id/toolbar_top_today_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/icon_today_container" />
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_top_today_container" />
 
         <TextView
             android:id="@+id/toolbar_top_today_text"
@@ -29,7 +30,7 @@
             android:layout_alignTop="@id/toolbar_top_today_image"
             android:layout_alignRight="@id/toolbar_top_today_image"
             android:layout_alignBottom="@id/toolbar_top_today_image"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="17"
             style="@style/TodayCalendarText" />

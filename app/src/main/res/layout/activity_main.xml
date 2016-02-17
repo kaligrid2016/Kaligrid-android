@@ -33,19 +33,9 @@
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/button_add_event_margin_right"
         android:layout_marginBottom="@dimen/button_add_event_margin_bottom"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/buttom_float_add_cross"
         app:backgroundTint="@color/colorPrimary"/>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_gravity="bottom"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/colorPrimary">
-
-        <include layout="@layout/toolbar_bottom" />
-
-    </android.support.v7.widget.Toolbar>
+    <include layout="@layout/toolbar_bottom" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -2,9 +2,11 @@
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar_top"
+    android:id="@+id/toolbar_bottom"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:layout_height="50dp"
+    android:layout_gravity="bottom"
+    android:layout_alignParentBottom="true"
     android:background="@color/colorToolbarBottomBackground"
     android:contentInsetStart="0dp"
     android:contentInsetEnd="0dp"
@@ -18,10 +20,10 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
+        android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
-        android:src="@drawable/icon_list_active"/>
+        android:src="@drawable/icon_bottom_list_selected"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -29,7 +31,7 @@
         android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
         android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
-        android:src="@drawable/icon_grid"/>
+        android:src="@drawable/icon_bottom_grid"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -37,7 +39,7 @@
         android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
         android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
-        android:src="@drawable/icon_discover"/>
+        android:src="@drawable/icon_bottom_kali"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -45,7 +47,7 @@
         android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
         android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
-        android:src="@drawable/icon_contacts"/>
+        android:src="@drawable/icon_bottom_friends"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -53,6 +55,6 @@
         android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
         android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
-        android:src="@drawable/icon_profile"/>
+        android:src="@drawable/icon_bottom_me"/>
 
 </android.support.v7.widget.Toolbar>

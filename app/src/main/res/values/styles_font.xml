@@ -6,7 +6,7 @@
     </style>
 
     <style name="TodayCalendarText" parent="@android:style/TextAppearance">
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">13sp</item>
     </style>
 
 </resources>
