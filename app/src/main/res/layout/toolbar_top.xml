@@ -30,7 +30,7 @@
             android:layout_alignTop="@id/toolbar_top_today_image"
             android:layout_alignRight="@id/toolbar_top_today_image"
             android:layout_alignBottom="@id/toolbar_top_today_image"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:gravity="center"
             android:text="17"
             style="@style/TodayCalendarText" />

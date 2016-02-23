@@ -18,42 +18,37 @@
     app:contentInsetRight="0dp">
 
     <ImageView
+        android:id="@+id/toolbar_bottom_list_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
-        android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
         android:src="@drawable/icon_bottom_list_selected"/>
 
     <ImageView
+        android:id="@+id/toolbar_bottom_grid_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
-        android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
         android:src="@drawable/icon_bottom_grid"/>
 
     <ImageView
+        android:id="@+id/toolbar_bottom_discover_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
-        android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
         android:src="@drawable/icon_bottom_kali"/>
 
     <ImageView
+        android:id="@+id/toolbar_bottom_friends_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
-        android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
         android:src="@drawable/icon_bottom_friends"/>
 
     <ImageView
+        android:id="@+id/toolbar_bottom_profile_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/toolbar_bottom_button_margin"
-        android:layout_marginBottom="@dimen/toolbar_bottom_button_margin"
         android:layout_weight="1"
         android:src="@drawable/icon_bottom_me"/>
 
