@@ -22,14 +22,21 @@ import com.kaligrid.fragment.TypedBaseFragment;
 
 import java.util.Calendar;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView listImage;
-    private ImageView gridImage;
-    private ImageView discoverImage;
-    private ImageView friendsImage;
-    private ImageView profileImage;
-    private FloatingActionButton addButton;
+    @Bind(R.id.toolbar_top) Toolbar toolbarTop;
+    @Bind(R.id.toolbar_bottom_list_image) ImageView listImage;
+    @Bind(R.id.toolbar_bottom_grid_image) ImageView gridImage;
+    @Bind(R.id.toolbar_bottom_discover_image) ImageView discoverImage;
+    @Bind(R.id.toolbar_bottom_friends_image) ImageView friendsImage;
+    @Bind(R.id.toolbar_bottom_profile_image) ImageView profileImage;
+    @Bind(R.id.button_add_event) FloatingActionButton addButton;
+    @Bind(R.id.toolbar_top_today_text) TextView todayText;
+
     private ContentViewType currentView;
 
     @Override
@@ -37,15 +44,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listImage = (ImageView) findViewById(R.id.toolbar_bottom_list_image);
-        gridImage = (ImageView) findViewById(R.id.toolbar_bottom_grid_image);
-        discoverImage = (ImageView) findViewById(R.id.toolbar_bottom_discover_image);
-        friendsImage = (ImageView) findViewById(R.id.toolbar_bottom_friends_image);
-        profileImage = (ImageView) findViewById(R.id.toolbar_bottom_profile_image);
-        addButton = (FloatingActionButton) findViewById(R.id.button_add_event);
+        ButterKnife.bind(this);
 
-        setUpTopToolbar();
-        setUpBottomToolbar();
+        setSupportActionBar(toolbarTop);
         setUpAddEventButton();
 
         loadInitialView(savedInstanceState);
@@ -53,82 +54,64 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        TextView todayText = (TextView) findViewById(R.id.toolbar_top_today_text);
         todayText.setText(String.valueOf(Calendar.getInstance().get(Calendar.DATE)));
         return true;
     }
 
-    private void setUpTopToolbar() {
-        Toolbar toolbarTop = (Toolbar) findViewById(R.id.toolbar_top);
-        setSupportActionBar(toolbarTop);
+    @OnClick(R.id.toolbar_bottom_list_image)
+    public void onListImageClick(View v) {
+        if (currentView == ContentViewType.LIST) {
+            return;
+        }
+
+        addButton.show();
+        resetBottomToolbarImages();
+        ((ImageView) v).setImageResource(R.drawable.icon_bottom_list_selected);
+        loadViewFragment(new ListViewFragment());
     }
 
-    private void setUpBottomToolbar() {
-        listImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentView == ContentViewType.LIST) {
-                    return;
-                }
+    @OnClick(R.id.toolbar_bottom_grid_image)
+    public void onGridImageClick(View v) {
+        if (currentView == ContentViewType.GRID) {
+            return;
+        }
 
-                addButton.show();
-                resetBottomToolbarImages();
-                ((ImageView) v).setImageResource(R.drawable.icon_bottom_list_selected);
-                loadViewFragment(new ListViewFragment());
-            }
-        });
+        resetBottomToolbarImages();
+        ((ImageView) v).setImageResource(R.drawable.icon_bottom_grid_selected);
+        loadViewFragment(new GridViewFragment());
+    }
 
-        gridImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentView == ContentViewType.GRID) {
-                    return;
-                }
+    @OnClick(R.id.toolbar_bottom_discover_image)
+    public void onDiscoverImageClick(View v) {
+        if (currentView == ContentViewType.DISCOVER) {
+            return;
+        }
 
-                resetBottomToolbarImages();
-                ((ImageView) v).setImageResource(R.drawable.icon_bottom_grid_selected);
-                loadViewFragment(new GridViewFragment());
-            }
-        });
+        resetBottomToolbarImages();
+        ((ImageView) v).setImageResource(R.drawable.icon_bottom_kali_selected);
+        loadViewFragment(new DiscoverViewFragment());
+    }
 
-        discoverImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentView == ContentViewType.DISCOVER) {
-                    return;
-                }
+    @OnClick(R.id.toolbar_bottom_friends_image)
+    public void onFriendsImageClick(View v) {
+        if (currentView == ContentViewType.FRIENDS) {
+            return;
+        }
 
-                resetBottomToolbarImages();
-                ((ImageView) v).setImageResource(R.drawable.icon_bottom_kali_selected);
-                loadViewFragment(new DiscoverViewFragment());
-            }
-        });
+        resetBottomToolbarImages();
+        ((ImageView) v).setImageResource(R.drawable.icon_bottom_friends_selected);
+        loadViewFragment(new FriendsViewFragment());
+    }
 
-        friendsImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentView == ContentViewType.FRIENDS) {
-                    return;
-                }
+    @OnClick(R.id.toolbar_bottom_profile_image)
+    public void onProfileImageClick(View v) {
+        if (currentView == ContentViewType.PROFILE) {
+            return;
+        }
 
-                resetBottomToolbarImages();
-                ((ImageView) v).setImageResource(R.drawable.icon_bottom_friends_selected);
-                loadViewFragment(new FriendsViewFragment());
-            }
-        });
-
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentView == ContentViewType.PROFILE) {
-                    return;
-                }
-
-                resetBottomToolbarImages();
-                ((ImageView) v).setImageResource(R.drawable.icon_bottom_me_selected);
-                loadViewFragment(new ProfileViewFragment());
-            }
-        });
+        resetBottomToolbarImages();
+        ((ImageView) v).setImageResource(R.drawable.icon_bottom_kali_selected);
+        loadViewFragment(new ProfileViewFragment());
     }
 
     private void setUpAddEventButton() {
