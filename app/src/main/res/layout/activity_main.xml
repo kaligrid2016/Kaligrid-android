@@ -19,7 +19,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <!-- Content view -->
-    <android.support.v4.widget.NestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </android.support.v4.widget.NestedScrollView>
+    </RelativeLayout>
 
     <!-- Add event button -->
     <android.support.design.widget.FloatingActionButton
