@@ -11,7 +11,7 @@
     <!-- Top toolbar -->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/toolbar_height"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <include layout="@layout/toolbar_top" />
@@ -34,13 +34,14 @@
     <!-- Add event button -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_add_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/button_add_event_size"
+        android:layout_height="@dimen/button_add_event_size"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/button_add_event_margin_right"
         android:layout_marginBottom="@dimen/button_add_event_margin_bottom"
         android:src="@drawable/buttom_float_add_cross"
-        app:backgroundTint="@color/colorPrimary"/>
+        android:scaleType="center"
+        app:backgroundTint="@color/colorPrimary" />
 
     <!-- Bottom toolbar -->
     <include layout="@layout/toolbar_bottom" />

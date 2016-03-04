@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        Window window = this.getWindow();
+//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         ButterKnife.bind(this);
 
@@ -110,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         resetBottomToolbarImages();
-        ((ImageView) v).setImageResource(R.drawable.icon_bottom_kali_selected);
+        ((ImageView) v).setImageResource(R.drawable.icon_bottom_me_selected);
         loadViewFragment(new ProfileViewFragment());
     }
 
