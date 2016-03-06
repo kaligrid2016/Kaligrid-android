@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbarTop);
-        setUpAddEventButton();
+        initializeAddEventButton();
 
         loadInitialView(savedInstanceState);
     }
@@ -119,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         loadViewFragment(new ProfileViewFragment());
     }
 
-    private void setUpAddEventButton() {
+    private void initializeAddEventButton() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_add_event);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
