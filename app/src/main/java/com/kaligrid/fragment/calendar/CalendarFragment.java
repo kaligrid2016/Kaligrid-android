@@ -9,22 +9,26 @@ import android.widget.TextView;
 import com.kaligrid.R;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
+import com.roomorama.caldroid.CalendarHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
+import hirondelle.date4j.DateTime;
 
 public class CalendarFragment extends CaldroidFragment {
 
     public CalendarFragment() {
-        setArguments(getBundle());
-    }
-
-    private Bundle getBundle() {
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
-        return args;
+        args.putInt(CaldroidFragment.THEME_RESOURCE, R.style.Calendar);
+
+        setArguments(args);
     }
 
     @Override
@@ -42,7 +46,26 @@ public class CalendarFragment extends CaldroidFragment {
         return new CalendarGridAdapter(getActivity(), month, year, getCaldroidData(), extraData);
     }
 
-    static class CalendarListener  extends CaldroidListener {
+    @Override
+    protected ArrayList<String> getDaysOfWeek() {
+        ArrayList<String> list = new ArrayList<>();
+
+        SimpleDateFormat fmt = new SimpleDateFormat("EEE", Locale.getDefault());
+
+        // 17 Feb 2013 is Sunday
+        DateTime sunday = new DateTime(2013, 2, 17, 0, 0, 0, 0);
+        DateTime nextDay = sunday.plusDays(startDayOfWeek - SUNDAY);
+
+        for (int i = 0; i < 7; i++) {
+            Date date = CalendarHelper.convertDateTimeToDate(nextDay);
+            list.add(fmt.format(date).substring(0, 1).toUpperCase());
+            nextDay = nextDay.plusDays(1);
+        }
+
+        return list;
+    }
+
+    static class CalendarListener extends CaldroidListener {
 
         private CaldroidFragment caldroidFragment;
 
@@ -57,10 +80,6 @@ public class CalendarFragment extends CaldroidFragment {
 
         @Override
         public void onCaldroidViewCreated() {
-            TextView monthTitle = caldroidFragment.getMonthTitleTextView();
-            monthTitle.setTextAppearance(R.style.CalendarMonthTitleText);
-            caldroidFragment.setMonthTitleTextView(monthTitle);
-            caldroidFragment.refreshView();
         }
     }
 }
