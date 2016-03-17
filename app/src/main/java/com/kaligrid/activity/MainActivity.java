@@ -1,9 +1,11 @@
 package com.kaligrid.activity;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -28,13 +30,20 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar_top) Toolbar toolbarTop;
+    @Bind(R.id.toolbar_main_top) Toolbar toolbarTop;
     @Bind(R.id.toolbar_bottom_list_image) ImageView listImage;
     @Bind(R.id.toolbar_bottom_grid_image) ImageView gridImage;
     @Bind(R.id.toolbar_bottom_discover_image) ImageView discoverImage;
     @Bind(R.id.toolbar_bottom_friends_image) ImageView friendsImage;
     @Bind(R.id.toolbar_bottom_profile_image) ImageView profileImage;
-    @Bind(R.id.button_add_event) FloatingActionButton addButton;
+    @Bind(R.id.button_add) FloatingActionButton addButton;
+    @Bind(R.id.button_add_cancel_label) TextView addButtonCancelLabel;
+    @Bind(R.id.button_add_fyi) FloatingActionButton addButtonFyi;
+    @Bind(R.id.button_add_fyi_label) TextView addButtonFyiLabel;
+    @Bind(R.id.button_add_reminder) FloatingActionButton addButtonReminder;
+    @Bind(R.id.button_add_reminder_label) TextView addButtonReminderLabel;
+    @Bind(R.id.button_add_event) FloatingActionButton addButtonEvent;
+    @Bind(R.id.button_add_event_label) TextView addButtonEventLabel;
     @Bind(R.id.toolbar_top_today_text) TextView todayText;
 
     private ContentViewType currentView;
@@ -43,15 +52,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        Window window = this.getWindow();
-//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbarTop);
-        initializeAddEventButton();
-
         loadInitialView(savedInstanceState);
     }
 
@@ -59,6 +61,34 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         todayText.setText(String.valueOf(Calendar.getInstance().get(Calendar.DATE)));
         return true;
+    }
+
+    @OnClick({R.id.button_add, R.id.button_add_cancel_label})
+    public void onAddButtonClick(View v) {
+        // If add button is enabled, expand other add buttons.
+        if (addButtonCancelLabel.getVisibility() == View.GONE) {
+            expandOtherAddButtons();
+        } else {
+            collapseOtherAddButtons();
+        }
+    }
+
+    @OnClick({R.id.button_add_fyi, R.id.button_add_fyi_label})
+    public void onAddFyiButtonClick(View v) {
+        startActivity(new Intent(this, AddFyiActivity.class));
+        collapseOtherAddButtons();
+    }
+
+    @OnClick({R.id.button_add_reminder, R.id.button_add_reminder_label})
+    public void onAddReminderButtonClick(View v) {
+        startActivity(new Intent(this, AddReminderActivity.class));
+        collapseOtherAddButtons();
+    }
+
+    @OnClick({R.id.button_add_event, R.id.button_add_event_label})
+    public void onAddEventButtonClick(View v) {
+        startActivity(new Intent(this, AddEventActivity.class));
+        collapseOtherAddButtons();
     }
 
     @OnClick(R.id.toolbar_bottom_list_image)
@@ -117,17 +147,6 @@ public class MainActivity extends AppCompatActivity {
         loadViewFragment(new ProfileViewFragment());
     }
 
-    private void initializeAddEventButton() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_add_event);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }
-
     private void loadInitialView(Bundle savedInstanceState) {
         if (findViewById(R.id.content_fragment_container) != null) {
             if (savedInstanceState != null) {
@@ -135,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             addButton.show();
+            collapseOtherAddButtons();
             listImage.setImageResource(R.drawable.icon_bottom_list_selected);
             loadViewFragment(new ListViewFragment());
         }
@@ -147,11 +167,41 @@ public class MainActivity extends AppCompatActivity {
         friendsImage.setImageResource(R.drawable.icon_bottom_friends);
         profileImage.setImageResource(R.drawable.icon_bottom_me);
         addButton.setVisibility(View.GONE);
+        collapseOtherAddButtons();
     }
 
     private void loadViewFragment(TypedBaseFragment fragment) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.content_fragment_container, fragment).commit();
         currentView = fragment.getType();
+    }
+
+    private void expandOtherAddButtons() {
+        // Change add button to cancel button
+        addButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.disabledBackground)));
+        addButtonCancelLabel.setVisibility(View.VISIBLE);
+
+        addButtonFyi.setVisibility(View.VISIBLE);
+        addButtonFyiLabel.setVisibility(View.VISIBLE);
+
+        addButtonReminder.setVisibility(View.VISIBLE);
+        addButtonReminderLabel.setVisibility(View.VISIBLE);
+
+        addButtonEvent.setVisibility(View.VISIBLE);
+        addButtonEventLabel.setVisibility(View.VISIBLE);
+    }
+
+    private void collapseOtherAddButtons() {
+        addButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+        addButtonCancelLabel.setVisibility(View.GONE);
+
+        addButtonFyi.setVisibility(View.GONE);
+        addButtonFyiLabel.setVisibility(View.GONE);
+
+        addButtonReminder.setVisibility(View.GONE);
+        addButtonReminderLabel.setVisibility(View.GONE);
+
+        addButtonEvent.setVisibility(View.GONE);
+        addButtonEventLabel.setVisibility(View.GONE);
     }
 }

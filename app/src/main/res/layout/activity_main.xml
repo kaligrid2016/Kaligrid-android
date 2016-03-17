@@ -14,12 +14,13 @@
         android:layout_height="@dimen/toolbar_top_height"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <include layout="@layout/toolbar_top" />
+        <include layout="@layout/toolbar_main_top" />
 
     </android.support.design.widget.AppBarLayout>
 
     <!-- Content view -->
     <RelativeLayout
+        android:id="@+id/layout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -27,23 +28,98 @@
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/content_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+        </FrameLayout>
 
     </RelativeLayout>
 
-    <!-- Add event button -->
+    <!-- Add event buttons -->
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/button_add_event"
-        android:layout_width="@dimen/button_add_event_size"
-        android:layout_height="@dimen/button_add_event_size"
+        android:id="@+id/button_add"
+        android:layout_width="@dimen/button_add_size"
+        android:layout_height="@dimen/button_add_size"
         android:layout_gravity="bottom|end"
-        android:layout_marginRight="@dimen/button_add_event_margin_right"
-        android:layout_marginBottom="@dimen/button_add_event_margin_bottom"
+        android:layout_marginRight="@dimen/button_add_margin_right"
+        android:layout_marginBottom="@dimen/button_add_margin_bottom"
         android:src="@drawable/buttom_float_add_cross"
         android:scaleType="center"
         app:backgroundTint="@color/colorPrimary" />
 
+    <TextView
+        android:id="@+id/button_add_cancel_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginRight="@dimen/button_add_label_margin_right"
+        android:layout_marginBottom="@dimen/button_add_margin_bottom"
+        android:paddingBottom="@dimen/button_add_label_padding_bottom"
+        android:text="Cancel" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_add_fyi"
+        android:layout_width="@dimen/button_add_size"
+        android:layout_height="@dimen/button_add_size"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/button_add_margin_right"
+        android:layout_marginBottom="@dimen/button_add_margin_bottom_fyi"
+        android:src="@drawable/buttom_float_add_cross"
+        android:scaleType="center"
+        app:backgroundTint="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/button_add_fyi_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginRight="@dimen/button_add_label_margin_right"
+        android:layout_marginBottom="@dimen/button_add_margin_bottom_fyi"
+        android:paddingBottom="@dimen/button_add_label_padding_bottom"
+        android:text="FYI" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_add_reminder"
+        android:layout_width="@dimen/button_add_size"
+        android:layout_height="@dimen/button_add_size"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/button_add_margin_right"
+        android:layout_marginBottom="@dimen/button_add_margin_bottom_reminder"
+        android:src="@drawable/buttom_float_add_cross"
+        android:scaleType="center"
+        app:backgroundTint="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/button_add_reminder_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginRight="@dimen/button_add_label_margin_right"
+        android:layout_marginBottom="@dimen/button_add_margin_bottom_reminder"
+        android:paddingBottom="@dimen/button_add_label_padding_bottom"
+        android:text="Reminder" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_add_event"
+        android:layout_width="@dimen/button_add_size"
+        android:layout_height="@dimen/button_add_size"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/button_add_margin_right"
+        android:layout_marginBottom="@dimen/button_add_margin_bottom_event"
+        android:src="@drawable/buttom_float_add_cross"
+        android:scaleType="center"
+        app:backgroundTint="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/button_add_event_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginRight="@dimen/button_add_label_margin_right"
+        android:layout_marginBottom="@dimen/button_add_margin_bottom_event"
+        android:paddingBottom="@dimen/button_add_label_padding_bottom"
+        android:text="Event" />
+
     <!-- Bottom toolbar -->
-    <include layout="@layout/toolbar_bottom" />
+    <include layout="@layout/toolbar_main_bottom" />
 
 </android.support.design.widget.CoordinatorLayout>

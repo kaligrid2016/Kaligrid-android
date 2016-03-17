@@ -2,9 +2,18 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="button_add_event_size">36dp</dimen>
-    <dimen name="button_add_event_margin_right">24dp</dimen>
-    <dimen name="button_add_event_margin_bottom">72dp</dimen>
+    <dimen name="button_add_size">36dp</dimen>
+    <dimen name="button_add_margin_right">24dp</dimen>
+    <dimen name="button_add_margin_bottom">72dp</dimen>
+    <dimen name="button_add_margin_bottom_fyi">118dp</dimen>
+    <!-- 72 + 36(icon) + 10(space) -->
+    <dimen name="button_add_margin_bottom_reminder">164dp</dimen>
+    <!-- 72 + (36(icon) + 10(space)) x 2 -->
+    <dimen name="button_add_margin_bottom_event">210dp</dimen>
+    <!-- 72 + (36(icon) + 10(space)) x 3 -->
+
+    <dimen name="button_add_label_margin_right">70dp</dimen>
+    <dimen name="button_add_label_padding_bottom">8dp</dimen>
 
     <dimen name="calendar_margin_top">-13dp</dimen>
     <dimen name="calendar_height">200dp</dimen>

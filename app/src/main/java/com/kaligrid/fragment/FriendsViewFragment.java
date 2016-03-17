@@ -12,7 +12,7 @@ public class FriendsViewFragment extends TypedBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.friends_view_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_friends_view, container, false);
     }
 
     @Override

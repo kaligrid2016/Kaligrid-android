@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="toolbarBottomBorder">#706E6E</color>
+    <color name="disabledBackground">#B2B2B2</color>
 </resources>
