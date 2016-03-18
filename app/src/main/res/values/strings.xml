@@ -1,4 +1,29 @@
 <resources>
     <string name="app_name">Kaligrid</string>
     <string name="action_settings">Settings</string>
+
+    <!-- New event button labels -->
+    <string name="button_label_new_event">Event</string>
+    <string name="button_label_new_reminder">Reminder</string>
+    <string name="button_label_new_fyi">FYI</string>
+    <string name="button_label_cancel">Cancel</string>
+
+    <string name="new_event_heading_date_time">DATE &amp; TIME</string>
+    <string name="new_event_label_all_day">All-day</string>
+    <string name="new_event_label_from">From:</string>
+    <string name="new_event_label_to">To:</string>
+
+    <string name="new_event_activity_title">New Event</string>
+    <string name="new_event_title_hint">Enter title e.g. Lunch Meeting</string>
+
+    <string name="new_reminder_activity_title">New Reminder</string>
+    <string name="new_reminder_title_hint">Enter title e.g. Joey\'s birthday</string>
+
+    <string name="new_fyi_activity_title">New FYI</string>
+    <string name="new_fyi_title_hint">Enter title e.g. Hey, FYI I\'m on vacation</string>
+
+    <string name="error_invalid_date_range_title">Cannot Use Selected Date</string>
+    <string name="error_invalid_date_range_message">The start date must be before the end date.</string>
+    <string name="dialog_button_ok">OK</string>
+
 </resources>

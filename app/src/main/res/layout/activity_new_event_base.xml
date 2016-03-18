@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edit_text_event_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-3dp"
+        android:hint="@string/new_event_title_hint"
+        android:textColorHint="@color/hintText"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/text_heading_date_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_text_event_title"
+        android:layout_marginTop="20dp"
+        android:text="@string/new_event_heading_date_time"
+        style="@style/HeadingNewEvent" />
+
+    <TextView
+        android:id="@+id/text_all_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_heading_date_time"
+        android:layout_marginTop="10dp"
+        android:text="@string/new_event_label_all_day" />
+
+    <Switch
+        android:id="@+id/switch_all_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_heading_date_time"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/text_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_all_day"
+        android:layout_marginTop="10dp"
+        android:text="@string/new_event_label_from"
+        style="@style/LabelNewEventDate" />
+
+    <TextView
+        android:id="@+id/text_from_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_all_day"
+        android:layout_toLeftOf="@+id/text_from_time"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:text="Wed, Mar 18, 2016"
+        style="@style/LabelNewEventDate" />
+
+    <TextView
+        android:id="@+id/text_from_time"
+        android:layout_width="@dimen/text_time_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_all_day"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:text="12:30 PM"
+        style="@style/LabelNewEventDate" />
+
+    <TextView
+        android:id="@+id/text_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_from"
+        android:layout_marginTop="10dp"
+        android:text="@string/new_event_label_to"
+        style="@style/LabelNewEventDate" />
+
+    <TextView
+        android:id="@+id/text_to_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_from_date"
+        android:layout_toLeftOf="@+id/text_to_time"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:text="Wed, Mar 18, 2016"
+        style="@style/LabelNewEventDate" />
+
+    <TextView
+        android:id="@+id/text_to_time"
+        android:layout_width="@dimen/text_time_width"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_from_time"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:text="12:30 PM"
+        style="@style/LabelNewEventDate" />
+
+</RelativeLayout>

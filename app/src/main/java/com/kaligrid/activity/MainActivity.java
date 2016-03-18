@@ -30,12 +30,15 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar_main_top) Toolbar toolbarTop;
-    @Bind(R.id.toolbar_bottom_list_image) ImageView listImage;
-    @Bind(R.id.toolbar_bottom_grid_image) ImageView gridImage;
-    @Bind(R.id.toolbar_bottom_discover_image) ImageView discoverImage;
-    @Bind(R.id.toolbar_bottom_friends_image) ImageView friendsImage;
-    @Bind(R.id.toolbar_bottom_profile_image) ImageView profileImage;
+    @Bind(R.id.toolbar_main_top) Toolbar topToolbar;
+    @Bind(R.id.toolbar_top_today_text) TextView textToday;
+    @Bind(R.id.toolbar_bottom_image_list) ImageView toolbarImageList;
+    @Bind(R.id.toolbar_bottom_image_grid) ImageView toolbarImageGrid;
+    @Bind(R.id.toolbar_bottom_image_discover) ImageView toolbarImageDiscover;
+    @Bind(R.id.toolbar_bottom_image_friends) ImageView toolbarImageFriends;
+    @Bind(R.id.toolbar_bottom_image_profile) ImageView toolbarImageProfile;
+
+    // Add event buttons
     @Bind(R.id.button_add) FloatingActionButton addButton;
     @Bind(R.id.button_add_cancel_label) TextView addButtonCancelLabel;
     @Bind(R.id.button_add_fyi) FloatingActionButton addButtonFyi;
@@ -44,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.button_add_reminder_label) TextView addButtonReminderLabel;
     @Bind(R.id.button_add_event) FloatingActionButton addButtonEvent;
     @Bind(R.id.button_add_event_label) TextView addButtonEventLabel;
-    @Bind(R.id.toolbar_top_today_text) TextView todayText;
 
     private ContentViewType currentView;
 
@@ -53,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbarTop);
+        setSupportActionBar(topToolbar);
         loadInitialView(savedInstanceState);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        todayText.setText(String.valueOf(Calendar.getInstance().get(Calendar.DATE)));
+        textToday.setText(String.valueOf(Calendar.getInstance().get(Calendar.DATE)));
         return true;
     }
 
@@ -75,23 +77,23 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick({R.id.button_add_fyi, R.id.button_add_fyi_label})
     public void onAddFyiButtonClick(View v) {
-        startActivity(new Intent(this, AddFyiActivity.class));
+        startActivity(new Intent(this, NewFyiActivity.class));
         collapseOtherAddButtons();
     }
 
     @OnClick({R.id.button_add_reminder, R.id.button_add_reminder_label})
     public void onAddReminderButtonClick(View v) {
-        startActivity(new Intent(this, AddReminderActivity.class));
+        startActivity(new Intent(this, NewReminderActivity.class));
         collapseOtherAddButtons();
     }
 
     @OnClick({R.id.button_add_event, R.id.button_add_event_label})
     public void onAddEventButtonClick(View v) {
-        startActivity(new Intent(this, AddEventActivity.class));
+        startActivity(new Intent(this, NewEventActivity.class));
         collapseOtherAddButtons();
     }
 
-    @OnClick(R.id.toolbar_bottom_list_image)
+    @OnClick(R.id.toolbar_bottom_image_list)
     public void onListImageClick(View v) {
         if (currentView == ContentViewType.LIST) {
             return;
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         loadViewFragment(new ListViewFragment());
     }
 
-    @OnClick(R.id.toolbar_bottom_grid_image)
+    @OnClick(R.id.toolbar_bottom_image_grid)
     public void onGridImageClick(View v) {
         if (currentView == ContentViewType.GRID) {
             return;
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         loadViewFragment(new GridViewFragment());
     }
 
-    @OnClick(R.id.toolbar_bottom_discover_image)
+    @OnClick(R.id.toolbar_bottom_image_discover)
     public void onDiscoverImageClick(View v) {
         if (currentView == ContentViewType.DISCOVER) {
             return;
@@ -125,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         loadViewFragment(new DiscoverViewFragment());
     }
 
-    @OnClick(R.id.toolbar_bottom_friends_image)
+    @OnClick(R.id.toolbar_bottom_image_friends)
     public void onFriendsImageClick(View v) {
         if (currentView == ContentViewType.FRIENDS) {
             return;
@@ -136,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         loadViewFragment(new FriendsViewFragment());
     }
 
-    @OnClick(R.id.toolbar_bottom_profile_image)
+    @OnClick(R.id.toolbar_bottom_image_profile)
     public void onProfileImageClick(View v) {
         if (currentView == ContentViewType.PROFILE) {
             return;
@@ -155,17 +157,17 @@ public class MainActivity extends AppCompatActivity {
 
             addButton.show();
             collapseOtherAddButtons();
-            listImage.setImageResource(R.drawable.icon_bottom_list_selected);
+            toolbarImageList.setImageResource(R.drawable.icon_bottom_list_selected);
             loadViewFragment(new ListViewFragment());
         }
     }
 
     private void resetBottomToolbarImages() {
-        listImage.setImageResource(R.drawable.icon_bottom_list);
-        gridImage.setImageResource(R.drawable.icon_bottom_grid);
-        discoverImage.setImageResource(R.drawable.icon_bottom_kali);
-        friendsImage.setImageResource(R.drawable.icon_bottom_friends);
-        profileImage.setImageResource(R.drawable.icon_bottom_me);
+        toolbarImageList.setImageResource(R.drawable.icon_bottom_list);
+        toolbarImageGrid.setImageResource(R.drawable.icon_bottom_grid);
+        toolbarImageDiscover.setImageResource(R.drawable.icon_bottom_kali);
+        toolbarImageFriends.setImageResource(R.drawable.icon_bottom_friends);
+        toolbarImageProfile.setImageResource(R.drawable.icon_bottom_me);
         addButton.setVisibility(View.GONE);
         collapseOtherAddButtons();
     }

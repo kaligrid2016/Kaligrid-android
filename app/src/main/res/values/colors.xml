@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#08BABA</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorPrimaryNewEvent">#F7A700</color>
+
+    <color name="colorPrimaryNewReminder">#FE3047</color>
+
+    <color name="colorPrimaryNewFyi">#97C2F5</color>
+
+    <color name="activityTitle">#FFFFFF</color>
+    <color name="textBlack">#1F1F1F</color>
+    <color name="textDarkGrey">#706E6E</color>
+    <color name="hintText">#CCCCCC</color>
+
+    <color name="calendarMonthName">#706E6E</color>
+    <color name="calendarWeekday">#08BABA</color>
+    <color name="calendarToday">#FFFFFF</color>
+    <color name="calendarDateActive">#1F1F1F</color>
+    <color name="calendarDateInactive">#B5B2B2</color>
+
     <color name="windowBackground">#FFFFFF</color>
     <color name="toolbarBottomBorder">#706E6E</color>
     <color name="disabledBackground">#B2B2B2</color>
+
 </resources>

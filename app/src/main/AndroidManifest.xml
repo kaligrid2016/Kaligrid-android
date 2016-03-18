@@ -22,16 +22,19 @@
         </activity>
 
         <activity
-            android:name=".activity.AddEventActivity"
-            android:label="New Event" />
+            android:name=".activity.NewEventActivity"
+            android:label="@string/new_event_activity_title"
+            android:theme="@style/AppTheme.AddEvent" />
 
         <activity
-            android:name=".activity.AddReminderActivity"
-            android:label="New Reminder" />
+            android:name=".activity.NewReminderActivity"
+            android:label="@string/new_reminder_activity_title"
+            android:theme="@style/AppTheme.AddReminder" />
 
         <activity
-            android:name=".activity.AddFyiActivity"
-            android:label="New FYI" />
+            android:name=".activity.NewFyiActivity"
+            android:label="@string/new_fyi_activity_title"
+            android:theme="@style/AppTheme.AddFyi" />
 
     </application>
 

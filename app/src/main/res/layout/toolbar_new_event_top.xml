@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toolbar_main_top"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_add_event_top"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_top_height"
-    android:background="?attr/colorPrimary">
+    android:background="?attr/colorPrimary"
+    android:contentInsetStart="0dp"
+    android:contentInsetEnd="0dp"
+    android:contentInsetLeft="0dp"
+    android:contentInsetRight="0dp"
+    app:contentInsetStart="0dp"
+    app:contentInsetEnd="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
         <TextView
@@ -24,7 +34,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="Title goes here..."
-            style="@style/CalendarDateActiveText" />
+            style="@style/ToolbarNewEventTitle" />
 
     </RelativeLayout>
 
