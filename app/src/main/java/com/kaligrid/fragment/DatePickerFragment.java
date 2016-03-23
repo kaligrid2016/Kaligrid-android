@@ -10,6 +10,8 @@ import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment {
 
+    public static final String FIELD_INITIAL_DATE = "initialDate";
+
     private DatePickerDialog.OnDateSetListener onDateSetListener;
 
     public static DatePickerFragment newInstance(DatePickerDialog.OnDateSetListener listener) {
@@ -21,11 +23,12 @@ public class DatePickerFragment extends DialogFragment {
     @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current date as the default date in the picker
-        final Calendar today = Calendar.getInstance();
-        int year = today.get(Calendar.YEAR);
-        int month = today.get(Calendar.MONTH);
-        int day = today.get(Calendar.DAY_OF_MONTH);
+        Calendar initialDate = Calendar.getInstance();
+        initialDate.setTimeInMillis(getArguments().getLong(FIELD_INITIAL_DATE, System.currentTimeMillis()));
+
+        int year = initialDate.get(Calendar.YEAR);
+        int month = initialDate.get(Calendar.MONTH);
+        int day = initialDate.get(Calendar.DAY_OF_MONTH);
 
         return new DatePickerDialog(getActivity(), onDateSetListener, year, month, day);
     }

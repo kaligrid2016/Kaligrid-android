@@ -10,6 +10,8 @@ import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment {
 
+    public static final String FIELD_INITIAL_TIME = "initialTime";
+
     private TimePickerDialog.OnTimeSetListener onTimeSetListener;
 
     public static TimePickerFragment newInstance(TimePickerDialog.OnTimeSetListener listener) {
@@ -20,10 +22,11 @@ public class TimePickerFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current time as the default values for the picker
-        final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
+        Calendar initialTime = Calendar.getInstance();
+        initialTime.setTimeInMillis(getArguments().getLong(FIELD_INITIAL_TIME, System.currentTimeMillis()));
+
+        int hour = initialTime.get(Calendar.HOUR_OF_DAY);
+        int minute = initialTime.get(Calendar.MINUTE);
 
         return new TimePickerDialog(getActivity(), onTimeSetListener, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
