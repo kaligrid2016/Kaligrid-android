@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
     private void expandOtherAddButtons() {
         // Change add button to cancel button
         addButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.disabledBackground)));
+        addButton.setImageResource(R.drawable.icon_add_cancel);
         addButtonCancelLabel.setVisibility(View.VISIBLE);
 
         addButtonFyi.setVisibility(View.VISIBLE);
@@ -195,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void collapseOtherAddButtons() {
         addButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+        addButton.setImageResource(R.drawable.icon_add);
         addButtonCancelLabel.setVisibility(View.GONE);
 
         addButtonFyi.setVisibility(View.GONE);
