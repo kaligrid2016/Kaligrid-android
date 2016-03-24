@@ -56,7 +56,7 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
                 } else {
                     dateText.setTextAppearance(R.style.CalendarDateTodayText);
                 }
-                convertView.setBackgroundResource(R.drawable.calendar_cell_today_background);
+                convertView.setBackgroundResource(R.drawable.background_calendar_cell_today);
             }
         }
 

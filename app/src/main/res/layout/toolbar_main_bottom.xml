@@ -32,35 +32,35 @@
             android:layout_below="@+id/toolbar_border">
 
             <ImageView
-                android:id="@+id/toolbar_bottom_image_list"
+                android:id="@+id/bottom_toolbar_list_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/icon_bottom_list_selected"/>
 
             <ImageView
-                android:id="@+id/toolbar_bottom_image_grid"
+                android:id="@+id/bottom_toolbar_grid_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/icon_bottom_grid"/>
 
             <ImageView
-                android:id="@+id/toolbar_bottom_image_discover"
+                android:id="@+id/bottom_toolbar_discover_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/icon_bottom_kali"/>
 
             <ImageView
-                android:id="@+id/toolbar_bottom_image_friends"
+                android:id="@+id/bottom_toolbar_friends_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/icon_bottom_friends"/>
 
             <ImageView
-                android:id="@+id/toolbar_bottom_image_profile"
+                android:id="@+id/bottom_toolbar_profile_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

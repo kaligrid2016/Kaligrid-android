@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toolbar_main_top"
+    android:id="@+id/top_toolbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_top_height"
     android:background="?attr/colorPrimary">
@@ -21,7 +21,7 @@
             android:src="@drawable/icon_top_today_container" />
 
         <TextView
-            android:id="@+id/toolbar_top_today_text"
+            android:id="@+id/top_toolbar_today_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/toolbar_top_today_image"

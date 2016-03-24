@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/edit_text_event_title"
+        android:id="@+id/event_title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="-3dp"
@@ -16,7 +16,7 @@
         android:id="@+id/text_heading_date_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_text_event_title"
+        android:layout_below="@+id/event_title_text"
         android:layout_marginTop="20dp"
         android:text="@string/new_event_heading_date_time"
         style="@style/HeadingNewEvent" />
@@ -47,11 +47,11 @@
         style="@style/LabelNewEventDate" />
 
     <TextView
-        android:id="@+id/text_from_date"
+        android:id="@+id/from_date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_all_day"
-        android:layout_toLeftOf="@+id/text_from_time"
+        android:layout_toLeftOf="@+id/from_time_text"
         android:layout_marginTop="10dp"
         android:gravity="right"
         android:text="Wed, Mar 18, 2016"
@@ -79,11 +79,11 @@
         style="@style/LabelNewEventDate" />
 
     <TextView
-        android:id="@+id/text_to_date"
+        android:id="@+id/to_date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_from_date"
-        android:layout_toLeftOf="@+id/text_to_time"
+        android:layout_below="@+id/from_date_text"
+        android:layout_toLeftOf="@+id/to_time_text"
         android:layout_marginTop="10dp"
         android:gravity="right"
         android:text="Wed, Mar 18, 2016"
@@ -93,7 +93,7 @@
         android:id="@+id/text_to_time"
         android:layout_width="@dimen/text_time_width"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_from_time"
+        android:layout_below="@+id/from_time_text"
         android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
         android:layout_alignParentRight="true"

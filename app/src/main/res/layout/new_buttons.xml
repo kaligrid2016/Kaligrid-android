@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/button_add_margin_bottom"
+    android:layout_marginBottom="@dimen/new_button_margin_bottom"
     android:layout_marginRight="24dp"
     android:layout_gravity="bottom|right">
 
@@ -12,28 +11,27 @@
         android:id="@+id/button_add_fyi_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/button_add_space"
+        android:layout_marginBottom="@dimen/new_button_space"
         android:layout_alignParentRight="true">
 
         <TextView
-            android:id="@+id/button_add_fyi_label"
+            android:id="@+id/new_fyi_button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/button_add_label_space"
+            android:layout_marginRight="@dimen/new_button_and_label_space"
             android:layout_centerVertical="true"
             android:text="@string/button_label_new_fyi"
             style="@style/LabelNewEventButtonLabel" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/button_add_fyi"
+        <ImageView
+            android:id="@+id/new_fyi_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="0dp"
-            android:layout_toRightOf="@id/button_add_fyi_label"
+            android:layout_toRightOf="@id/new_fyi_button_text"
+            android:background="@drawable/button_background_new_fyi"
             android:src="@drawable/icon_new_fyi"
-            android:scaleType="center"
-            app:backgroundTint="@color/colorPrimaryNewFyi"
-            app:fabSize="mini" />
+            android:scaleType="center" />
 
     </RelativeLayout>
 
@@ -41,28 +39,27 @@
         android:id="@+id/button_add_reminder_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/button_add_space"
+        android:layout_marginBottom="@dimen/new_button_space"
         android:layout_alignParentRight="true"
         android:layout_below="@id/button_add_fyi_layout">
 
         <TextView
-            android:id="@+id/button_add_reminder_label"
+            android:id="@+id/new_reminder_button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/button_add_label_space"
+            android:layout_marginRight="@dimen/new_button_and_label_space"
             android:layout_centerVertical="true"
             android:text="@string/button_label_new_reminder"
             style="@style/LabelNewEventButtonLabel" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/button_add_reminder"
+        <ImageView
+            android:id="@+id/new_reminder_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/button_add_reminder_label"
+            android:layout_toRightOf="@id/new_reminder_button_text"
+            android:background="@drawable/button_background_new_reminder"
             android:src="@drawable/icon_new_reminder"
-            android:scaleType="center"
-            app:backgroundTint="@color/colorPrimaryNewReminder"
-            app:fabSize="mini" />
+            android:scaleType="center" />
 
     </RelativeLayout>
 
@@ -70,28 +67,27 @@
         android:id="@+id/button_add_event_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/button_add_space"
+        android:layout_marginBottom="@dimen/new_button_space"
         android:layout_alignParentRight="true"
         android:layout_below="@id/button_add_reminder_layout">
 
         <TextView
-            android:id="@+id/button_add_event_label"
+            android:id="@+id/new_event_button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/button_add_label_space"
+            android:layout_marginRight="@dimen/new_button_and_label_space"
             android:layout_centerVertical="true"
             android:text="@string/button_label_new_event"
             style="@style/LabelNewEventButtonLabel" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/button_add_event"
+        <ImageView
+            android:id="@+id/new_event_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/button_add_event_label"
+            android:layout_toRightOf="@id/new_event_button_text"
+            android:background="@drawable/button_background_new_event"
             android:src="@drawable/icon_new_event"
-            android:scaleType="center"
-            app:backgroundTint="@color/colorPrimaryNewEvent"
-            app:fabSize="mini" />
+            android:scaleType="center" />
 
     </RelativeLayout>
 
@@ -103,23 +99,22 @@
         android:layout_below="@id/button_add_event_layout">
 
         <TextView
-            android:id="@+id/button_add_cancel_label"
+            android:id="@+id/cancel_button_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/button_add_label_space"
+            android:layout_marginRight="@dimen/new_button_and_label_space"
             android:layout_centerVertical="true"
             android:text="@string/button_label_cancel"
             style="@style/LabelNewEventButtonLabel" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/button_add"
+        <ImageView
+            android:id="@+id/new_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/button_add_cancel_label"
+            android:layout_toRightOf="@id/cancel_button_text"
+            android:background="@drawable/button_background_new"
             android:src="@drawable/icon_add"
-            android:scaleType="center"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="mini" />
+            android:scaleType="center" />
 
     </RelativeLayout>
 
