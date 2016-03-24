@@ -129,23 +129,11 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     }
 
     private void handleOnDateSet(TextView dateTextView, int year, int month, int day) {
-        CharSequence oldDateText = dateTextView.getText();
         dateTextView.setText(DATE_FORMAT.format(createDate(year, month, day)));
-        if (!isDateRangeValid()) {
-            showDateRangeError();
-            // Restore the old date text if the new date is invalid.
-            dateTextView.setText(oldDateText);
-        }
     }
 
     private void handleOnTimeSet(TextView timeTextView, int hourOfDay, int minute) {
-        CharSequence oldDateText = timeTextView.getText();
         timeTextView.setText(TIME_FORMAT.format(createTime(hourOfDay, minute)));
-        if (!isDateRangeValid()) {
-            showDateRangeError();
-            // Restore the old date text if the new date is invalid.
-            timeTextView.setText(oldDateText);
-        }
     }
 
     private static Date createDate(int year, int month, int day) {
@@ -179,8 +167,28 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         }
     }
 
+    private static Date mergeDateAndTime(Date date, Date time) {
+        Calendar timeCal = Calendar.getInstance();
+        timeCal.setTime(time);
+
+        Calendar dateCal = Calendar.getInstance();
+        dateCal.setTime(date);
+        dateCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
+        dateCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
+
+        return dateCal.getTime();
+    }
+
     private boolean isDateRangeValid() {
-        return true;
+        Date fromDate = readDate(textFromDate);
+        Date fromTime = readTime(textFromTime);
+        Date fromDateTime = mergeDateAndTime(fromDate, fromTime);
+
+        Date toDate = readDate(textToDate);
+        Date toTime = readTime(textToTime);
+        Date toDateTime = mergeDateAndTime(toDate, toTime);
+
+        return fromDateTime.getTime() < toDateTime.getTime();
     }
 
     private void showDateRangeError() {
