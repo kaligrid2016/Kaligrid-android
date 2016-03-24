@@ -58,7 +58,7 @@ public class CalendarFragment extends CaldroidFragment {
 
         for (int i = 0; i < 7; i++) {
             Date date = CalendarHelper.convertDateTimeToDate(nextDay);
-            list.add(fmt.format(date).substring(0, 1).toUpperCase());
+            list.add(fmt.format(date));
             nextDay = nextDay.plusDays(1);
         }
 

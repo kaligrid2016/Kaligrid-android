@@ -7,13 +7,22 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.kaligrid.R;
 import com.kaligrid.fragment.calendar.CalendarFragment;
 
+import java.util.List;
+
 public class ListViewFragment extends TypedBaseFragment {
 
     private Context context;
+
+    public static ListViewFragment newInstance(Context context) {
+        ListViewFragment fragment = new ListViewFragment();
+        fragment.setContext(context);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,12 +35,6 @@ public class ListViewFragment extends TypedBaseFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
-    }
-
-    @Override
     public ContentViewType getType() {
         return ContentViewType.LIST;
     }
@@ -40,5 +43,9 @@ public class ListViewFragment extends TypedBaseFragment {
         FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.calendar, new CalendarFragment());
         transaction.commit();
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

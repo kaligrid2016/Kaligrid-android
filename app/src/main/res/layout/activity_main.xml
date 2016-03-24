@@ -37,14 +37,15 @@
     <!-- Add event buttons -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_add_event"
-        android:layout_width="@dimen/button_add_size"
-        android:layout_height="@dimen/button_add_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/button_add_margin_right"
         android:layout_marginBottom="@dimen/button_add_margin_bottom_event"
         android:src="@drawable/buttom_float_add_cross"
         android:scaleType="center"
-        app:backgroundTint="@color/colorPrimary" />
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini" />
 
     <TextView
         android:id="@+id/button_add_event_label"
@@ -59,14 +60,15 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_add_reminder"
-        android:layout_width="@dimen/button_add_size"
-        android:layout_height="@dimen/button_add_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/button_add_margin_right"
         android:layout_marginBottom="@dimen/button_add_margin_bottom_reminder"
         android:src="@drawable/buttom_float_add_cross"
         android:scaleType="center"
-        app:backgroundTint="@color/colorPrimary" />
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini" />
 
     <TextView
         android:id="@+id/button_add_reminder_label"
@@ -81,14 +83,15 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_add_fyi"
-        android:layout_width="@dimen/button_add_size"
-        android:layout_height="@dimen/button_add_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/button_add_margin_right"
         android:layout_marginBottom="@dimen/button_add_margin_bottom_fyi"
         android:src="@drawable/buttom_float_add_cross"
         android:scaleType="center"
-        app:backgroundTint="@color/colorPrimary" />
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini" />
 
     <TextView
         android:id="@+id/button_add_fyi_label"
@@ -103,14 +106,15 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_add"
-        android:layout_width="@dimen/button_add_size"
-        android:layout_height="@dimen/button_add_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/button_add_margin_right"
         android:layout_marginBottom="@dimen/button_add_margin_bottom"
         android:src="@drawable/buttom_float_add_cross"
         android:scaleType="center"
-        app:backgroundTint="@color/colorPrimary" />
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini" />
 
     <TextView
         android:id="@+id/button_add_cancel_label"

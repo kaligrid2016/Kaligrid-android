@@ -2,6 +2,7 @@ package com.kaligrid.fragment.calendar;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,11 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
 
         // Set color of the dates in previous / next month
         if (dateTime.getMonth() != month) {
-            dateText.setTextAppearance(R.style.CalendarDateInactiveText);
+            if (Build.VERSION.SDK_INT < 23) {
+                dateText.setTextAppearance(context, R.style.CalendarDateInactiveText);
+            } else {
+                dateText.setTextAppearance(R.style.CalendarDateInactiveText);
+            }
         }
 
         if (isDateSelected(dateTime)) {
@@ -46,7 +51,11 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
         } else {
             // Customize for today
             if (dateTime.equals(getToday())) {
-                dateText.setTextAppearance(R.style.CalendarDateTodayText);
+                if (Build.VERSION.SDK_INT < 23) {
+                    dateText.setTextAppearance(context, R.style.CalendarDateTodayText);
+                } else {
+                    dateText.setTextAppearance(R.style.CalendarDateTodayText);
+                }
                 convertView.setBackgroundResource(R.drawable.calendar_cell_today_background);
             }
         }

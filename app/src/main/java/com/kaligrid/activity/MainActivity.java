@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         addButton.show();
         resetBottomToolbarImages();
         ((ImageView) v).setImageResource(R.drawable.icon_bottom_list_selected);
-        loadViewFragment(new ListViewFragment());
+        loadViewFragment(ListViewFragment.newInstance(this));
     }
 
     @OnClick(R.id.toolbar_bottom_image_grid)
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             addButton.show();
             collapseOtherAddButtons();
             toolbarImageList.setImageResource(R.drawable.icon_bottom_list_selected);
-            loadViewFragment(new ListViewFragment());
+            loadViewFragment(ListViewFragment.newInstance(this));
         }
     }
 
