@@ -12,7 +12,8 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,17 +25,20 @@
         <activity
             android:name=".activity.NewEventActivity"
             android:label="@string/new_event_activity_title"
-            android:theme="@style/AppTheme.AddEvent" />
+            android:theme="@style/AppTheme.AddEvent"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.NewReminderActivity"
             android:label="@string/new_reminder_activity_title"
-            android:theme="@style/AppTheme.AddReminder" />
+            android:theme="@style/AppTheme.AddReminder"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.NewFyiActivity"
             android:label="@string/new_fyi_activity_title"
-            android:theme="@style/AppTheme.AddFyi" />
+            android:theme="@style/AppTheme.AddFyi"
+            android:screenOrientation="portrait" />
 
     </application>
 
