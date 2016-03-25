@@ -10,19 +10,31 @@
         <item name="android:windowTitleStyle">@style/ToolbarAppName</item>
     </style>
 
-    <style name="AppTheme.AddEvent" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.NewEventCommon" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textBlack</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="AppTheme.AddEvent" parent="AppTheme.NewEventCommon">
         <item name="colorPrimary">@color/colorPrimaryNewEvent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkNewEvent</item>
         <item name="colorAccent">@color/colorPrimaryNewEvent</item>
+        <item name="colorHeadingText">@color/colorHeadingTextNewEvent</item>
     </style>
 
-    <style name="AppTheme.AddReminder" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.AddReminder" parent="AppTheme.NewEventCommon">
         <item name="colorPrimary">@color/colorPrimaryNewReminder</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkNewReminder</item>
         <item name="colorAccent">@color/colorPrimaryNewReminder</item>
+        <item name="colorHeadingText">@color/colorHeadingTextNewReminder</item>
     </style>
 
-    <style name="AppTheme.AddFyi" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.AddFyi" parent="AppTheme.NewEventCommon">
         <item name="colorPrimary">@color/colorPrimaryNewFyi</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkNewFyi</item>
         <item name="colorAccent">@color/colorPrimaryNewFyi</item>
+        <item name="colorHeadingText">@color/colorHeadingTextNewFyi</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

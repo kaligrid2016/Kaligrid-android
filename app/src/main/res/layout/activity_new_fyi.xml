@@ -18,6 +18,23 @@
 
         <include layout="@layout/activity_new_event_base" />
 
+        <TextView
+            android:id="@+id/text_heading_send_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/new_activity_section_margin"
+            android:layout_below="@+id/new_event_base_activity"
+            android:text="@string/new_event_heading_send_to"
+            style="@style/HeadingNewEvent" />
+
+        <TextView
+            android:id="@+id/recipients_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/new_activity_field_margin"
+            android:layout_below="@+id/text_heading_send_to"
+            android:text="@string/new_event_label_recipients" />
+
     </RelativeLayout>
 
 </RelativeLayout>

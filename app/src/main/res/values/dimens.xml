@@ -12,6 +12,7 @@
     <dimen name="new_button_and_label_space">12dp</dimen>
 
     <dimen name="new_activity_field_margin">12dp</dimen>
+    <dimen name="new_activity_section_margin">24dp</dimen>
 
     <dimen name="toolbar_top_height">48dp</dimen>
     <dimen name="toolbar_bottom_height">49dp</dimen>

@@ -5,11 +5,17 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="colorPrimaryNewEvent">#F7A700</color>
+    <color name="colorPrimaryNewEvent">#F5A623</color>
+    <color name="colorPrimaryDarkNewEvent">#F5A623</color>
+    <color name="colorHeadingTextNewEvent">#F5A623</color>
 
-    <color name="colorPrimaryNewReminder">#FE3047</color>
+    <color name="colorPrimaryNewReminder">#FB344C</color>
+    <color name="colorPrimaryDarkNewReminder">#FB344C</color>
+    <color name="colorHeadingTextNewReminder">#FB344C</color>
 
-    <color name="colorPrimaryNewFyi">#97C2F5</color>
+    <color name="colorPrimaryNewFyi">#99C3F3</color>
+    <color name="colorPrimaryDarkNewFyi">#4A90E2</color>
+    <color name="colorHeadingTextNewFyi">#4A90E2</color>
 
     <color name="activityTitle">#FFFFFF</color>
     <color name="textBlack">#1F1F1F</color>

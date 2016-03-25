@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/new_event_base_activity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <EditText
         android:id="@+id/event_title_text"
@@ -31,7 +33,6 @@
         android:layout_toLeftOf="@+id/location_button"
         android:src="@drawable/icon_pic_fyi"/>
 
-
     <TextView
         android:id="@+id/text_heading_date_time"
         android:layout_width="wrap_content"
@@ -41,7 +42,7 @@
         style="@style/HeadingNewEvent" />
 
     <TextView
-        android:id="@+id/text_all_day"
+        android:id="@+id/all_day_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_heading_date_time"
@@ -49,7 +50,7 @@
         android:text="@string/new_event_label_all_day" />
 
     <Switch
-        android:id="@+id/switch_all_day"
+        android:id="@+id/all_day_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_heading_date_time"
@@ -57,19 +58,19 @@
         android:layout_marginTop="6dp" />
 
     <TextView
-        android:id="@+id/text_from"
+        android:id="@+id/from_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_all_day"
+        android:layout_below="@+id/all_day_text"
         android:layout_marginTop="@dimen/new_activity_field_margin"
         android:text="@string/new_event_label_from"
-        style="@style/LabelNewEventDate" />
+        style="@style/NewEventDateTime" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/new_activity_field_margin"
-        android:layout_below="@+id/text_all_day"
+        android:layout_below="@+id/all_day_text"
         android:layout_alignParentRight="true">
 
         <TextView
@@ -77,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wed, Mar 18, 2016"
-            style="@style/LabelNewEventDate" />
+            style="@style/NewEventDateTime" />
 
         <TextView
             android:id="@+id/from_time_text"
@@ -87,24 +88,24 @@
             android:layout_toRightOf="@+id/from_date_text"
             android:gravity="right"
             android:text="12:30 PM"
-            style="@style/LabelNewEventDate" />
+            style="@style/NewEventDateTime" />
 
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/text_to"
+        android:id="@+id/to_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_from"
+        android:layout_below="@+id/from_Text"
         android:layout_marginTop="@dimen/new_activity_field_margin"
         android:text="@string/new_event_label_to"
-        style="@style/LabelNewEventDate" />
+        style="@style/NewEventDateTime" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/new_activity_field_margin"
-        android:layout_below="@+id/text_from"
+        android:layout_below="@+id/from_Text"
         android:layout_alignParentRight="true">
 
         <TextView
@@ -113,7 +114,7 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:text="Wed, Mar 18, 2016"
-            style="@style/LabelNewEventDate" />
+            style="@style/NewEventDateTime" />
 
         <TextView
             android:id="@+id/to_time_text"
@@ -123,7 +124,7 @@
             android:layout_toRightOf="@+id/to_date_text"
             android:gravity="right"
             android:text="12:30 PM"
-            style="@style/LabelNewEventDate" />
+            style="@style/NewEventDateTime" />
     </RelativeLayout>
 
 </RelativeLayout>

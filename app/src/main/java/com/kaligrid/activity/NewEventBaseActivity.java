@@ -33,7 +33,7 @@ import butterknife.OnClick;
 public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     private static final String TAG = NewEventBaseActivity.class.getSimpleName();
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, MMM d, yyyy");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, MMMM d, yyyy");
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("h:mm a");
 
     @Bind(R.id.title_text) TextView titleText;
@@ -41,7 +41,7 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     @Bind(R.id.event_title_text) EditText eventTitleText;
     @Bind(R.id.picture_button) ImageView pictureButton;
     @Bind(R.id.location_button) ImageView locationButton;
-    @Bind(R.id.switch_all_day) Switch allDaySwitch;
+    @Bind(R.id.all_day_switch) Switch allDaySwitch;
     @Bind(R.id.from_date_text) TextView fromDateText;
     @Bind(R.id.from_time_text) TextView fromTimeText;
     @Bind(R.id.to_date_text) TextView toDateText;

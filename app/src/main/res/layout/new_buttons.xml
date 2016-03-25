@@ -21,7 +21,7 @@
             android:layout_marginRight="@dimen/new_button_and_label_space"
             android:layout_centerVertical="true"
             android:text="@string/button_label_new_fyi"
-            style="@style/LabelNewEventButtonLabel" />
+            style="@style/NewEventButtonLabel" />
 
         <ImageView
             android:id="@+id/new_fyi_button"
@@ -50,7 +50,7 @@
             android:layout_marginRight="@dimen/new_button_and_label_space"
             android:layout_centerVertical="true"
             android:text="@string/button_label_new_reminder"
-            style="@style/LabelNewEventButtonLabel" />
+            style="@style/NewEventButtonLabel" />
 
         <ImageView
             android:id="@+id/new_reminder_button"
@@ -78,7 +78,7 @@
             android:layout_marginRight="@dimen/new_button_and_label_space"
             android:layout_centerVertical="true"
             android:text="@string/button_label_new_event"
-            style="@style/LabelNewEventButtonLabel" />
+            style="@style/NewEventButtonLabel" />
 
         <ImageView
             android:id="@+id/new_event_button"
@@ -105,7 +105,7 @@
             android:layout_marginRight="@dimen/new_button_and_label_space"
             android:layout_centerVertical="true"
             android:text="@string/button_label_cancel"
-            style="@style/LabelNewEventButtonLabel" />
+            style="@style/NewEventButtonLabel" />
 
         <ImageView
             android:id="@+id/new_button"
