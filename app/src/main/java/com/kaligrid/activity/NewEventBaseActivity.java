@@ -4,13 +4,16 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -34,7 +37,11 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("h:mm a");
 
     @Bind(R.id.title_text) TextView titleText;
+    @Bind(R.id.save_button) TextView saveButton;
     @Bind(R.id.event_title_text) EditText eventTitleText;
+    @Bind(R.id.picture_button) ImageView pictureButton;
+    @Bind(R.id.location_button) ImageView locationButton;
+    @Bind(R.id.switch_all_day) Switch allDaySwitch;
     @Bind(R.id.from_date_text) TextView fromDateText;
     @Bind(R.id.from_time_text) TextView fromTimeText;
     @Bind(R.id.to_date_text) TextView toDateText;
@@ -70,17 +77,29 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     abstract protected int getContentView();
     abstract protected String getActivityTitle();
+    abstract protected String getSaveButtonText();
     abstract protected String getEventTitleHint();
+    abstract protected int getPictureButtonImage();
+    abstract protected int getLocationButtonImage();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
-        addTopToolbar();
         ButterKnife.bind(this);
+        initlaizeTopToolbar();
         initializeDateTimeTextViews(Calendar.getInstance());
-        titleText.setText(getActivityTitle());
+
         eventTitleText.setHint(getEventTitleHint());
+        pictureButton.setImageResource(getPictureButtonImage());
+        locationButton.setImageResource(getLocationButtonImage());
+        allDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                fromTimeText.setVisibility(isChecked ? View.GONE : View.VISIBLE);
+                toTimeText.setVisibility(isChecked ? View.GONE : View.VISIBLE);
+            }
+        });
     }
 
     @OnClick(R.id.button_cancel)
@@ -110,9 +129,12 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
-    private void addTopToolbar() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_new_event_top);
+    private void initlaizeTopToolbar() {
+        Toolbar actionBar = (Toolbar) findViewById(R.id.toolbar_new_event_top);
+        setSupportActionBar(actionBar);
+
+        titleText.setText(getActivityTitle());
+        saveButton.setText(getSaveButtonText());
     }
 
     private void initializeDateTimeTextViews(Calendar calendar) {

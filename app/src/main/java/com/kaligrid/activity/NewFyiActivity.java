@@ -15,7 +15,22 @@ public class NewFyiActivity extends NewEventBaseActivity {
     }
 
     @Override
+    protected String getSaveButtonText() {
+        return getResources().getString(R.string.new_fyi_save_button_text);
+    }
+
+    @Override
     protected String getEventTitleHint() {
         return getResources().getString(R.string.new_fyi_title_hint);
+    }
+
+    @Override
+    protected int getPictureButtonImage() {
+        return R.drawable.icon_pic_fyi;
+    }
+
+    @Override
+    protected int getLocationButtonImage() {
+        return R.drawable.icon_location_fyi;
     }
 }

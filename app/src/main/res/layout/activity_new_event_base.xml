@@ -12,12 +12,31 @@
         android:textColorHint="@color/hintText"
         android:singleLine="true" />
 
+    <ImageView
+        android:id="@+id/location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/new_activity_field_margin"
+        android:layout_below="@+id/event_title_text"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/icon_location_fyi"/>
+
+    <ImageView
+        android:id="@+id/picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/new_activity_field_margin"
+        android:layout_marginRight="@dimen/new_activity_field_margin"
+        android:layout_below="@+id/event_title_text"
+        android:layout_toLeftOf="@+id/location_button"
+        android:src="@drawable/icon_pic_fyi"/>
+
+
     <TextView
         android:id="@+id/text_heading_date_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/event_title_text"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/location_button"
         android:text="@string/new_event_heading_date_time"
         style="@style/HeadingNewEvent" />
 
@@ -26,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_heading_date_time"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:text="@string/new_event_label_all_day" />
 
     <Switch
@@ -35,70 +54,76 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_heading_date_time"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="6dp" />
 
     <TextView
         android:id="@+id/text_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_all_day"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/new_activity_field_margin"
         android:text="@string/new_event_label_from"
         style="@style/LabelNewEventDate" />
 
-    <TextView
-        android:id="@+id/from_date_text"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/new_activity_field_margin"
         android:layout_below="@+id/text_all_day"
-        android:layout_toLeftOf="@+id/from_time_text"
-        android:layout_marginTop="10dp"
-        android:gravity="right"
-        android:text="Wed, Mar 18, 2016"
-        style="@style/LabelNewEventDate" />
+        android:layout_alignParentRight="true">
 
-    <TextView
-        android:id="@+id/text_from_time"
-        android:layout_width="@dimen/text_time_width"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_all_day"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
-        android:layout_alignParentRight="true"
-        android:gravity="right"
-        android:text="12:30 PM"
-        style="@style/LabelNewEventDate" />
+        <TextView
+            android:id="@+id/from_date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wed, Mar 18, 2016"
+            style="@style/LabelNewEventDate" />
+
+        <TextView
+            android:id="@+id/from_time_text"
+            android:layout_width="@dimen/text_time_width"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@+id/from_date_text"
+            android:gravity="right"
+            android:text="12:30 PM"
+            style="@style/LabelNewEventDate" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/text_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_from"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/new_activity_field_margin"
         android:text="@string/new_event_label_to"
         style="@style/LabelNewEventDate" />
 
-    <TextView
-        android:id="@+id/to_date_text"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/from_date_text"
-        android:layout_toLeftOf="@+id/to_time_text"
-        android:layout_marginTop="10dp"
-        android:gravity="right"
-        android:text="Wed, Mar 18, 2016"
-        style="@style/LabelNewEventDate" />
+        android:layout_marginTop="@dimen/new_activity_field_margin"
+        android:layout_below="@+id/text_from"
+        android:layout_alignParentRight="true">
 
-    <TextView
-        android:id="@+id/text_to_time"
-        android:layout_width="@dimen/text_time_width"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/from_time_text"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
-        android:layout_alignParentRight="true"
-        android:gravity="right"
-        android:text="12:30 PM"
-        style="@style/LabelNewEventDate" />
+        <TextView
+            android:id="@+id/to_date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Wed, Mar 18, 2016"
+            style="@style/LabelNewEventDate" />
+
+        <TextView
+            android:id="@+id/to_time_text"
+            android:layout_width="@dimen/text_time_width"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@+id/to_date_text"
+            android:gravity="right"
+            android:text="12:30 PM"
+            style="@style/LabelNewEventDate" />
+    </RelativeLayout>
 
 </RelativeLayout>

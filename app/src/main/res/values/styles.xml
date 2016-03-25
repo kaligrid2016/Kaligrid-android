@@ -10,17 +10,17 @@
         <item name="android:windowTitleStyle">@style/ToolbarAppName</item>
     </style>
 
-    <style name="AppTheme.AddEvent" parent="AppTheme">
+    <style name="AppTheme.AddEvent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimaryNewEvent</item>
         <item name="colorAccent">@color/colorPrimaryNewEvent</item>
     </style>
 
-    <style name="AppTheme.AddReminder" parent="AppTheme">
+    <style name="AppTheme.AddReminder" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimaryNewReminder</item>
         <item name="colorAccent">@color/colorPrimaryNewReminder</item>
     </style>
 
-    <style name="AppTheme.AddFyi" parent="AppTheme">
+    <style name="AppTheme.AddFyi" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimaryNewFyi</item>
         <item name="colorAccent">@color/colorPrimaryNewFyi</item>
     </style>

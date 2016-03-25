@@ -2,18 +2,12 @@
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar_add_event_top"
+    android:id="@+id/toolbar_new_event_top"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_top_height"
-    android:background="?attr/colorPrimary"
-    android:contentInsetStart="0dp"
-    android:contentInsetEnd="0dp"
-    android:contentInsetLeft="0dp"
-    android:contentInsetRight="0dp"
-    app:contentInsetStart="0dp"
-    app:contentInsetEnd="0dp"
-    app:contentInsetLeft="0dp"
-    app:contentInsetRight="0dp">
+    android:paddingLeft="@dimen/toolbar_new_event_horizontal_padding"
+    android:paddingRight="@dimen/toolbar_new_event_horizontal_padding"
+    android:background="?attr/colorPrimary">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,11 +15,11 @@
 
         <ImageView
             android:id="@+id/button_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/toolbar_new_event_cancel_icon_size"
+            android:layout_height="@dimen/toolbar_new_event_cancel_icon_size"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:src="@drawable/icon_add_cancel" />
 
         <TextView
             android:id="@+id/title_text"
@@ -36,7 +30,15 @@
             android:text="Title goes here..."
             style="@style/ToolbarNewEventTitle" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="SEND"
+            style="@style/ToolbarNewEventAction" />
 
+    </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>
