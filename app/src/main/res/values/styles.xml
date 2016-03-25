@@ -16,21 +16,21 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
-    <style name="AppTheme.AddEvent" parent="AppTheme.NewEventCommon">
+    <style name="AppTheme.NewEvent" parent="AppTheme.NewEventCommon">
         <item name="colorPrimary">@color/colorPrimaryNewEvent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNewEvent</item>
         <item name="colorAccent">@color/colorPrimaryNewEvent</item>
         <item name="colorHeadingText">@color/colorHeadingTextNewEvent</item>
     </style>
 
-    <style name="AppTheme.AddReminder" parent="AppTheme.NewEventCommon">
+    <style name="AppTheme.NewReminder" parent="AppTheme.NewEventCommon">
         <item name="colorPrimary">@color/colorPrimaryNewReminder</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNewReminder</item>
         <item name="colorAccent">@color/colorPrimaryNewReminder</item>
         <item name="colorHeadingText">@color/colorHeadingTextNewReminder</item>
     </style>
 
-    <style name="AppTheme.AddFyi" parent="AppTheme.NewEventCommon">
+    <style name="AppTheme.NewFyi" parent="AppTheme.NewEventCommon">
         <item name="colorPrimary">@color/colorPrimaryNewFyi</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNewFyi</item>
         <item name="colorAccent">@color/colorPrimaryNewFyi</item>

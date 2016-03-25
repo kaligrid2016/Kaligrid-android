@@ -25,19 +25,19 @@
         <activity
             android:name=".activity.NewEventActivity"
             android:label="@string/new_event_activity_title"
-            android:theme="@style/AppTheme.AddEvent"
+            android:theme="@style/AppTheme.NewEvent"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.NewReminderActivity"
             android:label="@string/new_reminder_activity_title"
-            android:theme="@style/AppTheme.AddReminder"
+            android:theme="@style/AppTheme.NewReminder"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.NewFyiActivity"
             android:label="@string/new_fyi_activity_title"
-            android:theme="@style/AppTheme.AddFyi"
+            android:theme="@style/AppTheme.NewFyi"
             android:screenOrientation="portrait" />
 
     </application>
