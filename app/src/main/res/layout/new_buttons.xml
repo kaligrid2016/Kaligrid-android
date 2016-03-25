@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/cancel_button_text"
             android:background="@drawable/button_background_new"
-            android:src="@drawable/icon_add"
+            android:src="@drawable/icon_new"
             android:scaleType="center" />
 
     </RelativeLayout>

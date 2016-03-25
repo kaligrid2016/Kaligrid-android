@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         resetBottomToolbarImages();
+        newButton.setVisibility(View.VISIBLE);
         ((ImageView) v).setImageResource(R.drawable.icon_bottom_list_selected);
         loadViewFragment(ListViewFragment.newInstance(this));
     }
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     private void expandOtherAddButtons() {
         // Change add button to cancel button
         newButton.setBackground(ContextCompat.getDrawable(this, R.drawable.button_background_cancel));
-        newButton.setImageResource(R.drawable.icon_add_cancel);
+        newButton.setImageResource(R.drawable.icon_new_cancel);
         cancelButtonText.setVisibility(View.VISIBLE);
 
         newFyiButton.setVisibility(View.VISIBLE);
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void collapseOtherAddButtons() {
         newButton.setBackground(ContextCompat.getDrawable(this, R.drawable.button_background_new));
-        newButton.setImageResource(R.drawable.icon_add);
+        newButton.setImageResource(R.drawable.icon_new);
         cancelButtonText.setVisibility(View.GONE);
 
         newFyiButton.setVisibility(View.GONE);
