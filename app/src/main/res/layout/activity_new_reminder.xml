@@ -18,6 +18,50 @@
 
         <include layout="@layout/activity_new_event_base" />
 
+        <TextView
+            android:id="@+id/text_heading_reminder_for"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/new_activity_section_margin"
+            android:layout_below="@+id/new_event_base_activity"
+            android:text="@string/new_event_heading_reminder_for"
+            style="@style/HeadingNewEvent" />
+
+        <TextView
+            android:id="@+id/me_reminder_switch_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/new_activity_field_margin"
+            android:layout_below="@+id/text_heading_reminder_for"
+            android:text="@string/new_event_text_reminder_me" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/me_reminder_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_heading_reminder_for"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="6dp"
+            android:checked="true"/>
+
+        <TextView
+            android:id="@+id/friends_reminder_switch_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/new_activity_field_margin"
+            android:layout_below="@+id/me_reminder_switch_text"
+            android:text="@string/new_event_text_reminder_friends" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/friends_reminder_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/me_reminder_switch_text"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="6dp"
+            android:checked="true"/>
     </RelativeLayout>
 
 </RelativeLayout>

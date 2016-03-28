@@ -21,6 +21,8 @@
     <string name="new_event_text_to">To:</string>
     <string name="new_event_text_recipients">+ Recipients</string>
     <string name="new_event_text_reminder_30min">30 min before</string>
+    <string name="new_event_text_reminder_me">Me</string>
+    <string name="new_event_text_reminder_friends">Friends</string>
     <string name="new_event_text_visibility_friends">Friends</string>
 
     <string name="new_event_activity_title">New Event</string>
