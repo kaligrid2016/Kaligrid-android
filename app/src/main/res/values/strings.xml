@@ -12,10 +12,16 @@
     <string name="new_event_location_button_description">Add location to event</string>
     <string name="new_event_heading_date_time">DATE &amp; TIME</string>
     <string name="new_event_heading_send_to">SEND TO</string>
-    <string name="new_event_label_all_day">All-day</string>
-    <string name="new_event_label_from">From:</string>
-    <string name="new_event_label_to">To:</string>
-    <string name="new_event_label_recipients">+ Recipients</string>
+    <string name="new_event_heading_invite">INVITE</string>
+    <string name="new_event_heading_reminder">REMINDER</string>
+    <string name="new_event_heading_visibility">VISIBILITY</string>
+    <string name="new_event_heading_reminder_for">REMINDER FOR</string>
+    <string name="new_event_text_all_day">All-day</string>
+    <string name="new_event_text_from">From:</string>
+    <string name="new_event_text_to">To:</string>
+    <string name="new_event_text_recipients">+ Recipients</string>
+    <string name="new_event_text_reminder_30min">30 min before</string>
+    <string name="new_event_text_visibility_friends">Friends</string>
 
     <string name="new_event_activity_title">New Event</string>
     <string name="new_event_save_button_text">SAVE</string>

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/new_activity_field_margin"
             android:layout_below="@+id/text_heading_send_to"
-            android:text="@string/new_event_label_recipients" />
+            android:text="@string/new_event_text_recipients" />
 
     </RelativeLayout>
 

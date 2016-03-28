@@ -6,11 +6,11 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorPrimaryNewEvent">#F5A623</color>
-    <color name="colorPrimaryDarkNewEvent">#F5A623</color>
+    <color name="colorPrimaryDarkNewEvent">#D98800</color>
     <color name="colorHeadingTextNewEvent">#F5A623</color>
 
     <color name="colorPrimaryNewReminder">#FB344C</color>
-    <color name="colorPrimaryDarkNewReminder">#FB344C</color>
+    <color name="colorPrimaryDarkNewReminder">#C00315</color>
     <color name="colorHeadingTextNewReminder">#FB344C</color>
 
     <color name="colorPrimaryNewFyi">#99C3F3</color>

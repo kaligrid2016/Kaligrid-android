@@ -1,6 +1,11 @@
 package com.kaligrid.activity;
 
+import android.view.View;
+import android.widget.Toast;
+
 import com.kaligrid.R;
+
+import butterknife.OnClick;
 
 public class NewEventActivity extends NewEventBaseActivity {
 
@@ -32,5 +37,10 @@ public class NewEventActivity extends NewEventBaseActivity {
     @Override
     protected int getLocationButtonImage() {
         return R.drawable.icon_location_event;
+    }
+
+    @OnClick(R.id.recipients_button)
+    public void onRecipientsButtonClick(View v) {
+        Toast.makeText(this, "This feature is not implemented yet...", Toast.LENGTH_LONG).show();
     }
 }

@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_heading_date_time"
         android:layout_marginTop="12dp"
-        android:text="@string/new_event_label_all_day" />
+        android:text="@string/new_event_text_all_day" />
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/all_day_switch"
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/all_day_text"
         android:layout_marginTop="@dimen/new_activity_field_margin"
-        android:text="@string/new_event_label_from"
+        android:text="@string/new_event_text_from"
         style="@style/NewEventDateTime" />
 
     <RelativeLayout
@@ -108,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/from_Text"
         android:layout_marginTop="@dimen/new_activity_field_margin"
-        android:text="@string/new_event_label_to"
+        android:text="@string/new_event_text_to"
         style="@style/NewEventDateTime" />
 
     <RelativeLayout
