@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.kaligrid.R;
 import com.kaligrid.fragment.DatePickerFragment;
@@ -41,7 +43,7 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     @Bind(R.id.event_title_text) EditText eventTitleText;
     @Bind(R.id.picture_button) ImageView pictureButton;
     @Bind(R.id.location_button) ImageView locationButton;
-    @Bind(R.id.all_day_switch) Switch allDaySwitch;
+    @Bind(R.id.all_day_switch) SwitchCompat allDaySwitch;
     @Bind(R.id.from_date_text) TextView fromDateText;
     @Bind(R.id.from_time_text) TextView fromTimeText;
     @Bind(R.id.to_date_text) TextView toDateText;
@@ -102,9 +104,20 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         });
     }
 
+
     @OnClick(R.id.button_cancel)
     public void onCancelButtonClick(View v) {
         finish();
+    }
+
+    @OnClick(R.id.picture_button)
+    public void onPictureButtonClick(View v) {
+        Toast.makeText(this, "This feature is not implemented yet...", Toast.LENGTH_LONG).show();
+    }
+
+    @OnClick(R.id.location_button)
+    public void onLocationButtonClick(View v) {
+        Toast.makeText(this, "This feature is not implemented yet...", Toast.LENGTH_LONG).show();
     }
 
     @OnClick({ R.id.from_date_text, R.id.to_date_text})

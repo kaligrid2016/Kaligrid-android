@@ -8,6 +8,8 @@
     <string name="button_label_new_fyi">FYI</string>
     <string name="button_label_cancel">Cancel</string>
 
+    <string name="new_event_picture_button_description">Add picture to event</string>
+    <string name="new_event_location_button_description">Add location to event</string>
     <string name="new_event_heading_date_time">DATE &amp; TIME</string>
     <string name="new_event_heading_send_to">SEND TO</string>
     <string name="new_event_label_all_day">All-day</string>

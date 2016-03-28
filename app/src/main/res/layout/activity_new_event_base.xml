@@ -9,6 +9,7 @@
         android:id="@+id/event_title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="-3dp"
         android:layout_marginLeft="-3dp"
         android:hint="@string/new_event_title_hint"
         android:textColorHint="@color/hintText"
@@ -21,6 +22,8 @@
         android:layout_marginTop="@dimen/new_activity_field_margin"
         android:layout_below="@+id/event_title_text"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/new_event_location_button_description"
         android:src="@drawable/icon_location_fyi"/>
 
     <ImageView
@@ -28,9 +31,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/new_activity_field_margin"
+        android:layout_marginEnd="@dimen/new_activity_field_margin"
         android:layout_marginRight="@dimen/new_activity_field_margin"
         android:layout_below="@+id/event_title_text"
+        android:layout_toStartOf="@+id/location_button"
         android:layout_toLeftOf="@+id/location_button"
+        android:contentDescription="@string/new_event_picture_button_description"
         android:src="@drawable/icon_pic_fyi"/>
 
     <TextView
@@ -49,11 +55,12 @@
         android:layout_marginTop="12dp"
         android:text="@string/new_event_label_all_day" />
 
-    <Switch
+    <android.support.v7.widget.SwitchCompat
         android:id="@+id/all_day_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_heading_date_time"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="6dp" />
 
@@ -71,6 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/new_activity_field_margin"
         android:layout_below="@+id/all_day_text"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true">
 
         <TextView
@@ -84,9 +92,11 @@
             android:id="@+id/from_time_text"
             android:layout_width="@dimen/text_time_width"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layout_toEndOf="@+id/from_date_text"
             android:layout_toRightOf="@+id/from_date_text"
-            android:gravity="right"
+            android:gravity="end"
             android:text="12:30 PM"
             style="@style/NewEventDateTime" />
 
@@ -106,13 +116,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/new_activity_field_margin"
         android:layout_below="@+id/from_Text"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true">
 
         <TextView
             android:id="@+id/to_date_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:text="Wed, Mar 18, 2016"
             style="@style/NewEventDateTime" />
 
@@ -120,9 +131,11 @@
             android:id="@+id/to_time_text"
             android:layout_width="@dimen/text_time_width"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layout_toEndOf="@+id/to_date_text"
             android:layout_toRightOf="@+id/to_date_text"
-            android:gravity="right"
+            android:gravity="end"
             android:text="12:30 PM"
             style="@style/NewEventDateTime" />
     </RelativeLayout>
