@@ -4,18 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.kaligrid.R;
 import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidGridAdapter;
 import com.roomorama.caldroid.CaldroidListener;
-import com.roomorama.caldroid.CalendarHelper;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import hirondelle.date4j.DateTime;
 
@@ -46,23 +42,34 @@ public class CalendarFragment extends CaldroidFragment {
         return new CalendarGridAdapter(getActivity(), month, year, getCaldroidData(), extraData);
     }
 
-    @Override
-    protected ArrayList<String> getDaysOfWeek() {
-        ArrayList<String> list = new ArrayList<>();
+    public void showMonthView() {
+        refreshView();
+    }
 
-        SimpleDateFormat fmt = new SimpleDateFormat("EEE", Locale.getDefault());
+    public void showWeekView(DateTime selectedDate) {
+        refreshMonthTitleTextView();
 
-        // 17 Feb 2013 is Sunday
-        DateTime sunday = new DateTime(2013, 2, 17, 0, 0, 0, 0);
-        DateTime nextDay = sunday.plusDays(startDayOfWeek - SUNDAY);
+        // Refresh the date grid views
+        for (CaldroidGridAdapter adapter : datePagerAdapters) {
+            if (!(adapter instanceof CalendarGridAdapter)) {
+                continue;
+            }
 
-        for (int i = 0; i < 7; i++) {
-            Date date = CalendarHelper.convertDateTimeToDate(nextDay);
-            list.add(fmt.format(date));
-            nextDay = nextDay.plusDays(1);
+            CalendarGridAdapter calendarGridAdapter = ((CalendarGridAdapter) adapter);
+
+            if (selectedDate.getMonth() == calendarGridAdapter.getMonth()) {
+                calendarGridAdapter.resetDatetimeListToCurrentWeek(selectedDate);
+
+                // Reset extra data
+                adapter.setExtraData(extraData);
+
+                // Update today variable
+                adapter.updateToday();
+
+                // Refresh view
+                adapter.notifyDataSetChanged();
+            }
         }
-
-        return list;
     }
 
     static class CalendarListener extends CaldroidListener {

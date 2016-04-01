@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.kaligrid.R;
 import com.roomorama.caldroid.CaldroidGridAdapter;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import hirondelle.date4j.DateTime;
@@ -66,6 +67,19 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
         setCustomResources(dateTime, convertView, dateText);
 
         return convertView;
+    }
+
+    public void resetDatetimeListToCurrentWeek(DateTime selectedDate) {
+        this.datetimeList = new ArrayList<>();
+
+        for (int i = 1; i <= 7; i++) {
+            DateTime dateTime = selectedDate.minusDays(selectedDate.getWeekDay() - i);
+            datetimeList.add(dateTime);
+        }
+    }
+
+    public int getMonth() {
+        return month;
     }
 
     private boolean isDateSelected(DateTime dateTime) {
