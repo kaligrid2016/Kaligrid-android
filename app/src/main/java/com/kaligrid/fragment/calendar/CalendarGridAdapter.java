@@ -3,6 +3,7 @@ package com.kaligrid.fragment.calendar;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,24 +41,21 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
 
         // Set color of the dates in previous / next month
         if (dateTime.getMonth() != month) {
-            if (Build.VERSION.SDK_INT < 23) {
-                dateText.setTextAppearance(context, R.style.CalendarDateInactiveText);
-            } else {
-                dateText.setTextAppearance(R.style.CalendarDateInactiveText);
-            }
+            setTextAppearance(context, dateText, R.style.CalendarDateInactiveText);
+        } else {
+            setTextAppearance(context, dateText, R.style.CalendarDateActiveText);
         }
 
         if (isDateSelected(dateTime)) {
-            convertView.setBackgroundColor(resources.getColor(com.caldroid.R.color.caldroid_sky_blue));
+            // TODO: IMPLEMENT VISUAL CHANGE FOR SELECTED DATES.
         } else {
             // Customize for today
-            if (dateTime.equals(getToday())) {
-                if (Build.VERSION.SDK_INT < 23) {
-                    dateText.setTextAppearance(context, R.style.CalendarDateTodayText);
-                } else {
-                    dateText.setTextAppearance(R.style.CalendarDateTodayText);
-                }
-                convertView.setBackgroundResource(R.drawable.background_calendar_cell_today);
+            if (dateTime.isSameDayAs(getToday())) {
+                setTextAppearance(context, dateText, R.style.CalendarDateTodayText);
+                dateText.setBackgroundResource(R.drawable.background_calendar_cell_today);
+            } else {
+                // Remove the background.
+                dateText.setBackgroundResource(0);
             }
         }
 
@@ -84,5 +82,13 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
 
     private boolean isDateSelected(DateTime dateTime) {
         return (selectedDates != null) && (selectedDates.contains(dateTime));
+    }
+
+    private static void setTextAppearance(Context context, TextView textView, int resId) {
+        if (Build.VERSION.SDK_INT < 23) {
+            textView.setTextAppearance(context, resId);
+        } else {
+            textView.setTextAppearance(resId);
+        }
     }
 }

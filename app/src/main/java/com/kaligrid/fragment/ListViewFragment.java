@@ -70,7 +70,6 @@ public class ListViewFragment extends TypedBaseFragment {
         transaction.commit();
     }
 
-
     private void showMonthView() {
         HeightResizeAnimation animation = new HeightResizeAnimation(calendarFrameLayout,
                 getResources().getDimensionPixelSize(R.dimen.calendar_height_week_view),
