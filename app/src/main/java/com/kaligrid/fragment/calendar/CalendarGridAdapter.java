@@ -2,14 +2,13 @@ package com.kaligrid.fragment.calendar;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kaligrid.R;
+import com.kaligrid.util.ViewHelper;
 import com.roomorama.caldroid.CaldroidGridAdapter;
 
 import java.util.ArrayList;
@@ -41,9 +40,9 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
 
         // Set color of the dates in previous / next month
         if (dateTime.getMonth() != month) {
-            setTextAppearance(context, dateText, R.style.CalendarDateInactiveText);
+            ViewHelper.setTextAppearance(context, dateText, R.style.CalendarDateInactiveText);
         } else {
-            setTextAppearance(context, dateText, R.style.CalendarDateActiveText);
+            ViewHelper.setTextAppearance(context, dateText, R.style.CalendarDateActiveText);
         }
 
         if (isDateSelected(dateTime)) {
@@ -51,7 +50,7 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
         } else {
             // Customize for today
             if (dateTime.isSameDayAs(getToday())) {
-                setTextAppearance(context, dateText, R.style.CalendarDateTodayText);
+                ViewHelper.setTextAppearance(context, dateText, R.style.CalendarDateTodayText);
                 dateText.setBackgroundResource(R.drawable.background_calendar_cell_today);
             } else {
                 // Remove the background.
@@ -82,13 +81,5 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
 
     private boolean isDateSelected(DateTime dateTime) {
         return (selectedDates != null) && (selectedDates.contains(dateTime));
-    }
-
-    private static void setTextAppearance(Context context, TextView textView, int resId) {
-        if (Build.VERSION.SDK_INT < 23) {
-            textView.setTextAppearance(context, resId);
-        } else {
-            textView.setTextAppearance(resId);
-        }
     }
 }

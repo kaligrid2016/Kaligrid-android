@@ -1,4 +1,4 @@
-package com.kaligrid.fragment;
+package com.kaligrid.model;
 
 public enum ContentViewType {
     LIST,

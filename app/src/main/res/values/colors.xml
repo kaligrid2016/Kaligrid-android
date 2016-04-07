@@ -24,12 +24,9 @@
 
     <color name="calendarMonthName">#706E6E</color>
     <color name="calendarWeekday">#08BABA</color>
-    <color name="calendarToday">#FFFFFF</color>
-    <color name="calendarDateActive">#1F1F1F</color>
-    <color name="calendarDateInactive">#B5B2B2</color>
 
     <color name="windowBackground">#FFFFFF</color>
-    <color name="toolbarBottomBorder">#706E6E</color>
+    <color name="divider">#706E6E</color>
     <color name="disabledBackground">#B2B2B2</color>
 
 </resources>

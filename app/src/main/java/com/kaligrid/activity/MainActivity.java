@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kaligrid.R;
-import com.kaligrid.fragment.ContentViewType;
+import com.kaligrid.model.ContentViewType;
 import com.kaligrid.fragment.DiscoverViewFragment;
 import com.kaligrid.fragment.FriendsViewFragment;
 import com.kaligrid.fragment.GridViewFragment;

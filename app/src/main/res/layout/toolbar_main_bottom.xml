@@ -23,8 +23,8 @@
         <View
             android:id="@+id/toolbar_border"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/toolbarBottomBorder"/>
+            android:layout_height="1dp"
+            android:background="@drawable/line_solid" />
 
         <LinearLayout
             android:layout_width="match_parent"

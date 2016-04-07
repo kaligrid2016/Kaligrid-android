@@ -14,34 +14,30 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/calendar_height_month_view"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/calendar_margin_top"/>
+        android:layout_marginTop="@dimen/calendar_margin_top" />
+
+    <View
+        android:id="@+id/calendar_border"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/calendar"
+        android:layerType="software"
+        android:background="@drawable/line_dotted" />
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/event_list_view"
+        android:id="@+id/event_list_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/calendar"
+        android:layout_below="@+id/calendar_border"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/event_list_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/test"
-                android:layout_width="wrap_content"
-                android:layout_height="900dp"
-                android:text="List view goes here..." />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Here is the bottom..."
-                android:layout_below="@+id/test" />
-
-        </RelativeLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
 
     </android.support.v4.widget.NestedScrollView>
 

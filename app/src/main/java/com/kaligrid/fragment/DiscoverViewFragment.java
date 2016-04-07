@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kaligrid.R;
+import com.kaligrid.model.ContentViewType;
 
 public class DiscoverViewFragment extends TypedBaseFragment {
 
