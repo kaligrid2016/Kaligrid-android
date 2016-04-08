@@ -36,7 +36,6 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
 
         // Get dateTime of this cell
         DateTime dateTime = this.datetimeList.get(position);
-        Resources resources = context.getResources();
 
         // Set color of the dates in previous / next month
         if (dateTime.getMonth() != month) {

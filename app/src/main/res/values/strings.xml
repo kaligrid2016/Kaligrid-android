@@ -2,6 +2,9 @@
     <string name="app_name">Kaligrid</string>
     <string name="action_settings">Settings</string>
 
+    <string name="date_today">Today</string>
+    <string name="date_tomorrow">Tomorrow</string>
+
     <!-- New event button labels -->
     <string name="button_label_new_event">Event</string>
     <string name="button_label_new_reminder">Reminder</string>

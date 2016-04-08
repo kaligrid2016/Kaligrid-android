@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,10 +24,13 @@ import com.kaligrid.model.Event;
 import com.kaligrid.model.EventType;
 import com.kaligrid.util.ViewHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -37,6 +41,12 @@ import hirondelle.date4j.DateTime;
 public class ListViewFragment extends TypedBaseFragment {
 
     private static final int RESIZE_ANIMATION_DURATION = 200;
+    private static final String DATE_FORMAT = "WWW, MMM D";
+
+    private static int CALENDAR_HEIGHT_WEEK_VIEW;
+    private static int CALENDAR_HEIGHT_MONTH_VIEW;
+    private static int EVENT_LIST_DATE_BORDER_HEIGHT;
+    private static int EVENT_LIST_HORIZONTAL_PADDING;
 
     @Bind(R.id.calendar) FrameLayout calendarFrameLayout;
     @Bind(R.id.event_list_scroll_view) NestedScrollView eventListView;
@@ -68,6 +78,7 @@ public class ListViewFragment extends TypedBaseFragment {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
 
+        initializeConstants();
         initializeCalendar(view);
         initializeEventList();
 
@@ -83,6 +94,13 @@ public class ListViewFragment extends TypedBaseFragment {
     public void onAttach(Activity activity) {
         context = (FragmentActivity) activity;
         super.onAttach(activity);
+    }
+
+    private void initializeConstants() {
+        CALENDAR_HEIGHT_WEEK_VIEW = getResources().getDimensionPixelSize(R.dimen.calendar_height_week_view);
+        CALENDAR_HEIGHT_MONTH_VIEW = getResources().getDimensionPixelSize(R.dimen.calendar_height_month_view);
+        EVENT_LIST_DATE_BORDER_HEIGHT = getResources().getDimensionPixelSize(R.dimen.event_list_date_border_height);
+        EVENT_LIST_HORIZONTAL_PADDING = getResources().getDimensionPixelSize(R.dimen.event_list_horizontal_padding);
     }
 
     private void initializeCalendar(View view) {
@@ -132,7 +150,7 @@ public class ListViewFragment extends TypedBaseFragment {
 
     private Map<Long, List<Event>> loadEvents() {
         Calendar today = Calendar.getInstance();
-        Map<Long, List<Event>> events = new HashMap<>();
+        Map<Long, List<Event>> events = new LinkedHashMap<>();
 
         List<Event> todayEvents = new ArrayList<>();
         todayEvents.add(new Event("Test event", EventType.EVENT, today.getTimeInMillis()));
@@ -180,8 +198,8 @@ public class ListViewFragment extends TypedBaseFragment {
 
     private void showMonthView() {
         HeightResizeAnimation animation = new HeightResizeAnimation(calendarFrameLayout,
-                getResources().getDimensionPixelSize(R.dimen.calendar_height_week_view),
-                getResources().getDimensionPixelSize(R.dimen.calendar_height_month_view),
+                CALENDAR_HEIGHT_WEEK_VIEW,
+                CALENDAR_HEIGHT_MONTH_VIEW,
                 new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -203,8 +221,8 @@ public class ListViewFragment extends TypedBaseFragment {
 
     private void showWeekView() {
         HeightResizeAnimation animation = new HeightResizeAnimation(calendarFrameLayout,
-                getResources().getDimensionPixelSize(R.dimen.calendar_height_month_view),
-                getResources().getDimensionPixelSize(R.dimen.calendar_height_week_view),
+                CALENDAR_HEIGHT_MONTH_VIEW,
+                CALENDAR_HEIGHT_WEEK_VIEW,
                 new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) { }
@@ -228,7 +246,7 @@ public class ListViewFragment extends TypedBaseFragment {
         Map<Long, List<Event>> events = loadEvents();
 
         for(Map.Entry<Long, List<Event>> eventsForDay : events.entrySet()) {
-            eventListLayout.addView(buildDateTextView(eventsForDay.getKey()));
+            addDateTextView(eventListLayout, eventsForDay.getKey());
 
             for(Event event : eventsForDay.getValue()) {
                 eventListLayout.addView(buildEventSummaryView(event));
@@ -236,17 +254,54 @@ public class ListViewFragment extends TypedBaseFragment {
         }
     }
 
-    private TextView buildDateTextView(Long key) {
-        TextView dateText = new TextView(context);
-        dateText.setText(key.toString());
-        ViewHelper.setTextAppearance(context, dateText, R.style.EventListDateText);
-        return dateText;
+    private void addDateTextView(LinearLayout layout, Long date) {
+        layout.addView(buildDateTextBorderView());
+        layout.addView(buildDateTextView(date));
+        layout.addView(buildDateTextBorderView());
+    }
+
+    private View buildDateTextView(Long date) {
+        TextView view = new TextView(context);
+        view.setPadding(EVENT_LIST_HORIZONTAL_PADDING, 0, EVENT_LIST_HORIZONTAL_PADDING, 0);
+        view.setText(getDateString(date));
+
+        ViewHelper.setTextAppearance(context, view, R.style.EventListDateText);
+
+        return view;
+    }
+
+    private View buildDateTextBorderView() {
+        ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                EVENT_LIST_DATE_BORDER_HEIGHT);
+
+        View view = new View(context);
+        view.setLayoutParams(layoutParams);
+        view.setBackground(ContextCompat.getDrawable(context, R.drawable.line_dotted));
+        view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+        return view;
     }
 
     private TextView buildEventSummaryView(Event event) {
-        TextView eventSummaryView = new TextView(context);
-        eventSummaryView.setText(event.getType() + "/" + event.getTitle());
-        ViewHelper.setTextAppearance(context, eventSummaryView, R.style.EventListBodyText);
-        return eventSummaryView;
+        TextView view = new TextView(context);
+        view.setPadding(EVENT_LIST_HORIZONTAL_PADDING, 0, EVENT_LIST_HORIZONTAL_PADDING, 0);
+        view.setText(event.getType() + "/" + event.getTitle());
+        ViewHelper.setTextAppearance(context, view, R.style.EventListBodyText);
+        return view;
+    }
+
+    private String getDateString(Long date) {
+        DateTime dateTime = DateTime.forInstant(date, TimeZone.getDefault());
+        DateTime today = DateTime.today(TimeZone.getDefault());
+        StringBuilder dateString = new StringBuilder(dateTime.format(DATE_FORMAT, Locale.getDefault()));
+
+        if (dateTime.isSameDayAs(DateTime.today(TimeZone.getDefault()))) {
+            dateString.append(" (").append(getResources().getString(R.string.date_today)).append(")");
+        } else if (dateTime.isSameDayAs(today.plusDays(1))) {
+            dateString.append(" (").append(getResources().getString(R.string.date_tomorrow)).append(")");
+        }
+
+        return dateString.toString();
     }
 }

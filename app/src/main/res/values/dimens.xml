@@ -21,4 +21,8 @@
     <dimen name="toolbar_new_event_cancel_icon_size">14dp</dimen>
 
     <dimen name="text_time_width">80dp</dimen>
+
+    <dimen name="border_line_height">2dp</dimen>
+    <dimen name="event_list_date_border_height">12dp</dimen>
+    <dimen name="event_list_horizontal_padding">16dp</dimen>
 </resources>
