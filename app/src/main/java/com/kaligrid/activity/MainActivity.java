@@ -54,7 +54,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(topToolbar);
-        loadInitialView(savedInstanceState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadInitialView();
     }
 
     @Override
@@ -147,12 +152,8 @@ public class MainActivity extends AppCompatActivity {
         loadViewFragment(new ProfileViewFragment());
     }
 
-    private void loadInitialView(Bundle savedInstanceState) {
+    private void loadInitialView() {
         if (findViewById(R.id.content_fragment_container) != null) {
-            if (savedInstanceState != null) {
-                return;
-            }
-
             collapseOtherAddButtons();
             bottomToolbarListImage.setImageResource(R.drawable.icon_bottom_list_selected);
             loadViewFragment(ListViewFragment.newInstance(this));

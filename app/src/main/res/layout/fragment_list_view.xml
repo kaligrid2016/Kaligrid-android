@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/calendar"
+        android:layout_marginTop="1dp"
         android:layerType="software"
         android:background="@drawable/line_dotted" />
 

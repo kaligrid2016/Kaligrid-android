@@ -1,5 +1,6 @@
 package com.kaligrid.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -76,6 +77,12 @@ public class ListViewFragment extends TypedBaseFragment {
     @Override
     public ContentViewType getType() {
         return ContentViewType.LIST;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        context = (FragmentActivity) activity;
+        super.onAttach(activity);
     }
 
     private void initializeCalendar(View view) {
