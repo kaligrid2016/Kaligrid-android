@@ -24,10 +24,7 @@ import com.kaligrid.model.Event;
 import com.kaligrid.model.EventType;
 import com.kaligrid.util.ViewHelper;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +46,7 @@ public class ListViewFragment extends TypedBaseFragment {
     private static int EVENT_LIST_HORIZONTAL_PADDING;
 
     @Bind(R.id.calendar) FrameLayout calendarFrameLayout;
+    @Bind(R.id.calendar_swipe_area) View calendarSwipeArea;
     @Bind(R.id.event_list_scroll_view) NestedScrollView eventListView;
     @Bind(R.id.event_list_layout) LinearLayout eventListLayout;
 
@@ -91,8 +89,9 @@ public class ListViewFragment extends TypedBaseFragment {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
-        context = (FragmentActivity) activity;
+        context = activity;
         super.onAttach(activity);
     }
 
@@ -114,7 +113,7 @@ public class ListViewFragment extends TypedBaseFragment {
     }
 
     private void initializeCalendarExpandingTouchListener(View view) {
-        view.setOnTouchListener(new View.OnTouchListener() {
+        calendarSwipeArea.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (!isMonthView) {
@@ -149,49 +148,18 @@ public class ListViewFragment extends TypedBaseFragment {
     }
 
     private Map<Long, List<Event>> loadEvents() {
-        Calendar today = Calendar.getInstance();
+        DateTime today = DateTime.today(TimeZone.getDefault());
         Map<Long, List<Event>> events = new LinkedHashMap<>();
 
-        List<Event> todayEvents = new ArrayList<>();
-        todayEvents.add(new Event("Test event", EventType.EVENT, today.getTimeInMillis()));
-        todayEvents.add(new Event("Test FYI", EventType.FYI, today.getTimeInMillis()));
-        todayEvents.add(new Event("Test reminder", EventType.REMINDER, today.getTimeInMillis()));
-        events.put(today.getTimeInMillis(), todayEvents);
-
-        today.add(Calendar.DATE, 1);
-        List<Event> tomorrowEvents = new ArrayList<>();
-        tomorrowEvents.add(new Event("Test event", EventType.EVENT, today.getTimeInMillis()));
-        tomorrowEvents.add(new Event("Test FYI", EventType.FYI, today.getTimeInMillis()));
-        tomorrowEvents.add(new Event("Test reminder", EventType.REMINDER, today.getTimeInMillis()));
-        events.put(today.getTimeInMillis(), tomorrowEvents);
-
-        today.add(Calendar.DATE, 1);
-        List<Event> tomorrowEvents2 = new ArrayList<>();
-        tomorrowEvents2.add(new Event("Test event", EventType.EVENT, today.getTimeInMillis()));
-        tomorrowEvents2.add(new Event("Test FYI", EventType.FYI, today.getTimeInMillis()));
-        tomorrowEvents2.add(new Event("Test reminder", EventType.REMINDER, today.getTimeInMillis()));
-        events.put(today.getTimeInMillis(), tomorrowEvents2);
-
-        today.add(Calendar.DATE, 1);
-        List<Event> tomorrowEvents3 = new ArrayList<>();
-        tomorrowEvents3.add(new Event("Test event", EventType.EVENT, today.getTimeInMillis()));
-        tomorrowEvents3.add(new Event("Test FYI", EventType.FYI, today.getTimeInMillis()));
-        tomorrowEvents3.add(new Event("Test reminder", EventType.REMINDER, today.getTimeInMillis()));
-        events.put(today.getTimeInMillis(), tomorrowEvents3);
-
-        today.add(Calendar.DATE, 1);
-        List<Event> tomorrowEvents4 = new ArrayList<>();
-        tomorrowEvents4.add(new Event("Test event", EventType.EVENT, today.getTimeInMillis()));
-        tomorrowEvents4.add(new Event("Test FYI", EventType.FYI, today.getTimeInMillis()));
-        tomorrowEvents4.add(new Event("Test reminder", EventType.REMINDER, today.getTimeInMillis()));
-        events.put(today.getTimeInMillis(), tomorrowEvents4);
-
-        today.add(Calendar.DATE, 1);
-        List<Event> tomorrowEvents5 = new ArrayList<>();
-        tomorrowEvents5.add(new Event("Test event", EventType.EVENT, today.getTimeInMillis()));
-        tomorrowEvents5.add(new Event("Test FYI", EventType.FYI, today.getTimeInMillis()));
-        tomorrowEvents5.add(new Event("Test reminder", EventType.REMINDER, today.getTimeInMillis()));
-        events.put(today.getTimeInMillis(), tomorrowEvents5);
+        for (int i = 0; i < 10; i++) {
+            today = today.plusDays(i);
+            long todayInMillis = today.getMilliseconds(TimeZone.getDefault());
+            List<Event> todayEvents = new ArrayList<>();
+            todayEvents.add(new Event("Test event " + i, EventType.EVENT, todayInMillis));
+            todayEvents.add(new Event("Test FYI " + i, EventType.FYI, todayInMillis));
+            todayEvents.add(new Event("Test reminder " + i, EventType.REMINDER, todayInMillis));
+            events.put(today.getMilliseconds(TimeZone.getDefault()), todayEvents);
+        }
 
         return events;
     }
@@ -204,6 +172,7 @@ public class ListViewFragment extends TypedBaseFragment {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         calendarFragment.showMonthView();
+                        calendarSwipeArea.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -230,6 +199,7 @@ public class ListViewFragment extends TypedBaseFragment {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         calendarFragment.showWeekView(DateTime.today(TimeZone.getDefault()));
+                        calendarSwipeArea.setVisibility(View.VISIBLE);
                     }
 
                     @Override
