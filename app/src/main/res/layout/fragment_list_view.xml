@@ -17,16 +17,12 @@
         <FrameLayout
             android:id="@+id/calendar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/calendar_height_month_view"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/calendar_margin_top" />
+            android:layout_height="@dimen/calendar_height_month_view" />
 
         <View
             android:id="@+id/calendar_swipe_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/calendar_height_week_view_swipe_area"
-            android:layout_alignParentTop="true"
-            android:visibility="visible" />
+            android:layout_height="@dimen/calendar_height_month_view_swipe_area" />
 
     </FrameLayout>
 
@@ -35,16 +31,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/border_line_height"
         android:layout_below="@+id/calendar_wrapper"
-        android:layout_marginTop="3dp"
-        android:layerType="software"
-        android:background="@drawable/line_dotted" />
+        android:background="@drawable/line_solid" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/event_list_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/calendar_border"
-        android:layout_marginTop="10dp">
+        android:layout_below="@+id/calendar_border">
 
         <LinearLayout
             android:id="@+id/event_list_layout"

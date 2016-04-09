@@ -31,6 +31,7 @@ public class CalendarFragment extends CaldroidFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        setEnableSwipe(false);
         setShowNavigationArrows(false);
         setCaldroidListener(new CalendarListener(this));
 

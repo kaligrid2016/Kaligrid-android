@@ -2,6 +2,7 @@ package com.kaligrid.util;
 
 import android.content.Context;
 import android.os.Build;
+import android.view.View;
 import android.widget.TextView;
 
 public class ViewHelper {
@@ -12,5 +13,10 @@ public class ViewHelper {
         } else {
             textView.setTextAppearance(resId);
         }
+    }
+
+    public static void setHeight(View view, int height) {
+        view.getLayoutParams().height = height;
+        view.requestLayout();
     }
 }
