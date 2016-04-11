@@ -155,14 +155,13 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     private void initializeDateTimeTextViews() {
         // Create initial date without minutes and seconds.
-        DateTime now = DateTime.now(TimeZone.getDefault());
-        DateTime initialDate = new DateTime(now.getYear(), now.getMonth(), now.getDay(), now.getHour(), 0, 0, 0);
+        DateTime now = DateTime.now(TimeZone.getDefault()).truncate(DateTime.Unit.HOUR);
 
-        fromDateText.setText(initialDate.format(DATE_WRITE_FORMAT, Locale.getDefault()));
-        fromTimeText.setText(initialDate.format(TIME_WRITE_FORMAT, Locale.getDefault()));
+        fromDateText.setText(now.format(DATE_WRITE_FORMAT, Locale.getDefault()));
+        fromTimeText.setText(now.format(TIME_WRITE_FORMAT, Locale.getDefault()));
 
-        toDateText.setText(initialDate.format(DATE_WRITE_FORMAT, Locale.getDefault()));
-        toTimeText.setText(initialDate.plus(0, 0, 0, 1, 0, 0, 0, DateTime.DayOverflow.FirstDay).format(TIME_WRITE_FORMAT, Locale.getDefault()));
+        toDateText.setText(now.format(DATE_WRITE_FORMAT, Locale.getDefault()));
+        toTimeText.setText(now.plus(0, 0, 0, 1, 0, 0, 0, DateTime.DayOverflow.FirstDay).format(TIME_WRITE_FORMAT, Locale.getDefault()));
     }
 
     private void handleOnDateSet(TextView dateText, int year, int month, int day) {

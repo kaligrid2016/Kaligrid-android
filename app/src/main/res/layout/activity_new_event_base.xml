@@ -90,7 +90,7 @@
 
         <TextView
             android:id="@+id/from_time_text"
-            android:layout_width="@dimen/text_time_width"
+            android:layout_width="@dimen/new_event_text_time_width"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
@@ -129,7 +129,7 @@
 
         <TextView
             android:id="@+id/to_time_text"
-            android:layout_width="@dimen/text_time_width"
+            android:layout_width="@dimen/new_event_text_time_width"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"

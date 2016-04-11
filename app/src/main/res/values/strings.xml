@@ -44,4 +44,6 @@
     <string name="error_invalid_date_range_message">The start date must be before the end date.</string>
     <string name="dialog_button_ok">OK</string>
 
+    <string name="event_list_text_all_day">All Day</string>
+
 </resources>

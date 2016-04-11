@@ -22,9 +22,14 @@
     <dimen name="toolbar_new_event_horizontal_padding">12dp</dimen>
     <dimen name="toolbar_new_event_cancel_icon_size">14dp</dimen>
 
-    <dimen name="text_time_width">80dp</dimen>
+    <dimen name="new_event_text_time_width">80dp</dimen>
 
     <dimen name="border_line_height">2dp</dimen>
+
     <dimen name="event_list_date_border_height">12dp</dimen>
     <dimen name="event_list_horizontal_padding">16dp</dimen>
+    <dimen name="event_list_vertical_padding">5dp</dimen>
+    <dimen name="event_list_time_text_width">80dp</dimen>
+    <dimen name="event_list_type_icon_size">16dp</dimen>
+    <dimen name="event_list_event_summary_left_padding">8dp</dimen>
 </resources>

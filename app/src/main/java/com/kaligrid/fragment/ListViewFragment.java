@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,10 +25,14 @@ import com.kaligrid.fragment.calendar.CalendarFragment;
 import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.EventType;
+import com.kaligrid.util.EventResourceHelper;
 import com.kaligrid.util.ViewHelper;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -40,6 +47,7 @@ public class ListViewFragment extends TypedBaseFragment {
     private static final int RESIZE_ANIMATION_DURATION = 200;
     private static final int SWIPE_MARGIN = 120;
     private static final String DATE_FORMAT = "WWW, MMM D";
+    private static final String TIME_FORMAT = "h12:mm a";
 
     private static int CALENDAR_HEIGHT_WEEK_VIEW;
     private static int CALENDAR_HEIGHT_WEEK_VIEW_SWIPE_AREA;
@@ -47,6 +55,8 @@ public class ListViewFragment extends TypedBaseFragment {
     private static int CALENDAR_HEIGHT_MONTH_VIEW_SWIPE_AREA;
     private static int EVENT_LIST_DATE_BORDER_HEIGHT;
     private static int EVENT_LIST_HORIZONTAL_PADDING;
+    private static int EVENT_LIST_VERTICAL_PADDING;
+    private static int EVENT_LIST_EVENT_SUMMARY_LEFT_PADDING;
 
     @Bind(R.id.calendar_wrapper) FrameLayout calendarFrameLayout;
     @Bind(R.id.calendar_swipe_area) View calendarSwipeArea;
@@ -108,6 +118,8 @@ public class ListViewFragment extends TypedBaseFragment {
         CALENDAR_HEIGHT_MONTH_VIEW_SWIPE_AREA = getResources().getDimensionPixelSize(R.dimen.calendar_height_month_view_swipe_area);
         EVENT_LIST_DATE_BORDER_HEIGHT = getResources().getDimensionPixelSize(R.dimen.event_list_date_border_height);
         EVENT_LIST_HORIZONTAL_PADDING = getResources().getDimensionPixelSize(R.dimen.event_list_horizontal_padding);
+        EVENT_LIST_VERTICAL_PADDING = getResources().getDimensionPixelSize(R.dimen.event_list_vertical_padding);
+        EVENT_LIST_EVENT_SUMMARY_LEFT_PADDING = getResources().getDimensionPixelSize(R.dimen.event_list_event_summary_left_padding);
     }
 
     private void initializeCalendar() {
@@ -203,14 +215,15 @@ public class ListViewFragment extends TypedBaseFragment {
     }
 
     private void initializeEventList() {
-        Map<Long, List<Event>> events = loadEvents();
+        List<Event> events = loadEvents();
+        Map<DateTime, EventListSourceItem> eventListSource = buildEventListSource(events);
 
-        for(Map.Entry<Long, List<Event>> eventsForDay : events.entrySet()) {
-            addDateTextView(eventListLayout, eventsForDay.getKey());
+        for (Map.Entry<DateTime, EventListSourceItem> entry : eventListSource.entrySet()) {
+            DateTime eventDate = entry.getKey();
+            addDateHeadingTextView(eventListLayout, eventDate);
 
-            for(Event event : eventsForDay.getValue()) {
-                eventListLayout.addView(buildEventSummaryView(event));
-            }
+            addAllDayEventViews(eventListLayout, entry.getValue().allDayEvents);
+            addTimedEventViews(eventListLayout, entry.getValue().timedEvents);
         }
     }
 
@@ -225,30 +238,77 @@ public class ListViewFragment extends TypedBaseFragment {
         });
     }
 
-    private Map<Long, List<Event>> loadEvents() {
-        DateTime today = DateTime.today(TimeZone.getDefault());
-        Map<Long, List<Event>> events = new LinkedHashMap<>();
+    private List<Event> loadEvents() {
+        DateTime today = DateTime.now(TimeZone.getDefault());
+        List<Event> events = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            today = today.plusDays(i);
+            today = today.plusDays(1);
             long todayInMillis = today.getMilliseconds(TimeZone.getDefault());
-            List<Event> todayEvents = new ArrayList<>();
-            todayEvents.add(new Event("Test event " + i, EventType.EVENT, todayInMillis));
-            todayEvents.add(new Event("Test FYI " + i, EventType.FYI, todayInMillis));
-            todayEvents.add(new Event("Test reminder " + i, EventType.REMINDER, todayInMillis));
-            events.put(today.getMilliseconds(TimeZone.getDefault()), todayEvents);
+            events.add(new Event.Builder("Test event " + i, EventType.EVENT, todayInMillis).build());
+            events.add(new Event.Builder("Test FYI " + i, EventType.FYI, todayInMillis).isAllDayEvent(true).build());
+            events.add(new Event.Builder("Test FYI 2" + i, EventType.FYI, todayInMillis).isAllDayEvent(true).build());
+            events.add(new Event.Builder("Test reminder 1" + i, EventType.REMINDER, todayInMillis - 10).build());
+            events.add(new Event.Builder("Test reminder 2" + i, EventType.REMINDER, todayInMillis - 360000).build());
+        }
+
+        Collections.sort(events, new Event.EventStartDateComparator());
+
+        return events;
+    }
+
+    private Map<DateTime, EventListSourceItem> buildEventListSource(List<Event> sortedEvents) {
+        Map<DateTime, EventListSourceItem> events = new LinkedHashMap<>();
+
+        for(Event event : sortedEvents) {
+            DateTime eventDate = DateTime.forInstant(event.getStartDateTime(), TimeZone.getDefault())
+                    .truncate(DateTime.Unit.DAY);
+
+            if (!events.containsKey(eventDate)) {
+                events.put(eventDate, new EventListSourceItem());
+            }
+            events.get(eventDate).addEvent(event);
         }
 
         return events;
     }
 
-    private void addDateTextView(LinearLayout layout, Long date) {
+    private void addDateHeadingTextView(LinearLayout layout, DateTime date) {
         layout.addView(buildDateTextBorderView());
         layout.addView(buildDateTextView(date));
         layout.addView(buildDateTextBorderView());
     }
 
-    private View buildDateTextView(Long date) {
+    private void addAllDayEventViews(LinearLayout layout, List<Event> events) {
+        boolean showAllDayText = true;
+
+        for (Event event : events) {
+            layout.addView(buildEventSummaryView(event, showAllDayText));
+            showAllDayText = false;
+        }
+    }
+
+    private void addTimedEventViews(LinearLayout layout, List<Event> events) {
+        boolean showEventTimeText = true;
+        DateTime oldEventTime = new DateTime(1, 1, 1, 0, 0, 0, 0);
+
+        for (Event event : events) {
+            DateTime newEventTime = DateTime.forInstant(event.getStartDateTime(), TimeZone.getDefault());
+
+            // Show event time text is event time is different.
+            if (!oldEventTime.getHour().equals(newEventTime.getHour()) ||
+                    !oldEventTime.getMinute().equals(newEventTime.getMinute())) {
+                showEventTimeText = true;
+            }
+
+            layout.addView(buildEventSummaryView(event, showEventTimeText));
+
+            showEventTimeText = false;
+            oldEventTime = newEventTime;
+        }
+    }
+
+    private View buildDateTextView(DateTime date) {
         TextView view = new TextView(context);
         view.setPadding(EVENT_LIST_HORIZONTAL_PADDING, 0, EVENT_LIST_HORIZONTAL_PADDING, 0);
         view.setText(getDateString(date));
@@ -259,37 +319,96 @@ public class ListViewFragment extends TypedBaseFragment {
     }
 
     private View buildDateTextBorderView() {
-        ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                EVENT_LIST_DATE_BORDER_HEIGHT);
-
         View view = new View(context);
-        view.setLayoutParams(layoutParams);
+        view.setLayoutParams(new DrawerLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, EVENT_LIST_DATE_BORDER_HEIGHT));
         view.setBackground(ContextCompat.getDrawable(context, R.drawable.line_dotted));
         view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         return view;
     }
 
-    private TextView buildEventSummaryView(Event event) {
+    private View buildEventSummaryView(Event event, boolean showEventTimeText) {
+        LinearLayout layout = new LinearLayout(context);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        layout.setLayoutParams(layoutParams);
+        layout.setPadding(EVENT_LIST_HORIZONTAL_PADDING, EVENT_LIST_VERTICAL_PADDING, EVENT_LIST_HORIZONTAL_PADDING, EVENT_LIST_VERTICAL_PADDING);
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        layout.setGravity(Gravity.CENTER_VERTICAL);
+
+        layout.addView(buildEventTimeTextView(event, showEventTimeText));
+        layout.addView(buildEventTypeImageView(event));
+
         TextView view = new TextView(context);
-        view.setPadding(EVENT_LIST_HORIZONTAL_PADDING, 0, EVENT_LIST_HORIZONTAL_PADDING, 0);
-        view.setText(event.getType() + "/" + event.getTitle());
+        view.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        view.setPadding(EVENT_LIST_EVENT_SUMMARY_LEFT_PADDING, 0, 0, 0);
+        view.setText(event.getTitle());
+
         ViewHelper.setTextAppearance(context, view, R.style.EventListBodyText);
+        layout.addView(view);
+
+        return layout;
+    }
+
+    private View buildEventTimeTextView(Event event, boolean showEventTimeText) {
+        TextView view = new TextView(context);
+        view.setLayoutParams(new ViewGroup.LayoutParams(
+                getResources().getDimensionPixelSize(R.dimen.event_list_time_text_width),
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        if (showEventTimeText) {
+            if (event.isAllDayEvent()) {
+                view.setText(getResources().getText(R.string.event_list_text_all_day));
+            } else {
+                DateTime eventStartTime = DateTime.forInstant(event.getStartDateTime(), TimeZone.getDefault());
+                view.setText(eventStartTime.format(TIME_FORMAT, Locale.getDefault()));
+            }
+        }
+
         return view;
     }
 
-    private String getDateString(Long date) {
-        DateTime dateTime = DateTime.forInstant(date, TimeZone.getDefault());
-        DateTime today = DateTime.today(TimeZone.getDefault());
-        StringBuilder dateString = new StringBuilder(dateTime.format(DATE_FORMAT, Locale.getDefault()));
+    private View buildEventTypeImageView(Event event) {
+        ImageView view = new ImageView(context);
+        view.setLayoutParams(new ViewGroup.LayoutParams(
+                getResources().getDimensionPixelSize(R.dimen.event_list_type_icon_size),
+                getResources().getDimensionPixelSize(R.dimen.event_list_type_icon_size)
+        ));
+        view.setImageResource(EventResourceHelper.getEventTypeIcon(event.getType()));
+        return view;
+    }
 
-        if (dateTime.isSameDayAs(DateTime.today(TimeZone.getDefault()))) {
+    private String getDateString(DateTime date) {
+        DateTime today = DateTime.today(TimeZone.getDefault());
+        StringBuilder dateString = new StringBuilder(date.format(DATE_FORMAT, Locale.getDefault()));
+
+        if (date.isSameDayAs(DateTime.today(TimeZone.getDefault()))) {
             dateString.append(" (").append(getResources().getString(R.string.date_today)).append(")");
-        } else if (dateTime.isSameDayAs(today.plusDays(1))) {
+        } else if (date.isSameDayAs(today.plusDays(1))) {
             dateString.append(" (").append(getResources().getString(R.string.date_tomorrow)).append(")");
         }
 
         return dateString.toString();
+    }
+
+    private class EventListSourceItem {
+
+        private List<Event> allDayEvents;
+        private List<Event> timedEvents;
+
+        public EventListSourceItem() {
+            allDayEvents = new ArrayList<>();
+            timedEvents = new ArrayList<>();
+        }
+
+        public void addEvent(Event event) {
+            if (event.isAllDayEvent()) {
+                allDayEvents.add(event);
+            } else {
+                timedEvents.add(event);
+            }
+        }
     }
 }
