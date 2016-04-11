@@ -3,10 +3,13 @@ package com.kaligrid.fragment;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 
-import java.util.Calendar;
+import java.util.TimeZone;
+
+import hirondelle.date4j.DateTime;
 
 public class TimePickerFragment extends DialogFragment {
 
@@ -21,15 +24,13 @@ public class TimePickerFragment extends DialogFragment {
     }
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Calendar initialTime = Calendar.getInstance();
-        initialTime.setTimeInMillis(getArguments().getLong(FIELD_INITIAL_TIME, System.currentTimeMillis()));
+        long initialTimeRaw = getArguments().getLong(FIELD_INITIAL_TIME, System.currentTimeMillis());
+        DateTime initialTime = DateTime.forInstant(initialTimeRaw, TimeZone.getDefault());
 
-        int hour = initialTime.get(Calendar.HOUR_OF_DAY);
-        int minute = initialTime.get(Calendar.MINUTE);
-
-        return new TimePickerDialog(getActivity(), onTimeSetListener, hour, minute,
-                DateFormat.is24HourFormat(getActivity()));
+        return new TimePickerDialog(getActivity(), onTimeSetListener, initialTime.getHour(),
+                initialTime.getMinute(), DateFormat.is24HourFormat(getActivity()));
     }
 
     public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener onTimeSetListener) {

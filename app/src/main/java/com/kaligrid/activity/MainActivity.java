@@ -12,19 +12,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kaligrid.R;
-import com.kaligrid.model.ContentViewType;
 import com.kaligrid.fragment.DiscoverViewFragment;
 import com.kaligrid.fragment.FriendsViewFragment;
 import com.kaligrid.fragment.GridViewFragment;
 import com.kaligrid.fragment.ListViewFragment;
 import com.kaligrid.fragment.ProfileViewFragment;
 import com.kaligrid.fragment.TypedBaseFragment;
+import com.kaligrid.model.ContentViewType;
 
-import java.util.Calendar;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import hirondelle.date4j.DateTime;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        topToolbarTodayText.setText(String.valueOf(Calendar.getInstance().get(Calendar.DATE)));
+        topToolbarTodayText.setText(String.valueOf(DateTime.today(TimeZone.getDefault()).getDay()));
         return true;
     }
 

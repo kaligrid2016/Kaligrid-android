@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import com.kaligrid.R;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidGridAdapter;
-import com.roomorama.caldroid.CaldroidListener;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
 
@@ -19,9 +17,9 @@ public class CalendarFragment extends CaldroidFragment {
 
     public CalendarFragment() {
         Bundle args = new Bundle();
-        Calendar cal = Calendar.getInstance();
-        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
-        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        DateTime today = DateTime.today(TimeZone.getDefault());
+        args.putInt(CaldroidFragment.MONTH, today.getMonth());
+        args.putInt(CaldroidFragment.YEAR, today.getYear());
         args.putInt(CaldroidFragment.THEME_RESOURCE, R.style.Calendar);
 
         setArguments(args);
@@ -33,7 +31,7 @@ public class CalendarFragment extends CaldroidFragment {
 
         setEnableSwipe(false);
         setShowNavigationArrows(false);
-        setCaldroidListener(new CalendarListener(this));
+//        setCaldroidListener(new CalendarListener(this));
 
         return view;
     }
@@ -73,21 +71,21 @@ public class CalendarFragment extends CaldroidFragment {
         }
     }
 
-    static class CalendarListener extends CaldroidListener {
-
-        private CaldroidFragment caldroidFragment;
-
-        public CalendarListener(CaldroidFragment caldroidFragment) {
-            this.caldroidFragment = caldroidFragment;
-        }
-
-        @Override
-        public void onSelectDate(Date date, View view) {
-
-        }
-
-        @Override
-        public void onCaldroidViewCreated() {
-        }
-    }
+//    static class CalendarListener extends CaldroidListener {
+//
+//        private CaldroidFragment caldroidFragment;
+//
+//        public CalendarListener(CaldroidFragment caldroidFragment) {
+//            this.caldroidFragment = caldroidFragment;
+//        }
+//
+//        @Override
+//        public void onSelectDate(Date date, View view) {
+//
+//        }
+//
+//        @Override
+//        public void onCaldroidViewCreated() {
+//        }
+//    }
 }

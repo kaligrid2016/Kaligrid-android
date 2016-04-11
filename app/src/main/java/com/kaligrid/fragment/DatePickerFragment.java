@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import java.util.Calendar;
+import java.util.TimeZone;
+
+import hirondelle.date4j.DateTime;
 
 public class DatePickerFragment extends DialogFragment {
 
@@ -23,14 +26,13 @@ public class DatePickerFragment extends DialogFragment {
     @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Calendar initialDate = Calendar.getInstance();
-        initialDate.setTimeInMillis(getArguments().getLong(FIELD_INITIAL_DATE, System.currentTimeMillis()));
+        // Use passed date or the current date.
+        long initialDateRaw = getArguments().getLong(FIELD_INITIAL_DATE, System.currentTimeMillis());
+        DateTime initialDate = DateTime.forInstant(initialDateRaw, TimeZone.getDefault());
 
-        int year = initialDate.get(Calendar.YEAR);
-        int month = initialDate.get(Calendar.MONTH);
-        int day = initialDate.get(Calendar.DAY_OF_MONTH);
-
-        return new DatePickerDialog(getActivity(), onDateSetListener, year, month, day);
+        // Android month starts from 0 but Date4J starts from 1.
+        return new DatePickerDialog(getActivity(), onDateSetListener,
+                initialDate.getYear(), initialDate.getMonth() - 1, initialDate.getDay());
     }
 
     public void setOnDateSetListener(DatePickerDialog.OnDateSetListener onDateSetListener) {

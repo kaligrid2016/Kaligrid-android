@@ -14,7 +14,6 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -25,18 +24,22 @@ import com.kaligrid.fragment.TimePickerFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import hirondelle.date4j.DateTime;
 
 public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     private static final String TAG = NewEventBaseActivity.class.getSimpleName();
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, MMMM d, yyyy");
-    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("h:mm a");
+    private static final String DATE_WRITE_FORMAT = "WWW, MMMM D, YYYY";
+    private static final String TIME_WRITE_FORMAT = "h12:mm a";
+    private static final SimpleDateFormat DATE_READ_FORMAT = new SimpleDateFormat("EEE, MMMM d, yyyy", Locale.getDefault());
+    private static final SimpleDateFormat TIME_READ_FORMAT = new SimpleDateFormat("h:mm a", Locale.getDefault());
 
     @Bind(R.id.title_text) TextView titleText;
     @Bind(R.id.save_button) TextView saveButton;
@@ -89,8 +92,8 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
         ButterKnife.bind(this);
-        initlaizeTopToolbar();
-        initializeDateTimeTextViews(Calendar.getInstance());
+        initializeTopToolbar();
+        initializeDateTimeTextViews();
 
         eventTitleText.setHint(getEventTitleHint());
         pictureButton.setImageResource(getPictureButtonImage());
@@ -123,7 +126,7 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     @OnClick({ R.id.from_date_text, R.id.to_date_text})
     public void onFromDateTextClick(TextView v) {
         Bundle bundle = new Bundle();
-        bundle.putLong(DatePickerFragment.FIELD_INITIAL_DATE, readDate(v).getTime());
+        bundle.putLong(DatePickerFragment.FIELD_INITIAL_DATE, readDate(v).getMilliseconds(TimeZone.getDefault()));
 
         DialogFragment newFragment = DatePickerFragment.newInstance(
                 (v.getId() == R.id.from_date_text) ? FROM_DATE_SET_LISTENER : TO_DATE_SET_LISTENER);
@@ -134,7 +137,7 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     @OnClick({ R.id.from_time_text, R.id.to_time_text})
     public void onFromTimeTextClick(TextView v) {
         Bundle bundle = new Bundle();
-        bundle.putLong(TimePickerFragment.FIELD_INITIAL_TIME, readTime(v).getTime());
+        bundle.putLong(TimePickerFragment.FIELD_INITIAL_TIME, readTime(v).getMilliseconds(TimeZone.getDefault()));
 
         DialogFragment newFragment = TimePickerFragment.newInstance(
                 (v.getId() == R.id.from_time_text) ? FROM_TIME_SET_LISTENER : TO_TIME_SET_LISTENER);
@@ -142,7 +145,7 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
-    private void initlaizeTopToolbar() {
+    private void initializeTopToolbar() {
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbar_new_event_top);
         setSupportActionBar(actionBar);
 
@@ -150,79 +153,59 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         saveButton.setText(getSaveButtonText());
     }
 
-    private void initializeDateTimeTextViews(Calendar calendar) {
-        calendar.set(Calendar.MINUTE, 0);
+    private void initializeDateTimeTextViews() {
+        // Create initial date without minutes and seconds.
+        DateTime now = DateTime.now(TimeZone.getDefault());
+        DateTime initialDate = new DateTime(now.getYear(), now.getMonth(), now.getDay(), now.getHour(), 0, 0, 0);
 
-        Date today = calendar.getTime();
-        fromDateText.setText(DATE_FORMAT.format(today));
-        fromTimeText.setText(TIME_FORMAT.format(today));
-        toDateText.setText(DATE_FORMAT.format(today));
+        fromDateText.setText(initialDate.format(DATE_WRITE_FORMAT, Locale.getDefault()));
+        fromTimeText.setText(initialDate.format(TIME_WRITE_FORMAT, Locale.getDefault()));
 
-        calendar.add(Calendar.HOUR, 1);
-        toTimeText.setText(TIME_FORMAT.format(calendar.getTime()));
+        toDateText.setText(initialDate.format(DATE_WRITE_FORMAT, Locale.getDefault()));
+        toTimeText.setText(initialDate.plus(0, 0, 0, 1, 0, 0, 0, DateTime.DayOverflow.FirstDay).format(TIME_WRITE_FORMAT, Locale.getDefault()));
     }
 
     private void handleOnDateSet(TextView dateText, int year, int month, int day) {
-        dateText.setText(DATE_FORMAT.format(createDate(year, month, day)));
+        // Android month starts from 0 but Date4J starts from 1.
+        dateText.setText(DateTime.forDateOnly(year, month + 1, day).format(DATE_WRITE_FORMAT, Locale.getDefault()));
     }
 
     private void handleOnTimeSet(TextView timeText, int hourOfDay, int minute) {
-        timeText.setText(TIME_FORMAT.format(createTime(hourOfDay, minute)));
+        timeText.setText(DateTime.forTimeOnly(hourOfDay, minute, 0, 0).format(TIME_WRITE_FORMAT, Locale.getDefault()));
     }
 
-    private static Date createDate(int year, int month, int day) {
-        Calendar selectedDate = Calendar.getInstance();
-        selectedDate.set(year, month, day);
-        return selectedDate.getTime();
-    }
-
-    private static Date createTime(int hourOfDay, int minute) {
-        Calendar selectedDate = Calendar.getInstance();
-        selectedDate.set(Calendar.HOUR, hourOfDay);
-        selectedDate.set(Calendar.MINUTE, minute);
-        return selectedDate.getTime();
-    }
-
-    private static Date readDate(TextView dateText) {
+    private static DateTime readDate(TextView dateText) {
         try {
-            return DATE_FORMAT.parse(dateText.getText().toString());
+            Date dateRead = DATE_READ_FORMAT.parse(dateText.getText().toString());
+            return DateTime.forInstant(dateRead.getTime(), TimeZone.getDefault());
         } catch (ParseException e) {
             Log.w(TAG, "Failed to parse date text: " + dateText.getText());
-            return new Date();
+            return DateTime.today(TimeZone.getDefault());
         }
     }
 
-    private static Date readTime(TextView timeTextView) {
+    private static DateTime readTime(TextView timeTextView) {
         try {
-            return TIME_FORMAT.parse(timeTextView.getText().toString());
+            Date readTime = TIME_READ_FORMAT.parse(timeTextView.getText().toString());
+            return DateTime.forInstant(readTime.getTime(), TimeZone.getDefault());
         } catch (ParseException e) {
             Log.w(TAG, "Failed to parse time text: " + timeTextView.getText());
-            return new Date();
+            return DateTime.now(TimeZone.getDefault());
         }
-    }
-
-    private static Date mergeDateAndTime(Date date, Date time) {
-        Calendar timeCal = Calendar.getInstance();
-        timeCal.setTime(time);
-
-        Calendar dateCal = Calendar.getInstance();
-        dateCal.setTime(date);
-        dateCal.set(Calendar.HOUR, timeCal.get(Calendar.HOUR));
-        dateCal.set(Calendar.MINUTE, timeCal.get(Calendar.MINUTE));
-
-        return dateCal.getTime();
     }
 
     private boolean isDateRangeValid() {
-        Date fromDate = readDate(fromDateText);
-        Date fromTime = readTime(fromTimeText);
-        Date fromDateTime = mergeDateAndTime(fromDate, fromTime);
+        DateTime fromDate = readDate(fromDateText);
+        DateTime fromTime = readTime(fromTimeText);
+        DateTime fromDateTime = new DateTime(fromDate.getYear(), fromDate.getMonth(), fromDate.getDay(),
+                fromTime.getHour(), fromTime.getMinute(), 0, 0);
 
-        Date toDate = readDate(toDateText);
-        Date toTime = readTime(toTimeText);
-        Date toDateTime = mergeDateAndTime(toDate, toTime);
+        DateTime toDate = readDate(toDateText);
+        DateTime toTime = readTime(toTimeText);
+        DateTime toDateTime = new DateTime(toDate.getYear(), toDate.getMonth(), toDate.getDay(),
+                toTime.getHour(), toTime.getMinute(), 0, 0);
 
-        return fromDateTime.getTime() < toDateTime.getTime();
+        return fromDateTime.lteq(toDateTime);
     }
 
     private void showDateRangeError() {
