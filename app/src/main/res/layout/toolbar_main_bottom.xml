@@ -1,74 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar_main_bottom"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_bottom_height"
-    android:layout_gravity="bottom"
-    android:layout_alignParentBottom="true"
-    android:contentInsetStart="0dp"
-    android:contentInsetEnd="0dp"
-    android:contentInsetLeft="0dp"
-    android:contentInsetRight="0dp"
-    app:contentInsetStart="0dp"
-    app:contentInsetEnd="0dp"
-    app:contentInsetLeft="0dp"
-    app:contentInsetRight="0dp"
-    android:background="@android:color/white">
+    android:layout_gravity="bottom">
 
-    <RelativeLayout
+    <View
+        android:id="@+id/toolbar_border"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/border_line_height"
+        android:background="@drawable/line_solid" />
 
-        <View
-            android:id="@+id/toolbar_border"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/border_line_height"
-            android:background="@drawable/line_solid" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_border">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar_border">
+        <ImageView
+            android:id="@+id/bottom_toolbar_list_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/icon_bottom_list_selected"/>
 
-            <ImageView
-                android:id="@+id/bottom_toolbar_list_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/icon_bottom_list_selected"/>
+        <ImageView
+            android:id="@+id/bottom_toolbar_grid_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/icon_bottom_grid"/>
 
-            <ImageView
-                android:id="@+id/bottom_toolbar_grid_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/icon_bottom_grid"/>
+        <ImageView
+            android:id="@+id/bottom_toolbar_discover_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/icon_bottom_kali"/>
 
-            <ImageView
-                android:id="@+id/bottom_toolbar_discover_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/icon_bottom_kali"/>
+        <ImageView
+            android:id="@+id/bottom_toolbar_friends_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/icon_bottom_friends"/>
 
-            <ImageView
-                android:id="@+id/bottom_toolbar_friends_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/icon_bottom_friends"/>
+        <ImageView
+            android:id="@+id/bottom_toolbar_profile_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/icon_bottom_me"/>
 
-            <ImageView
-                android:id="@+id/bottom_toolbar_profile_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/icon_bottom_me"/>
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</android.support.v7.widget.Toolbar>
+</RelativeLayout>

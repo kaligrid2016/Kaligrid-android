@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kaligrid.R;
@@ -29,7 +30,6 @@ import hirondelle.date4j.DateTime;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Bind(R.id.top_toolbar) Toolbar topToolbar;
     @Bind(R.id.top_toolbar_today_text) TextView topToolbarTodayText;
     @Bind(R.id.bottom_toolbar_list_image) ImageView bottomToolbarListImage;
     @Bind(R.id.bottom_toolbar_grid_image) ImageView bottomToolbarGridImage;
@@ -54,19 +54,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setSupportActionBar(topToolbar);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         loadInitialView();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
         topToolbarTodayText.setText(String.valueOf(DateTime.today(TimeZone.getDefault()).getDay()));
-        return true;
     }
 
     @OnClick({R.id.new_button, R.id.cancel_button_text})

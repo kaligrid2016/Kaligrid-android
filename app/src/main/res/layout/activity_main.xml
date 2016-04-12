@@ -9,20 +9,15 @@
     tools:context=".activity.MainActivity">
 
     <!-- Top toolbar -->
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_top_height"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <include layout="@layout/toolbar_main_top" />
-
-    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/toolbar_main_top" />
 
     <!-- Content view -->
     <RelativeLayout
         android:id="@+id/layout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbar_top_height"
+        android:layout_marginBottom="@dimen/toolbar_bottom_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
