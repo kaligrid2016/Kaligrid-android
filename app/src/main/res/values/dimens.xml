@@ -32,4 +32,5 @@
     <dimen name="event_list_time_text_width">80dp</dimen>
     <dimen name="event_list_type_icon_size">16dp</dimen>
     <dimen name="event_list_event_summary_left_padding">8dp</dimen>
+    <dimen name="event_list_type_icon_margin_top">3dp</dimen>
 </resources>

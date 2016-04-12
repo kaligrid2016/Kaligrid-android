@@ -28,11 +28,9 @@ import com.kaligrid.model.EventType;
 import com.kaligrid.util.EventResourceHelper;
 import com.kaligrid.util.ViewHelper;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -57,6 +55,9 @@ public class ListViewFragment extends TypedBaseFragment {
     private static int EVENT_LIST_HORIZONTAL_PADDING;
     private static int EVENT_LIST_VERTICAL_PADDING;
     private static int EVENT_LIST_EVENT_SUMMARY_LEFT_PADDING;
+    private static int EVENT_LIST_TIME_TEXT_WIDTH;
+    private static int EVENT_LIST_TYPE_ICON_SIZE;
+    private static int EVENT_LIST_TYPE_ICON_MARGIN_TOP;
 
     @Bind(R.id.calendar_wrapper) FrameLayout calendarFrameLayout;
     @Bind(R.id.calendar_swipe_area) View calendarSwipeArea;
@@ -120,6 +121,10 @@ public class ListViewFragment extends TypedBaseFragment {
         EVENT_LIST_HORIZONTAL_PADDING = getResources().getDimensionPixelSize(R.dimen.event_list_horizontal_padding);
         EVENT_LIST_VERTICAL_PADDING = getResources().getDimensionPixelSize(R.dimen.event_list_vertical_padding);
         EVENT_LIST_EVENT_SUMMARY_LEFT_PADDING = getResources().getDimensionPixelSize(R.dimen.event_list_event_summary_left_padding);
+        EVENT_LIST_TIME_TEXT_WIDTH = getResources().getDimensionPixelSize(R.dimen.event_list_time_text_width);
+        EVENT_LIST_TYPE_ICON_SIZE = getResources().getDimensionPixelSize(R.dimen.event_list_type_icon_size);
+        EVENT_LIST_TYPE_ICON_MARGIN_TOP = getResources().getDimensionPixelSize(R.dimen.event_list_type_icon_margin_top);
+
     }
 
     private void initializeCalendar() {
@@ -245,7 +250,7 @@ public class ListViewFragment extends TypedBaseFragment {
         for (int i = 0; i < 10; i++) {
             today = today.plusDays(1);
             long todayInMillis = today.getMilliseconds(TimeZone.getDefault());
-            events.add(new Event.Builder("Test event " + i, EventType.EVENT, todayInMillis).build());
+            events.add(new Event.Builder("Test event event event event eventeventeventeventeventeventeventeventeventeventeventeventevent event " + i, EventType.EVENT, todayInMillis).build());
             events.add(new Event.Builder("Test FYI " + i, EventType.FYI, todayInMillis).isAllDayEvent(true).build());
             events.add(new Event.Builder("Test FYI 2" + i, EventType.FYI, todayInMillis).isAllDayEvent(true).build());
             events.add(new Event.Builder("Test reminder 1" + i, EventType.REMINDER, todayInMillis - 10).build());
@@ -329,34 +334,29 @@ public class ListViewFragment extends TypedBaseFragment {
 
     private View buildEventSummaryView(Event event, boolean showEventTimeText) {
         LinearLayout layout = new LinearLayout(context);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layout.setLayoutParams(layoutParams);
-        layout.setPadding(EVENT_LIST_HORIZONTAL_PADDING, EVENT_LIST_VERTICAL_PADDING, EVENT_LIST_HORIZONTAL_PADDING, EVENT_LIST_VERTICAL_PADDING);
+        layout.setPadding(EVENT_LIST_HORIZONTAL_PADDING, EVENT_LIST_VERTICAL_PADDING,
+                EVENT_LIST_HORIZONTAL_PADDING, EVENT_LIST_VERTICAL_PADDING);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER_VERTICAL);
 
         layout.addView(buildEventTimeTextView(event, showEventTimeText));
         layout.addView(buildEventTypeImageView(event));
-
-        TextView view = new TextView(context);
-        view.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        view.setPadding(EVENT_LIST_EVENT_SUMMARY_LEFT_PADDING, 0, 0, 0);
-        view.setText(event.getTitle());
-
-        ViewHelper.setTextAppearance(context, view, R.style.EventListBodyText);
-        layout.addView(view);
+        layout.addView(buildEventSummaryTextView(event));
 
         return layout;
     }
 
     private View buildEventTimeTextView(Event event, boolean showEventTimeText) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                EVENT_LIST_TIME_TEXT_WIDTH, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.TOP;
+
         TextView view = new TextView(context);
-        view.setLayoutParams(new ViewGroup.LayoutParams(
-                getResources().getDimensionPixelSize(R.dimen.event_list_time_text_width),
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.setLayoutParams(layoutParams);
+        view.setMaxLines(1);
 
         if (showEventTimeText) {
             if (event.isAllDayEvent()) {
@@ -371,12 +371,29 @@ public class ListViewFragment extends TypedBaseFragment {
     }
 
     private View buildEventTypeImageView(Event event) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                EVENT_LIST_TYPE_ICON_SIZE, EVENT_LIST_TYPE_ICON_SIZE);
+        layoutParams.gravity = Gravity.TOP;
+        layoutParams.topMargin = EVENT_LIST_TYPE_ICON_MARGIN_TOP;
+
         ImageView view = new ImageView(context);
-        view.setLayoutParams(new ViewGroup.LayoutParams(
-                getResources().getDimensionPixelSize(R.dimen.event_list_type_icon_size),
-                getResources().getDimensionPixelSize(R.dimen.event_list_type_icon_size)
-        ));
+        view.setLayoutParams(layoutParams);
         view.setImageResource(EventResourceHelper.getEventTypeIcon(event.getType()));
+        return view;
+    }
+
+    private View buildEventSummaryTextView(Event event) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.TOP;
+
+        TextView view = new TextView(context);
+        view.setLayoutParams(layoutParams);
+        view.setPadding(EVENT_LIST_EVENT_SUMMARY_LEFT_PADDING, 0, 0, 0);
+        view.setMaxLines(3);
+        view.setText(event.getTitle());
+        ViewHelper.setTextAppearance(context, view, R.style.EventListBodyText);
+
         return view;
     }
 
