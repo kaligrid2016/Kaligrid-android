@@ -151,10 +151,10 @@ public class ListViewFragment extends TypedBaseFragment {
                     } else if (isMonthView && (Math.abs(event.getY() - initialYTouchPoint) < SWIPE_MARGIN)) {
                         if (event.getX() < initialXTouchPoint) {
                             // Swipe left
-                            calendarFragment.prevMonth();
+                            calendarFragment.nextMonth();
                         } else if (event.getX() > initialXTouchPoint) {
                             // Swipe right
-                            calendarFragment.nextMonth();
+                            calendarFragment.prevMonth();
                         }
                     }
                 }
