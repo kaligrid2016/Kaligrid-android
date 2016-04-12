@@ -155,7 +155,8 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     private void initializeDateTimeTextViews() {
         // Create initial date without minutes and seconds.
-        DateTime now = DateTime.now(TimeZone.getDefault()).truncate(DateTime.Unit.HOUR);
+        DateTime now = DateTime.now(TimeZone.getDefault());
+        now = now.minus(0, 0, 0, 0, now.getMinute(), now.getSecond(), now.getNanoseconds(), DateTime.DayOverflow.LastDay);
 
         fromDateText.setText(now.format(DATE_WRITE_FORMAT, Locale.getDefault()));
         fromTimeText.setText(now.format(TIME_WRITE_FORMAT, Locale.getDefault()));
