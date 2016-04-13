@@ -26,6 +26,7 @@ import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.EventType;
 import com.kaligrid.util.EventResourceHelper;
+import com.kaligrid.util.EventSummaryBuilder;
 import com.kaligrid.util.ViewHelper;
 
 import java.util.ArrayList;
@@ -124,7 +125,6 @@ public class ListViewFragment extends TypedBaseFragment {
         EVENT_LIST_TIME_TEXT_WIDTH = getResources().getDimensionPixelSize(R.dimen.event_list_time_text_width);
         EVENT_LIST_TYPE_ICON_SIZE = getResources().getDimensionPixelSize(R.dimen.event_list_type_icon_size);
         EVENT_LIST_TYPE_ICON_MARGIN_TOP = getResources().getDimensionPixelSize(R.dimen.event_list_type_icon_margin_top);
-
     }
 
     private void initializeCalendar() {
@@ -224,9 +224,7 @@ public class ListViewFragment extends TypedBaseFragment {
         Map<DateTime, EventListSourceItem> eventListSource = buildEventListSource(events);
 
         for (Map.Entry<DateTime, EventListSourceItem> entry : eventListSource.entrySet()) {
-            DateTime eventDate = entry.getKey();
-            addDateHeadingTextView(eventListLayout, eventDate);
-
+            addDateHeadingTextView(eventListLayout, entry.getKey());
             addAllDayEventViews(eventListLayout, entry.getValue().allDayEvents);
             addTimedEventViews(eventListLayout, entry.getValue().timedEvents);
         }
@@ -250,11 +248,33 @@ public class ListViewFragment extends TypedBaseFragment {
         for (int i = 0; i < 10; i++) {
             today = today.plusDays(1);
             long todayInMillis = today.getMilliseconds(TimeZone.getDefault());
-            events.add(new Event.Builder("Test event event event event eventeventeventeventeventeventeventeventeventeventeventeventevent event " + i, EventType.EVENT, todayInMillis).build());
-            events.add(new Event.Builder("Test FYI " + i, EventType.FYI, todayInMillis).isAllDayEvent(true).build());
-            events.add(new Event.Builder("Test FYI 2" + i, EventType.FYI, todayInMillis).isAllDayEvent(true).build());
-            events.add(new Event.Builder("Test reminder 1" + i, EventType.REMINDER, todayInMillis - 10).build());
-            events.add(new Event.Builder("Test reminder 2" + i, EventType.REMINDER, todayInMillis - 360000).build());
+
+            events.add(new Event.Builder("Yong", "My long test event/My long test event/My long test event/My long test event/My long test event.",
+                    EventType.EVENT, todayInMillis).recipients("daniel", "seula").isSelfIncluded(true).build());
+
+            events.add(new Event.Builder("Seula", "Seula's all day event",
+                    EventType.EVENT, todayInMillis).isAllDayEvent(true).isSelfIncluded(true).recipients("Yong").build());
+
+            events.add(new Event.Builder("Yong", "My vacation",
+                    EventType.FYI, todayInMillis).isAllDayEvent(true).recipients("Daniel").build());
+
+            events.add(new Event.Builder("Yong", "Out sick",
+                    EventType.FYI, todayInMillis).isAllDayEvent(true).recipients("Daniel", "Xingy").build());
+
+            events.add(new Event.Builder("Yong", "Traveling",
+                    EventType.FYI, todayInMillis).isAllDayEvent(true).recipients("Daniel", "Seula", "Brad").build());
+
+            events.add(new Event.Builder("Daniel", "Daniel's vacation",
+                    EventType.FYI, todayInMillis).isAllDayEvent(true).recipients("Yong", "Seula", "Brad").build());
+
+            events.add(new Event.Builder("Brad", "Brad's workout",
+                    EventType.REMINDER, todayInMillis - 10).recipients("yong").build());
+
+            events.add(new Event.Builder("Yong", "My grocery shopping reminder",
+                    EventType.REMINDER, todayInMillis - 360000).isSelfIncluded(true).build());
+
+            events.add(new Event.Builder("Yong", "My tax return",
+                    EventType.REMINDER, todayInMillis - 360000).recipients("Xingy").isSelfIncluded(true).build());
         }
 
         Collections.sort(events, new Event.EventStartDateComparator());
@@ -333,6 +353,7 @@ public class ListViewFragment extends TypedBaseFragment {
     }
 
     private View buildEventSummaryView(Event event, boolean showEventTimeText) {
+        // Create layout.
         LinearLayout layout = new LinearLayout(context);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -342,6 +363,7 @@ public class ListViewFragment extends TypedBaseFragment {
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER_VERTICAL);
 
+        // Add individual layout components.
         layout.addView(buildEventTimeTextView(event, showEventTimeText));
         layout.addView(buildEventTypeImageView(event));
         layout.addView(buildEventSummaryTextView(event));
@@ -379,6 +401,7 @@ public class ListViewFragment extends TypedBaseFragment {
         ImageView view = new ImageView(context);
         view.setLayoutParams(layoutParams);
         view.setImageResource(EventResourceHelper.getEventTypeIcon(event.getType()));
+
         return view;
     }
 
@@ -391,7 +414,7 @@ public class ListViewFragment extends TypedBaseFragment {
         view.setLayoutParams(layoutParams);
         view.setPadding(EVENT_LIST_EVENT_SUMMARY_LEFT_PADDING, 0, 0, 0);
         view.setMaxLines(3);
-        view.setText(event.getTitle());
+        view.setText(EventSummaryBuilder.build(event));
         ViewHelper.setTextAppearance(context, view, R.style.EventListBodyText);
 
         return view;
