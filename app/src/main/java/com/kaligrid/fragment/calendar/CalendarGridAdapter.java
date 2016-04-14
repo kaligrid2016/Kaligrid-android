@@ -29,7 +29,7 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
 
         // For reuse
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.calendar_cell, null);
+            convertView = inflater.inflate(R.layout.calendar_cell, parent, false);
         }
 
         TextView dateText = (TextView) convertView.findViewById(R.id.calendar_date_text);
@@ -45,7 +45,8 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
         }
 
         if (isDateSelected(dateTime)) {
-            // TODO: IMPLEMENT VISUAL CHANGE FOR SELECTED DATES.
+            ViewHelper.setTextAppearance(context, dateText, R.style.CalendarDateTodayText);
+            dateText.setBackgroundResource(R.drawable.background_calendar_cell_selected);
         } else {
             // Customize for today
             if (dateTime.isSameDayAs(getToday())) {

@@ -9,6 +9,7 @@ import com.kaligrid.R;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidGridAdapter;
 
+import java.util.Date;
 import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
@@ -31,6 +32,7 @@ public class CalendarFragment extends CaldroidFragment {
 
         setEnableSwipe(false);
         setShowNavigationArrows(false);
+        setSelectedDate(new Date());
 //        setCaldroidListener(new CalendarListener(this));
 
         return view;

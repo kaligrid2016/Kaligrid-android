@@ -6,6 +6,6 @@
     android:thickness="11dp"
     android:useLevel="false">
 
-    <solid android:color="@color/calendarBackgroundToday" />
+    <solid android:color="@color/calendarBackgroundSelected" />
 
 </shape>
