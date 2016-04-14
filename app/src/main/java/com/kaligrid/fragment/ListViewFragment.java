@@ -27,6 +27,7 @@ import com.kaligrid.model.Event;
 import com.kaligrid.model.EventType;
 import com.kaligrid.util.EventResourceHelper;
 import com.kaligrid.util.EventSummaryBuilder;
+import com.kaligrid.util.RandomEventRecipientGenerator;
 import com.kaligrid.util.ViewHelper;
 
 import java.util.ArrayList;
@@ -49,9 +50,7 @@ public class ListViewFragment extends TypedBaseFragment {
     private static final String TIME_FORMAT = "h12:mm a";
 
     private static int CALENDAR_HEIGHT_WEEK_VIEW;
-    private static int CALENDAR_HEIGHT_WEEK_VIEW_SWIPE_AREA;
     private static int CALENDAR_HEIGHT_MONTH_VIEW;
-    private static int CALENDAR_HEIGHT_MONTH_VIEW_SWIPE_AREA;
     private static int EVENT_LIST_DATE_BORDER_HEIGHT;
     private static int EVENT_LIST_HORIZONTAL_PADDING;
     private static int EVENT_LIST_VERTICAL_PADDING;
@@ -115,9 +114,7 @@ public class ListViewFragment extends TypedBaseFragment {
 
     private void initializeConstants() {
         CALENDAR_HEIGHT_WEEK_VIEW = getResources().getDimensionPixelSize(R.dimen.calendar_height_week_view);
-        CALENDAR_HEIGHT_WEEK_VIEW_SWIPE_AREA = getResources().getDimensionPixelSize(R.dimen.calendar_height_week_view_swipe_area);
         CALENDAR_HEIGHT_MONTH_VIEW = getResources().getDimensionPixelSize(R.dimen.calendar_height_month_view);
-        CALENDAR_HEIGHT_MONTH_VIEW_SWIPE_AREA = getResources().getDimensionPixelSize(R.dimen.calendar_height_month_view_swipe_area);
         EVENT_LIST_DATE_BORDER_HEIGHT = getResources().getDimensionPixelSize(R.dimen.event_list_date_border_height);
         EVENT_LIST_HORIZONTAL_PADDING = getResources().getDimensionPixelSize(R.dimen.event_list_horizontal_padding);
         EVENT_LIST_VERTICAL_PADDING = getResources().getDimensionPixelSize(R.dimen.event_list_vertical_padding);
@@ -177,7 +174,7 @@ public class ListViewFragment extends TypedBaseFragment {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         calendarFragment.showMonthView();
-                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_MONTH_VIEW_SWIPE_AREA);
+                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_MONTH_VIEW);
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_MONTH_VIEW);
                     }
 
@@ -205,7 +202,7 @@ public class ListViewFragment extends TypedBaseFragment {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         calendarFragment.showWeekView(DateTime.today(TimeZone.getDefault()));
-                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_WEEK_VIEW_SWIPE_AREA);
+                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_WEEK_VIEW);
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_WEEK_VIEW);
                     }
 
@@ -250,7 +247,7 @@ public class ListViewFragment extends TypedBaseFragment {
             long todayInMillis = today.getMilliseconds(TimeZone.getDefault());
 
             events.add(new Event.Builder("Yong", "My long test event/My long test event/My long test event/My long test event/My long test event.",
-                    EventType.EVENT, todayInMillis).recipients("daniel", "seula").isSelfIncluded(true).build());
+                    EventType.EVENT, todayInMillis).recipients(RandomEventRecipientGenerator.generate()).isSelfIncluded(true).build());
 
             events.add(new Event.Builder("Seula", "Seula's all day event",
                     EventType.EVENT, todayInMillis).isAllDayEvent(true).isSelfIncluded(true).recipients("Yong").build());

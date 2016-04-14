@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/calendar_margin_top"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <FrameLayout
@@ -20,7 +21,7 @@
         <View
             android:id="@+id/calendar_swipe_area"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/calendar_height_month_view_swipe_area" />
+            android:layout_height="@dimen/calendar_height_month_view" />
 
     </FrameLayout>
 
