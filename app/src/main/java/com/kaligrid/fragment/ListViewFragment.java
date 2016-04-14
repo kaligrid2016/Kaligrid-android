@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.kaligrid.R;
 import com.kaligrid.animation.HeightResizeAnimation;
+import com.kaligrid.app.App;
 import com.kaligrid.fragment.calendar.CalendarFragment;
 import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
@@ -38,6 +39,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -65,6 +68,8 @@ public class ListViewFragment extends TypedBaseFragment {
     @Bind(R.id.event_list_scroll_view) NestedScrollView eventListView;
     @Bind(R.id.event_list_layout) LinearLayout eventListLayout;
 
+    @Inject EventService eventService;
+
     private Context context;
     private CalendarFragment calendarFragment;
     private boolean isMonthView = true;
@@ -91,6 +96,7 @@ public class ListViewFragment extends TypedBaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
         ButterKnife.bind(this, view);
+        App.getObjectGraph().inject(this);
 
         initializeConstants();
         initializeCalendar();
@@ -240,7 +246,7 @@ public class ListViewFragment extends TypedBaseFragment {
     }
 
     private List<Event> loadEvents() {
-        List<Event> events = EventService.getTestEvents();
+        List<Event> events = eventService.getTestEvents();
         Collections.sort(events, new Event.EventStartDateComparator());
 
         return events;

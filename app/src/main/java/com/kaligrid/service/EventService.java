@@ -12,7 +12,7 @@ import hirondelle.date4j.DateTime;
 
 public class EventService {
 
-    public static final List<Event> getTestEvents() {
+    public List<Event> getTestEvents() {
         DateTime today = DateTime.now(TimeZone.getDefault());
         today = today.minus(0, 0, 5, 0, 0, 0, 0, DateTime.DayOverflow.LastDay);
         List<Event> events = new ArrayList<>();
