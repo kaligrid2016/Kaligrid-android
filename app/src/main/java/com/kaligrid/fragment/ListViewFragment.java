@@ -49,6 +49,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
     private static int CALENDAR_HEIGHT_WEEK_VIEW;
     private static int CALENDAR_HEIGHT_MONTH_VIEW;
+    private static DateTime TODAY;
 
     @Bind(R.id.calendar_wrapper) FrameLayout calendarFrameLayout;
     @Bind(R.id.calendar_swipe_area) View calendarSwipeArea;
@@ -121,6 +122,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
     private void initializeConstants() {
         CALENDAR_HEIGHT_WEEK_VIEW = getResources().getDimensionPixelSize(R.dimen.calendar_height_week_view);
         CALENDAR_HEIGHT_MONTH_VIEW = getResources().getDimensionPixelSize(R.dimen.calendar_height_month_view);
+        TODAY = DateTime.today(TimeZone.getDefault());
     }
 
     private void initializeCalendar() {
@@ -200,7 +202,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        calendarFragment.showWeekView(DateTime.today(TimeZone.getDefault()));
+                        calendarFragment.showWeekView(TODAY);
                         ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_WEEK_VIEW);
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_WEEK_VIEW);
                     }
@@ -219,14 +221,19 @@ public class ListViewFragment extends TypedBaseViewFragment {
         List<Event> events = loadEvents();
         Map<DateTime, EventListSourceItem> eventListSource = buildEventListSource(events);
         eventListItems = new ArrayList<>();
-
+int firstItemIndex = -1;
         for (Map.Entry<DateTime, EventListSourceItem> entry : eventListSource.entrySet()) {
-            eventListItems.add(new EventListDateHeaderItem(entry.getKey(), context));
+            DateTime date = entry.getKey();
+            if ((firstItemIndex < 0) && date.gteq(TODAY)) {
+                firstItemIndex = eventListItems.size();
+            }
+            eventListItems.add(new EventListDateHeaderItem(date, context));
             addAllDayEventListItems(eventListItems, entry.getValue().allDayEvents);
             addTimedEventListItems(eventListItems, entry.getValue().timedEvents);
         }
 
         eventList.setAdapter(new EventListItemAdapter(context, eventListItems));
+        eventList.setSelection(firstItemIndex);
     }
 
     private void initializeEventListTouchListener() {
