@@ -37,12 +37,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        loadInitialView();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadInitialView();
         topToolbarTodayText.setText(String.valueOf(DateTime.today(TimeZone.getDefault()).getDay()));
     }
 

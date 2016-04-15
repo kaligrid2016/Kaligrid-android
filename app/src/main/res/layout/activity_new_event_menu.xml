@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/new_event_menu_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/new_button_margin_activity_bottom"
+    android:paddingRight="@dimen/new_button_margin"
+    android:paddingEnd="@dimen/new_button_margin"
+    android:gravity="bottom|end"
+    android:background="#E6FFFFFF">
+
+    <RelativeLayout
+        android:id="@+id/button_add_fyi_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/new_button_space"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/new_fyi_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/new_button_and_label_space"
+            android:layout_marginEnd="@dimen/new_button_and_label_space"
+            android:layout_centerVertical="true"
+            android:text="@string/button_label_new_fyi"
+            style="@style/NewEventButtonLabel" />
+
+        <ImageView
+            android:id="@+id/new_fyi_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:layout_toRightOf="@id/new_fyi_button_text"
+            android:layout_toEndOf="@id/new_fyi_button_text"
+            android:background="@drawable/button_background_new_fyi"
+            android:src="@drawable/icon_new_fyi"
+            android:scaleType="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/button_add_reminder_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/new_button_space"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/button_add_fyi_layout">
+
+        <TextView
+            android:id="@+id/new_reminder_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/new_button_and_label_space"
+            android:layout_marginEnd="@dimen/new_button_and_label_space"
+            android:layout_centerVertical="true"
+            android:text="@string/button_label_new_reminder"
+            style="@style/NewEventButtonLabel" />
+
+        <ImageView
+            android:id="@+id/new_reminder_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/new_reminder_button_text"
+            android:layout_toEndOf="@id/new_reminder_button_text"
+            android:background="@drawable/button_background_new_reminder"
+            android:src="@drawable/icon_new_reminder"
+            android:scaleType="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/button_add_event_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/new_button_space"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/button_add_reminder_layout">
+
+        <TextView
+            android:id="@+id/new_event_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/new_button_and_label_space"
+            android:layout_marginEnd="@dimen/new_button_and_label_space"
+            android:layout_centerVertical="true"
+            android:text="@string/button_label_new_event"
+            style="@style/NewEventButtonLabel" />
+
+        <ImageView
+            android:id="@+id/new_event_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/new_event_button_text"
+            android:layout_toEndOf="@id/new_event_button_text"
+            android:background="@drawable/button_background_new_event"
+            android:src="@drawable/icon_new_event"
+            android:scaleType="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/button_add_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/button_add_event_layout">
+
+        <TextView
+            android:id="@+id/cancel_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/new_button_and_label_space"
+            android:layout_marginEnd="@dimen/new_button_and_label_space"
+            android:layout_centerVertical="true"
+            android:text="@string/button_label_cancel"
+            style="@style/NewEventButtonLabel" />
+
+        <ImageView
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cancel_button_text"
+            android:layout_toEndOf="@id/cancel_button_text"
+            android:background="@drawable/button_background_cancel"
+            android:src="@drawable/icon_add_cancel"
+            android:scaleType="center" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -24,6 +24,11 @@
         </activity>
 
         <activity
+            android:name=".activity.NewEventMenuActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".activity.NewEventActivity"
             android:label="@string/new_event_activity_title"
             android:theme="@style/AppTheme.NewEvent"
