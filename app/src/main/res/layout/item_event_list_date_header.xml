@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_event_list_date_header_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/event_list_date_border_height"
+        android:background="@drawable/line_dotted"
+        android:layerType="software" />
+
+    <TextView
+        android:id="@+id/event_list_date_header_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/event_list_horizontal_padding"
+        android:paddingStart="@dimen/event_list_horizontal_padding"
+        android:paddingRight="@dimen/event_list_horizontal_padding"
+        android:paddingEnd="@dimen/event_list_horizontal_padding"
+        android:text="Thu Apr 14"
+        style="@style/EventListDateText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/event_list_date_border_height"
+        android:background="@drawable/line_dotted"
+        android:layerType="software" />
+
+</LinearLayout>

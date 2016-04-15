@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.kaligrid.R;
 import com.kaligrid.model.ContentViewType;
 
-public class FriendsViewFragment extends TypedBaseFragment {
+public class FriendsViewFragment extends TypedBaseViewFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -4,6 +4,6 @@ import android.app.Fragment;
 
 import com.kaligrid.model.ContentViewType;
 
-public abstract class TypedBaseFragment extends Fragment {
+public abstract class TypedBaseViewFragment extends Fragment {
     public abstract ContentViewType getType();
 }

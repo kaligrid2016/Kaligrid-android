@@ -22,14 +22,11 @@ import android.widget.TextView;
 import com.kaligrid.R;
 import com.kaligrid.animation.HeightResizeAnimation;
 import com.kaligrid.app.App;
-import com.kaligrid.fragment.calendar.CalendarFragment;
 import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
-import com.kaligrid.model.EventType;
 import com.kaligrid.service.EventService;
 import com.kaligrid.util.EventResourceHelper;
 import com.kaligrid.util.EventSummaryBuilder;
-import com.kaligrid.util.RandomEventRecipientGenerator;
 import com.kaligrid.util.ViewHelper;
 
 import java.util.ArrayList;
@@ -46,7 +43,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import hirondelle.date4j.DateTime;
 
-public class ListViewFragment extends TypedBaseFragment {
+public class ListViewFragment extends TypedBaseViewFragment {
 
     private static final int RESIZE_ANIMATION_DURATION = 200;
     private static final int SWIPE_MARGIN = 120;

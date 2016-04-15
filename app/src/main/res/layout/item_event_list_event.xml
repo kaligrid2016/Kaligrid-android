@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_event_list_event_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/event_list_vertical_padding"
+    android:paddingBottom="@dimen/event_list_vertical_padding"
+    android:paddingLeft="@dimen/event_list_horizontal_padding"
+    android:paddingStart="@dimen/event_list_horizontal_padding"
+    android:paddingRight="@dimen/event_list_horizontal_padding"
+    android:paddingEnd="@dimen/event_list_horizontal_padding"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/event_list_event_time_text"
+        android:layout_width="@dimen/event_list_time_text_width"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/event_list_text_all_day" />
+
+    <ImageView
+        android:id="@+id/event_list_event_type_image"
+        android:layout_width="@dimen/event_list_type_icon_size"
+        android:layout_height="@dimen/event_list_type_icon_size"
+        android:layout_marginTop="@dimen/event_list_type_icon_margin_top"
+        android:layout_gravity="top"
+        android:src="@drawable/icon_front_event"/>
+
+    <TextView
+        android:id="@+id/event_list_event_summary_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/event_list_event_summary_left_padding"
+        android:paddingStart="@dimen/event_list_event_summary_left_padding"
+        android:maxLines="3"
+        android:text="@string/event_list_text_all_day"
+        style="@style/EventListBodyText"
+        tools:ignore="RtlSymmetry" />
+
+</LinearLayout>

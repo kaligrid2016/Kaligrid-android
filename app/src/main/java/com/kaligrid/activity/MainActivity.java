@@ -15,7 +15,7 @@ import com.kaligrid.fragment.FriendsViewFragment;
 import com.kaligrid.fragment.GridViewFragment;
 import com.kaligrid.fragment.ListViewFragment;
 import com.kaligrid.fragment.ProfileViewFragment;
-import com.kaligrid.fragment.TypedBaseFragment;
+import com.kaligrid.fragment.TypedBaseViewFragment;
 import com.kaligrid.model.ContentViewType;
 
 import java.util.TimeZone;
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         collapseOtherAddButtons();
     }
 
-    private void loadViewFragment(TypedBaseFragment fragment) {
+    private void loadViewFragment(TypedBaseViewFragment fragment) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.content_fragment_container, fragment).commit();
         currentView = fragment.getType();

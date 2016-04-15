@@ -1,7 +1,6 @@
-package com.kaligrid.fragment.calendar;
+package com.kaligrid.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
 
         // For reuse
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.calendar_cell, parent, false);
+            convertView = inflater.inflate(R.layout.item_calendar_cell, parent, false);
         }
 
         TextView dateText = (TextView) convertView.findViewById(R.id.calendar_date_text);

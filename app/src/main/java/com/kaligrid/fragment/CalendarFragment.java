@@ -1,4 +1,4 @@
-package com.kaligrid.fragment.calendar;
+package com.kaligrid.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kaligrid.R;
+import com.kaligrid.adapter.CalendarGridAdapter;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidGridAdapter;
 

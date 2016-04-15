@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.kaligrid.R;
 import com.kaligrid.model.ContentViewType;
 
-public class ProfileViewFragment extends TypedBaseFragment {
+public class ProfileViewFragment extends TypedBaseViewFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
