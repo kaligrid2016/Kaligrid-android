@@ -43,4 +43,6 @@
         android:dividerHeight="0dp"
         android:clickable="false" />
 
+    <include layout="@layout/new_buttons" />
+
 </RelativeLayout>

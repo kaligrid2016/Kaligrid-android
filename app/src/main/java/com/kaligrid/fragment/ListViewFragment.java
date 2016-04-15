@@ -2,9 +2,11 @@ package com.kaligrid.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,9 +15,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.kaligrid.R;
+import com.kaligrid.activity.NewEventActivity;
+import com.kaligrid.activity.NewFyiActivity;
+import com.kaligrid.activity.NewReminderActivity;
 import com.kaligrid.adapter.EventListItemAdapter;
 import com.kaligrid.animation.HeightResizeAnimation;
 import com.kaligrid.app.App;
@@ -38,6 +45,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import hirondelle.date4j.DateTime;
 
 public class ListViewFragment extends TypedBaseViewFragment {
@@ -51,6 +59,16 @@ public class ListViewFragment extends TypedBaseViewFragment {
     @Bind(R.id.calendar_wrapper) FrameLayout calendarFrameLayout;
     @Bind(R.id.calendar_swipe_area) View calendarSwipeArea;
     @Bind(R.id.event_list) ListView eventList;
+
+    // Add event buttons
+    @Bind(R.id.new_button) ImageView newButton;
+    @Bind(R.id.cancel_button_text) TextView cancelButtonText;
+    @Bind(R.id.new_fyi_button) ImageView newFyiButton;
+    @Bind(R.id.new_fyi_button_text) TextView newFyiButtonText;
+    @Bind(R.id.new_reminder_button) ImageView newReminderButton;
+    @Bind(R.id.new_reminder_button_text) TextView newReminderButtonText;
+    @Bind(R.id.new_event_button) ImageView newEventButton;
+    @Bind(R.id.new_event_button_text) TextView newEventButtonText;
 
     @Inject EventService eventService;
 
@@ -74,6 +92,12 @@ public class ListViewFragment extends TypedBaseViewFragment {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        collapseOtherAddButtons();
     }
 
     @Override
@@ -102,6 +126,34 @@ public class ListViewFragment extends TypedBaseViewFragment {
     public void onAttach(Activity activity) {
         context = activity;
         super.onAttach(activity);
+    }
+
+    @OnClick({R.id.new_button, R.id.cancel_button_text})
+    public void onAddButtonClick(View v) {
+        // If add button is enabled, expand other add buttons.
+        if (cancelButtonText.getVisibility() == View.GONE) {
+            expandOtherAddButtons();
+        } else {
+            collapseOtherAddButtons();
+        }
+    }
+
+    @OnClick({R.id.new_fyi_button, R.id.new_fyi_button_text})
+    public void onAddFyiButtonClick(View v) {
+        startActivity(new Intent(getActivity(), NewFyiActivity.class));
+        collapseOtherAddButtons();
+    }
+
+    @OnClick({R.id.new_reminder_button, R.id.new_reminder_button_text})
+    public void onAddReminderButtonClick(View v) {
+        startActivity(new Intent(getActivity(), NewReminderActivity.class));
+        collapseOtherAddButtons();
+    }
+
+    @OnClick({R.id.new_event_button, R.id.new_event_button_text})
+    public void onAddEventButtonClick(View v) {
+        startActivity(new Intent(getActivity(), NewEventActivity.class));
+        collapseOtherAddButtons();
     }
 
     private void initializeConstants() {
@@ -280,6 +332,38 @@ public class ListViewFragment extends TypedBaseViewFragment {
             oldEventTime = newEventTime;
         }
     }
+
+    private void expandOtherAddButtons() {
+        // Change add button to cancel button
+        newButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_background_cancel));
+        newButton.setImageResource(R.drawable.icon_new_cancel);
+        cancelButtonText.setVisibility(View.VISIBLE);
+
+        newFyiButton.setVisibility(View.VISIBLE);
+        newFyiButtonText.setVisibility(View.VISIBLE);
+
+        newReminderButton.setVisibility(View.VISIBLE);
+        newReminderButtonText.setVisibility(View.VISIBLE);
+
+        newEventButton.setVisibility(View.VISIBLE);
+        newEventButtonText.setVisibility(View.VISIBLE);
+    }
+
+    private void collapseOtherAddButtons() {
+        newButton.setBackground(ContextCompat.getDrawable(context, R.drawable.button_background_new));
+        newButton.setImageResource(R.drawable.icon_new);
+        cancelButtonText.setVisibility(View.GONE);
+
+        newFyiButton.setVisibility(View.GONE);
+        newFyiButtonText.setVisibility(View.GONE);
+
+        newReminderButton.setVisibility(View.GONE);
+        newReminderButtonText.setVisibility(View.GONE);
+
+        newEventButton.setVisibility(View.GONE);
+        newEventButtonText.setVisibility(View.GONE);
+    }
+
 
     private class EventListSourceItem {
 

@@ -27,9 +27,6 @@
 
     </RelativeLayout>
 
-    <!-- Add event buttons -->
-    <include layout="@layout/new_buttons" />
-
     <!-- Bottom toolbar -->
     <include layout="@layout/toolbar_main_bottom" />
 
