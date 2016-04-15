@@ -32,18 +32,15 @@
         android:layout_below="@+id/calendar_wrapper"
         android:background="@drawable/line_solid" />
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/event_list_scroll_view"
+    <ListView
+        android:id="@+id/event_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/calendar_border">
-
-        <LinearLayout
-            android:id="@+id/event_list_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" />
-
-    </android.support.v4.widget.NestedScrollView>
+        android:layout_below="@+id/calendar_border"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:clickable="false" />
 
 </RelativeLayout>
