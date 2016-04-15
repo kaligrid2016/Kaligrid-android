@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.kaligrid.R;
 import com.kaligrid.fragment.DiscoverViewFragment;
 import com.kaligrid.fragment.FriendsViewFragment;
-import com.kaligrid.fragment.GridViewFragment;
 import com.kaligrid.fragment.ListViewFragment;
 import com.kaligrid.fragment.ProfileViewFragment;
 import com.kaligrid.fragment.TypedBaseViewFragment;
@@ -29,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.top_toolbar_today_text) TextView topToolbarTodayText;
     @Bind(R.id.bottom_toolbar_list_image) ImageView bottomToolbarListImage;
-    @Bind(R.id.bottom_toolbar_grid_image) ImageView bottomToolbarGridImage;
     @Bind(R.id.bottom_toolbar_discover_image) ImageView bottomToolbarDiscoverImage;
     @Bind(R.id.bottom_toolbar_friends_image) ImageView bottomToolbarFriendsImage;
     @Bind(R.id.bottom_toolbar_profile_image) ImageView bottomToolbarProfileImage;
@@ -100,17 +98,6 @@ public class MainActivity extends AppCompatActivity {
         loadViewFragment(ListViewFragment.newInstance(this));
     }
 
-    @OnClick(R.id.bottom_toolbar_grid_image)
-    public void onGridImageClick(View v) {
-        if (currentView == ContentViewType.GRID) {
-            return;
-        }
-
-        resetBottomToolbarImages();
-        ((ImageView) v).setImageResource(R.drawable.icon_bottom_grid_selected);
-        loadViewFragment(new GridViewFragment());
-    }
-
     @OnClick(R.id.bottom_toolbar_discover_image)
     public void onDiscoverImageClick(View v) {
         if (currentView == ContentViewType.DISCOVER) {
@@ -154,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetBottomToolbarImages() {
         bottomToolbarListImage.setImageResource(R.drawable.icon_bottom_list);
-        bottomToolbarGridImage.setImageResource(R.drawable.icon_bottom_grid);
         bottomToolbarDiscoverImage.setImageResource(R.drawable.icon_bottom_kali);
         bottomToolbarFriendsImage.setImageResource(R.drawable.icon_bottom_friends);
         bottomToolbarProfileImage.setImageResource(R.drawable.icon_bottom_me);
