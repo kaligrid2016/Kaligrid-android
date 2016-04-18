@@ -25,6 +25,11 @@ public class EventListEventItem implements EventListItem {
         this.showEventTime = showEventTime;
     }
 
+    @Override
+    public DateTime getDate() {
+        return DateTime.forInstant(event.getStartDateTime(), TimeZone.getDefault());
+    }
+
     public String getTimeText() {
         if (!showEventTime) {
             return "";

@@ -22,6 +22,11 @@ public class EventListDateHeaderItem implements EventListItem {
     }
 
     @Override
+    public DateTime getDate() {
+        return date;
+    }
+
+    @Override
     public String toString() {
         DateTime today = DateTime.today(TimeZone.getDefault());
         StringBuilder dateString = new StringBuilder(date.format(DATE_FORMAT, Locale.getDefault()));

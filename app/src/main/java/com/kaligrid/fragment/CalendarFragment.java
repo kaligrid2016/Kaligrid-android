@@ -44,11 +44,16 @@ public class CalendarFragment extends CaldroidFragment {
         return new CalendarGridAdapter(getActivity(), month, year, getCaldroidData(), extraData);
     }
 
-    public void showMonthView() {
+    public void showMonthView(DateTime selectedDate) {
+        clearSelectedDates();
+        setSelectedDate(new Date(selectedDate.getMilliseconds(TimeZone.getDefault())));
         refreshView();
     }
 
     public void showWeekView(DateTime selectedDate) {
+        clearSelectedDates();
+        setSelectedDate(new Date(selectedDate.getMilliseconds(TimeZone.getDefault())));
+
         refreshMonthTitleTextView();
 
         // Refresh the date grid views
@@ -84,7 +89,7 @@ public class CalendarFragment extends CaldroidFragment {
 //
 //        @Override
 //        public void onSelectDate(Date date, View view) {
-//
+//            Toast.makeText(caldroidFragment.getContext(), "Hello from listener!", Toast.LENGTH_SHORT).show();
 //        }
 //
 //        @Override

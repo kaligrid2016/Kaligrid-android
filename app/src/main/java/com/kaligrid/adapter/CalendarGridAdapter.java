@@ -79,6 +79,16 @@ public class CalendarGridAdapter extends CaldroidGridAdapter {
     }
 
     private boolean isDateSelected(DateTime dateTime) {
-        return (selectedDates != null) && (selectedDates.contains(dateTime));
+        if (selectedDates == null) {
+            return false;
+        }
+
+        for (DateTime date : selectedDates) {
+            if (dateTime.isSameDayAs(date)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

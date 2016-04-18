@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -63,6 +64,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
     private float initialXTouchPoint;
     private float initialYTouchPoint;
     private List<EventListItem> eventListItems;
+    boolean isEventListListenersInitialized = false;
 
     public static ListViewFragment newInstance(Context context) {
         ListViewFragment fragment = new ListViewFragment();
@@ -90,7 +92,8 @@ public class ListViewFragment extends TypedBaseViewFragment {
         initializeCalendar();
         initializeEventList();
         initializeCalendarTouchListener();
-        initializeEventListTouchListener();
+
+        selectedDate = TODAY;
 
         return view;
     }
@@ -98,6 +101,10 @@ public class ListViewFragment extends TypedBaseViewFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (!isEventListListenersInitialized) {
+            initializeEventListTouchListener();
+            isEventListListenersInitialized = true;
+        }
     }
 
     @Override
@@ -136,26 +143,30 @@ public class ListViewFragment extends TypedBaseViewFragment {
         calendarSwipeArea.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                Log.d("TEST", "onTouch: " + event.getAction());
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     initialXTouchPoint = event.getX();
                     initialYTouchPoint = event.getY();
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    final float xTouchPoint = event.getX();
+                    final float yTouchPoint = event.getY();
+
                     // If X touch point change is within margin, it's either swipe up or down.
                     // If Y touch point change is within margin, it's either swipe left or right.
-                    if (Math.abs(event.getX() - initialXTouchPoint) < SWIPE_MARGIN) {
-                        if (isMonthView && (event.getY() < initialYTouchPoint)) {
+                    if (Math.abs(xTouchPoint - initialXTouchPoint) < SWIPE_MARGIN) {
+                        if (isMonthView && (yTouchPoint < initialYTouchPoint)) {
                             // Swipe up
                             showWeekView();
-                        } else if (!isMonthView && (event.getY() > initialYTouchPoint)) {
+                        } else if (!isMonthView && (yTouchPoint > initialYTouchPoint)) {
                             // Swipe down
                             showMonthView();
                         }
-                    } else if (isMonthView && (Math.abs(event.getY() - initialYTouchPoint) < SWIPE_MARGIN)) {
-                        if (event.getX() < initialXTouchPoint) {
+                    } else if (isMonthView && (Math.abs(yTouchPoint - initialYTouchPoint) < SWIPE_MARGIN)) {
+                        if (xTouchPoint < initialXTouchPoint) {
                             // Swipe left
                             calendarFragment.nextMonth();
-                        } else if (event.getX() > initialXTouchPoint) {
+                        } else if (xTouchPoint > initialXTouchPoint) {
                             // Swipe right
                             calendarFragment.prevMonth();
                         }
@@ -174,7 +185,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
                 new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        calendarFragment.showMonthView();
+                        calendarFragment.showMonthView(selectedDate);
                         ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_MONTH_VIEW);
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_MONTH_VIEW);
                     }
@@ -202,7 +213,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        calendarFragment.showWeekView(TODAY);
+                        calendarFragment.showWeekView(selectedDate);
                         ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_WEEK_VIEW);
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_WEEK_VIEW);
                     }
@@ -221,12 +232,16 @@ public class ListViewFragment extends TypedBaseViewFragment {
         List<Event> events = loadEvents();
         Map<DateTime, EventListSourceItem> eventListSource = buildEventListSource(events);
         eventListItems = new ArrayList<>();
-int firstItemIndex = -1;
+        int firstItemIndex = -1;
+
         for (Map.Entry<DateTime, EventListSourceItem> entry : eventListSource.entrySet()) {
             DateTime date = entry.getKey();
+
+            // First event that's today or later should be the first event shown.
             if ((firstItemIndex < 0) && date.gteq(TODAY)) {
                 firstItemIndex = eventListItems.size();
             }
+
             eventListItems.add(new EventListDateHeaderItem(date, context));
             addAllDayEventListItems(eventListItems, entry.getValue().allDayEvents);
             addTimedEventListItems(eventListItems, entry.getValue().timedEvents);
@@ -234,21 +249,6 @@ int firstItemIndex = -1;
 
         eventList.setAdapter(new EventListItemAdapter(context, eventListItems));
         eventList.setSelection(firstItemIndex);
-    }
-
-    private void initializeEventListTouchListener() {
-        eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (isMonthView) {
-                    showWeekView();
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            }
-        });
     }
 
     private List<Event> loadEvents() {
@@ -300,6 +300,38 @@ int firstItemIndex = -1;
             showEventTimeText = false;
             oldEventTime = newEventTime;
         }
+    }
+
+    private DateTime selectedDate = null;
+
+    private void initializeEventListTouchListener() {
+        eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (isMonthView) {
+                    showWeekView();
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (visibleItemCount == 0) {
+                    return;
+                }
+
+                EventListItem item = eventListItems.get(firstVisibleItem);
+                DateTime newSelectedDate = item.getDate();
+                if (!newSelectedDate.isSameDayAs(selectedDate)) {
+                    selectedDate = newSelectedDate.truncate(DateTime.Unit.DAY);
+                    if (isMonthView) {
+                        calendarFragment.showMonthView(selectedDate);
+                    } else {
+                        calendarFragment.showWeekView(selectedDate);
+                    }
+
+                }
+            }
+        });
     }
 
     private class EventListSourceItem {
