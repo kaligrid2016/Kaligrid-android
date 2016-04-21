@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 
 import com.kaligrid.R;
 import com.kaligrid.adapter.CalendarGridAdapter;
-import com.roomorama.caldroid.CaldroidFragment;
-import com.roomorama.caldroid.CaldroidGridAdapter;
+import com.kaligrid.calendar.CaldroidFragment;
+import com.kaligrid.calendar.adapter.CaldroidGridAdapter;
 
 import java.util.Date;
 import java.util.TimeZone;

@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kaligrid.R;
+import com.kaligrid.calendar.adapter.CaldroidGridAdapter;
 import com.kaligrid.util.ViewHelper;
-import com.roomorama.caldroid.CaldroidGridAdapter;
 
 import java.util.ArrayList;
 import java.util.Map;
