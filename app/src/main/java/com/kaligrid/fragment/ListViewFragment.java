@@ -21,6 +21,7 @@ import com.kaligrid.activity.NewEventMenuActivity;
 import com.kaligrid.adapter.EventListItemAdapter;
 import com.kaligrid.animation.HeightResizeAnimation;
 import com.kaligrid.app.App;
+import com.kaligrid.calendar.CaldroidFragment;
 import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.EventListDateHeaderItem;
@@ -59,7 +60,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
     @Inject EventService eventService;
 
     private Context context;
-    private CalendarFragment calendarFragment;
+    private CaldroidFragment calendarFragment;
     private boolean isMonthView = true;
     private float initialXTouchPoint;
     private float initialYTouchPoint;
@@ -133,7 +134,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
     }
 
     private void initializeCalendar() {
-        calendarFragment = new CalendarFragment();
+        calendarFragment = new CaldroidFragment();
         FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.calendar, calendarFragment);
         transaction.commit();

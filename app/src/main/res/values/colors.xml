@@ -22,16 +22,15 @@
     <color name="textDarkGrey">#706E6E</color>
     <color name="hintText">#CCCCCC</color>
 
-    <color name="calendarMonthName">#706E6E</color>
-    <color name="calendarWeekday">#08BABA</color>
-    <color name="calendarBackgroundToday">#B2B2B2</color>
-    <color name="calendarBackgroundSelected">#08BABA</color>
-
     <color name="windowBackground">#FFFFFF</color>
     <color name="divider">#706E6E</color>
     <color name="disabledBackground">#B2B2B2</color>
 
-
+    <!-- Caldroid calendar colors -->
+    <color name="calendarMonthName">#706E6E</color>
+    <color name="calendarWeekday">#08BABA</color>
+    <color name="calendarBackgroundToday">#B2B2B2</color>
+    <color name="calendarBackgroundSelected">#08BABA</color>
 
     <color name="caldroid_white">#FFFFFF</color>
     <color name="caldroid_black">#000000</color>
