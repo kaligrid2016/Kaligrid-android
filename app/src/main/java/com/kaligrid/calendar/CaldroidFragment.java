@@ -28,7 +28,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.kaligrid.R;
-import com.kaligrid.adapter.CalendarGridAdapter;
 import com.kaligrid.calendar.adapter.CaldroidGridAdapter;
 import com.kaligrid.calendar.adapter.MonthPagerAdapter;
 import com.kaligrid.calendar.adapter.WeekdayArrayAdapter;
@@ -145,7 +144,7 @@ public class CaldroidFragment extends DialogFragment {
             YEAR = "year",
             SHOW_NAVIGATION_ARROWS = "showNavigationArrows",
             DISABLE_DATES = "disableDates",
-            SELECTED_DATES = "selectedDates",
+            SELECTED_DATE = "selectedDate",
             MIN_DATE = "minDate",
             MAX_DATE = "maxDate",
             ENABLE_SWIPE = "enableSwipe",
@@ -170,11 +169,11 @@ public class CaldroidFragment extends DialogFragment {
     protected String dialogTitle;
     protected int month = -1;
     protected int year = -1;
-    protected ArrayList<DateTime> disableDates = new ArrayList<>();
-    protected ArrayList<DateTime> selectedDates = new ArrayList<>();
+    protected List<DateTime> disableDates = new ArrayList<>();
+    protected DateTime selectedDate;
     protected DateTime minDateTime;
     protected DateTime maxDateTime;
-    protected ArrayList<DateTime> dateInMonthsList;
+    protected List<DateTime> dateInMonthsList;
 
     /**
      * caldroidData belongs to Caldroid
@@ -241,6 +240,8 @@ public class CaldroidFragment extends DialogFragment {
      */
     private CaldroidListener caldroidListener;
 
+    private boolean isShowingWeekView;
+
     /**
      * Retrieve current month
      */
@@ -264,7 +265,7 @@ public class CaldroidFragment extends DialogFragment {
      * provide custom adapter here
      */
     public CaldroidGridAdapter getNewDatesGridAdapter(int month, int year) {
-        return new CalendarGridAdapter(getActivity(), month, year, getCaldroidData(), extraData);
+        return new CaldroidGridAdapter(getActivity(), month, year, getCaldroidData(), extraData);
     }
 
     /**
@@ -297,7 +298,6 @@ public class CaldroidFragment extends DialogFragment {
     public InfiniteViewPager getDateViewPager() {
         return dateViewPager;
     }
-
 
     /*
      * For client to access background and text color maps
@@ -350,7 +350,7 @@ public class CaldroidFragment extends DialogFragment {
     public Map<String, Object> getCaldroidData() {
         caldroidData.clear();
         caldroidData.put(DISABLE_DATES, disableDates);
-        caldroidData.put(SELECTED_DATES, selectedDates);
+        caldroidData.put(SELECTED_DATE, selectedDate);
         caldroidData.put(_MIN_DATE_TIME, minDateTime);
         caldroidData.put(_MAX_DATE_TIME, maxDateTime);
         caldroidData.put(START_DAY_OF_WEEK, startDayOfWeek);
@@ -498,14 +498,12 @@ public class CaldroidFragment extends DialogFragment {
             bundle.putString(DIALOG_TITLE, dialogTitle);
         }
 
-        if (selectedDates != null && selectedDates.size() > 0) {
-            bundle.putStringArrayList(SELECTED_DATES,
-                    CalendarHelper.convertToStringList(selectedDates));
+        if (selectedDate != null) {
+            bundle.putString(SELECTED_DATE, CalendarHelper.convertToString(selectedDate));
         }
 
         if (disableDates != null && disableDates.size() > 0) {
-            bundle.putStringArrayList(DISABLE_DATES,
-                    CalendarHelper.convertToStringList(disableDates));
+            bundle.putStringArrayList(DISABLE_DATES, CalendarHelper.convertToStringList(disableDates));
         }
 
         if (minDateTime != null) {
@@ -716,57 +714,14 @@ public class CaldroidFragment extends DialogFragment {
      * explicitly call refreshView()
      */
     public void clearSelectedDates() {
-        selectedDates.clear();
-    }
-
-    /**
-     * Select the dates from fromDate to toDate. By default the background color
-     * is holo_blue_light, and the text color is black. You can customize the
-     * background by changing CaldroidFragment.selectedBackgroundDrawable, and
-     * change the text color CaldroidFragment.selectedTextColor before call this
-     * method. This method does not refresh view, need to call refreshView()
-     */
-    public void setSelectedDates(Date fromDate, Date toDate) {
-        // Ensure fromDate is before toDate
-        if (fromDate == null || toDate == null || fromDate.after(toDate)) {
-            return;
-        }
-
-        selectedDates.clear();
-
-        DateTime fromDateTime = CalendarHelper.convertDateToDateTime(fromDate);
-        DateTime toDateTime = CalendarHelper.convertDateToDateTime(toDate);
-
-        DateTime dateTime = fromDateTime;
-        while (dateTime.lt(toDateTime)) {
-            selectedDates.add(dateTime);
-            dateTime = dateTime.plusDays(1);
-        }
-        selectedDates.add(toDateTime);
-    }
-
-    /**
-     * Convenient method to select dates from String
-     */
-    public void setSelectedDateStrings(String fromDateString,
-                                       String toDateString, String dateFormat) throws ParseException {
-
-        Date fromDate = CalendarHelper.getDateFromString(fromDateString,
-                dateFormat);
-        Date toDate = CalendarHelper
-                .getDateFromString(toDateString, dateFormat);
-        setSelectedDates(fromDate, toDate);
+        selectedDate = null;
     }
 
     /**
      * Select single date
      */
-    public void setSelectedDate(Date date) {
-        if (date == null) {
-            return;
-        }
-        DateTime dateTime = CalendarHelper.convertDateToDateTime(date);
-        selectedDates.add(dateTime);
+    public void setSelectedDate(DateTime date) {
+        this.selectedDate = date;
     }
 
     /**
@@ -776,8 +731,7 @@ public class CaldroidFragment extends DialogFragment {
         if (date == null) {
             return;
         }
-        DateTime dateTime = CalendarHelper.convertDateToDateTime(date);
-        selectedDates.remove(dateTime);
+        this.selectedDate = null;
     }
 
     /**
@@ -788,7 +742,7 @@ public class CaldroidFragment extends DialogFragment {
             return false;
         }
         DateTime dateTime = CalendarHelper.convertDateToDateTime(date);
-        return selectedDates.contains(dateTime);
+        return dateTime.equals(this.selectedDate);
     }
 
     /**
@@ -993,8 +947,14 @@ public class CaldroidFragment extends DialogFragment {
 
         // Refresh the date grid views
         for (CaldroidGridAdapter adapter : datePagerAdapters) {
-            // Reset caldroid data
-            adapter.setCaldroidData(getCaldroidData());
+            if (isShowingWeekView) {
+                if (selectedDate.getMonth() != adapter.getMonth()) {
+                    continue;
+                }
+                adapter.setCaldroidData(getCaldroidData(), isShowingWeekView);
+            } else {
+                adapter.setCaldroidData(getCaldroidData(), false);
+            }
 
             // Reset extra data
             adapter.setExtraData(extraData);
@@ -1076,17 +1036,12 @@ public class CaldroidFragment extends DialogFragment {
             }
 
             // Get selected dates
-//            ArrayList<String> selectedDateStrings = args
-//                    .getStringArrayList(SELECTED_DATES);
-//            if (selectedDateStrings != null && selectedDateStrings.size() > 0) {
-//                selectedDates.clear();
-//                for (String dateString : selectedDateStrings) {
-//                    DateTime dt = CalendarHelper.getDateTimeFromString(
-//                            dateString, null);
-//                    selectedDates.add(dt);
-//                }
-//            }
-            selectedDates.add(DateTime.today(TimeZone.getDefault()));
+            String selectedDateString = args.getString(SELECTED_DATE);
+            if (selectedDateString == null) {
+                selectedDate = DateTime.today(TimeZone.getDefault());
+            } else {
+                selectedDate = CalendarHelper.getDateTimeFromString(selectedDateString, null);
+            }
 
             // Get min date and max date
             String minDateTimeString = args.getString(MIN_DATE);
@@ -1108,6 +1063,7 @@ public class CaldroidFragment extends DialogFragment {
             DateTime dateTime = DateTime.today(TimeZone.getDefault());
             month = dateTime.getMonth();
             year = dateTime.getYear();
+            selectedDate = DateTime.today(TimeZone.getDefault());
         }
     }
 
@@ -1531,37 +1487,16 @@ public class CaldroidFragment extends DialogFragment {
     }
 
     public void showMonthView(DateTime selectedDate) {
+        isShowingWeekView = false;
         clearSelectedDates();
-        setSelectedDate(new Date(selectedDate.getMilliseconds(TimeZone.getDefault())));
+        setSelectedDate(selectedDate);
         refreshView();
     }
 
     public void showWeekView(DateTime selectedDate) {
+        isShowingWeekView = true;
         clearSelectedDates();
-        setSelectedDate(new Date(selectedDate.getMilliseconds(TimeZone.getDefault())));
-
-        refreshMonthTitleTextView();
-
-        // Refresh the date grid views
-        for (CaldroidGridAdapter adapter : datePagerAdapters) {
-            if (!(adapter instanceof CalendarGridAdapter)) {
-                continue;
-            }
-
-            CalendarGridAdapter calendarGridAdapter = ((CalendarGridAdapter) adapter);
-
-            if (selectedDate.getMonth() == calendarGridAdapter.getMonth()) {
-                calendarGridAdapter.resetDatetimeListToCurrentWeek(selectedDate);
-
-                // Reset extra data
-                adapter.setExtraData(extraData);
-
-                // Update today variable
-                adapter.updateToday();
-
-                // Refresh view
-                adapter.notifyDataSetChanged();
-            }
-        }
+        setSelectedDate(selectedDate);
+        refreshView();
     }
 }

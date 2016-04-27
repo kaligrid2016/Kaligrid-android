@@ -7,13 +7,13 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import hirondelle.date4j.DateTime;
 
 /**
  * A {@link ViewPager} that allows pseudo-infinite paging with a wrap-around
- * effect. Should be used with an {@link com.antonyt.infiniteviewpager.InfinitePagerAdapter}.
+ * effect. Should be used with an com.antonyt.infiniteviewpager.InfinitePagerAdapter.
  *
  */
 public class InfiniteViewPager extends ViewPager {
@@ -24,7 +24,7 @@ public class InfiniteViewPager extends ViewPager {
 	/**
 	 * datesInMonth is required to calculate the height correctly
 	 */
-	private ArrayList<DateTime> datesInMonth;
+	private List<DateTime> datesInMonth;
 
 	/**
 	 * Enable swipe
@@ -55,11 +55,11 @@ public class InfiniteViewPager extends ViewPager {
 		return sixWeeksInCalendar;
 	}
 
-	public ArrayList<DateTime> getDatesInMonth() {
+	public List<DateTime> getDatesInMonth() {
 		return datesInMonth;
 	}
 
-	public void setDatesInMonth(ArrayList<DateTime> datesInMonth) {
+	public void setDatesInMonth(List<DateTime> datesInMonth) {
 		this.datesInMonth = datesInMonth;
 	}
 

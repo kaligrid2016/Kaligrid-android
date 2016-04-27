@@ -17,10 +17,12 @@ import android.widget.TextView;
 import com.kaligrid.R;
 import com.kaligrid.calendar.CaldroidFragment;
 import com.kaligrid.calendar.CalendarHelper;
+import com.kaligrid.util.ViewHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import hirondelle.date4j.DateTime;
@@ -31,17 +33,17 @@ import hirondelle.date4j.DateTime;
  * @author thomasdao
  */
 public class CaldroidGridAdapter extends BaseAdapter {
-    protected ArrayList<DateTime> datetimeList;
+
+    protected List<DateTime> datetimeList;
     protected int month;
     protected int year;
     protected Context context;
-    protected ArrayList<DateTime> disableDates;
-    protected ArrayList<DateTime> selectedDates;
+    protected List<DateTime> disableDates;
+    protected DateTime selectedDate;
 
     // Use internally, to make the search for date faster instead of using
     // indexOf methods on ArrayList
     protected Map<DateTime, Integer> disableDatesMap = new HashMap<>();
-    protected Map<DateTime, Integer> selectedDatesMap = new HashMap<>();
 
     protected DateTime minDateTime;
     protected DateTime maxDateTime;
@@ -74,7 +76,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
     }
 
     // GETTERS AND SETTERS
-    public ArrayList<DateTime> getDatetimeList() {
+    public List<DateTime> getDatetimeList() {
         return datetimeList;
     }
 
@@ -94,7 +96,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
         this.maxDateTime = maxDateTime;
     }
 
-    public ArrayList<DateTime> getDisableDates() {
+    public List<DateTime> getDisableDates() {
         return disableDates;
     }
 
@@ -102,12 +104,12 @@ public class CaldroidGridAdapter extends BaseAdapter {
         this.disableDates = disableDates;
     }
 
-    public ArrayList<DateTime> getSelectedDates() {
-        return selectedDates;
+    public DateTime getSelectedDate() {
+        return selectedDate;
     }
 
-    public void setSelectedDates(ArrayList<DateTime> selectedDates) {
-        this.selectedDates = selectedDates;
+    public void setSelectedDate(DateTime selectedDate) {
+        this.selectedDate = selectedDate;
     }
 
     public int getThemeResource() {
@@ -118,11 +120,11 @@ public class CaldroidGridAdapter extends BaseAdapter {
         return caldroidData;
     }
 
-    public void setCaldroidData(Map<String, Object> caldroidData) {
+    public void setCaldroidData(Map<String, Object> caldroidData, boolean isWeekView) {
         this.caldroidData = caldroidData;
 
         // Reset parameters
-        populateFromCaldroidData();
+        populateFromCaldroidData(isWeekView);
     }
 
     public Map<String, Object> getExtraData() {
@@ -133,15 +135,6 @@ public class CaldroidGridAdapter extends BaseAdapter {
         this.extraData = extraData;
     }
 
-    /**
-     * Constructor
-     *
-     * @param context
-     * @param month
-     * @param year
-     * @param caldroidData
-     * @param extraData
-     */
     public CaldroidGridAdapter(Context context, int month, int year,
                                Map<String, Object> caldroidData,
                                Map<String, Object> extraData) {
@@ -154,7 +147,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
         this.resources = context.getResources();
 
         // Get data from caldroidData
-        populateFromCaldroidData();
+        populateFromCaldroidData(false);
 
 	    LayoutInflater inflater = (LayoutInflater) context
 			    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -165,7 +158,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
      * Retrieve internal parameters from caldroid data
      */
     @SuppressWarnings("unchecked")
-    private void populateFromCaldroidData() {
+    private void populateFromCaldroidData(boolean isWeekView) {
         disableDates = (ArrayList<DateTime>) caldroidData
                 .get(CaldroidFragment.DISABLE_DATES);
         if (disableDates != null) {
@@ -175,14 +168,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
             }
         }
 
-        selectedDates = (ArrayList<DateTime>) caldroidData
-                .get(CaldroidFragment.SELECTED_DATES);
-        if (selectedDates != null) {
-            selectedDatesMap.clear();
-            for (DateTime dateTime : selectedDates) {
-                selectedDatesMap.put(dateTime, 1);
-            }
-        }
+        selectedDate = (DateTime) caldroidData.get(CaldroidFragment.SELECTED_DATE);
 
         minDateTime = (DateTime) caldroidData
                 .get(CaldroidFragment._MIN_DATE_TIME);
@@ -199,8 +185,11 @@ public class CaldroidGridAdapter extends BaseAdapter {
         themeResource = (Integer) caldroidData
                 .get(CaldroidFragment.THEME_RESOURCE);
 
-        this.datetimeList = CalendarHelper.getFullWeeks(this.month, this.year,
-                startDayOfWeek, sixWeeksInCalendar);
+        if (isWeekView) {
+            this.datetimeList = CalendarHelper.getSingleWeek(selectedDate);
+        } else {
+            this.datetimeList = CalendarHelper.getFullWeeks(this.month, this.year, startDayOfWeek, sixWeeksInCalendar);
+        }
 
         getDefaultResources();
     }
@@ -235,6 +224,10 @@ public class CaldroidGridAdapter extends BaseAdapter {
             today = CalendarHelper.convertDateToDateTime(new Date());
         }
         return today;
+    }
+
+    public int getMonth() {
+        return month;
     }
 
     @SuppressWarnings("unchecked")
@@ -317,7 +310,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
         }
 
         // Customize for selected dates
-        if (selectedDates != null && selectedDatesMap.containsKey(dateTime)) {
+        if (selectedDate != null) {
             cellView.addCustomState(com.kaligrid.calendar.view.CellView.STATE_SELECTED);
         }
 
@@ -351,21 +344,50 @@ public class CaldroidGridAdapter extends BaseAdapter {
         return 0;
     }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		com.kaligrid.calendar.view.CellView cellView;
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		// For reuse
-		if (convertView == null) {
-			final int squareDateCellResource = squareTextViewCell ? R.layout.square_date_cell : R.layout.normal_date_cell;
-			cellView = (com.kaligrid.calendar.view.CellView) localInflater.inflate(squareDateCellResource, parent, false);
-		} else {
-			cellView = (com.kaligrid.calendar.view.CellView) convertView;
-		}
+        // For reuse
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_calendar_cell, parent, false);
+        }
 
-		customizeTextView(position, cellView);
+        TextView dateText = (TextView) convertView.findViewById(R.id.calendar_date_text);
 
-		return cellView;
-	}
+        // Get dateTime of this cell
+        DateTime dateTime = this.datetimeList.get(position);
 
+        // Set color of the dates in previous / next month
+        if (dateTime.getMonth() != month) {
+            ViewHelper.setTextAppearance(context, dateText, R.style.CalendarDateInactiveText);
+        } else {
+            ViewHelper.setTextAppearance(context, dateText, R.style.CalendarDateActiveText);
+        }
+
+        if (isDateSelected(dateTime)) {
+            ViewHelper.setTextAppearance(context, dateText, R.style.CalendarDateTodayText);
+            dateText.setBackgroundResource(R.drawable.background_calendar_cell_selected);
+        } else {
+            // Customize for today
+            if (dateTime.isSameDayAs(getToday())) {
+                ViewHelper.setTextAppearance(context, dateText, R.style.CalendarDateTodayText);
+                dateText.setBackgroundResource(R.drawable.background_calendar_cell_today);
+            } else {
+                // Remove the background.
+                dateText.setBackgroundResource(0);
+            }
+        }
+
+        dateText.setText(dateTime.getDay().toString());
+
+        // Set custom color if required
+        setCustomResources(dateTime, convertView, dateText);
+
+        return convertView;
+    }
+
+    private boolean isDateSelected(DateTime dateTime) {
+        return (selectedDate != null) && dateTime.isSameDayAs(selectedDate);
+    }
 }

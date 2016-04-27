@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import hirondelle.date4j.DateTime;
@@ -13,6 +14,7 @@ import hirondelle.date4j.DateTime;
  * Convenient helper to work with date, Date4J DateTime and String
  *
  * @author thomasdao
+ * @author blueyoj
  */
 public class CalendarHelper {
 
@@ -22,18 +24,24 @@ public class CalendarHelper {
         yyyyMMddFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     }
 
+    public static List<DateTime> getSingleWeek(DateTime selectedDate) {
+        List<DateTime> datetimeList = new ArrayList<>();
+        for (int i = 1; i <= 7; i++) {
+            DateTime dateTime = selectedDate.minusDays(selectedDate.getWeekDay() - i);
+            datetimeList.add(dateTime);
+        }
+        return datetimeList;
+    }
+
     /**
      * Retrieve all the dates for a given calendar month Include previous month,
      * current month and next month.
      *
-     * @param month
-     * @param year
      * @param startDayOfWeek : calendar can start from customized date instead of Sunday
-     * @return
      */
-    public static ArrayList<DateTime> getFullWeeks(int month, int year,
+    public static List<DateTime> getFullWeeks(int month, int year,
                                                    int startDayOfWeek, boolean sixWeeksInCalendar) {
-        ArrayList<DateTime> datetimeList = new ArrayList<DateTime>();
+        List<DateTime> datetimeList = new ArrayList<>();
 
         DateTime firstDateOfMonth = new DateTime(year, month, 1, 0, 0, 0, 0);
         DateTime lastDateOfMonth = firstDateOfMonth.plusDays(firstDateOfMonth
@@ -101,9 +109,6 @@ public class CalendarHelper {
 
     /**
      * Get the DateTime from Date, with hour and min is 0
-     *
-     * @param date
-     * @return
      */
     public static DateTime convertDateToDateTime(Date date) {
         // Get year, javaMonth, date
@@ -135,11 +140,6 @@ public class CalendarHelper {
 
     /**
      * Get the Date from String with custom format. Default format is yyyy-MM-dd
-     *
-     * @param dateString
-     * @param dateFormat
-     * @return
-     * @throws ParseException
      */
     public static Date getDateFromString(String dateString, String dateFormat)
             throws ParseException {
@@ -158,12 +158,7 @@ public class CalendarHelper {
     }
 
     /**
-     * Get the DateTime from String with custom format. Default format is
-     * yyyy-MM-dd
-     *
-     * @param dateString
-     * @param dateFormat
-     * @return
+     * Get the DateTime from String with custom format. Default format is yyyy-MM-dd
      */
     public static DateTime getDateTimeFromString(String dateString,
                                                  String dateFormat) {
@@ -178,13 +173,15 @@ public class CalendarHelper {
         return null;
     }
 
-    public static ArrayList<String> convertToStringList(
-            ArrayList<DateTime> dateTimes) {
-        ArrayList<String> list = new ArrayList<String>();
+    public static String convertToString(DateTime dateTime) {
+        return dateTime.format("YYYY-MM-DD");
+    }
+
+    public static ArrayList<String> convertToStringList(List<DateTime> dateTimes) {
+        ArrayList<String> list = new ArrayList<>();
         for (DateTime dateTime : dateTimes) {
             list.add(dateTime.format("YYYY-MM-DD"));
         }
         return list;
     }
-
 }
