@@ -5,30 +5,15 @@
     style="?styleCaldroidViewLayout"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/calendar_title_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/calendar_left_arrow"
-            style="?styleCaldroidLeftArrow" />
-
-        <TextView
-            android:id="@+id/calendar_month_year_textview"
-            style="?styleCaldroidMonthName"/>
-
-        <Button
-            android:id="@+id/calendar_right_arrow"
-            style="?styleCaldroidRightArrow" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/calendar_month_year_textview"
+        style="?styleCaldroidMonthName"
+        android:layout_gravity="center_horizontal" />
 
     <GridView
         android:id="@+id/weekday_gridview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-10dp"
         android:numColumns="7"
         android:stretchMode="columnWidth" >
     </GridView>

@@ -58,8 +58,6 @@
     <!-- Caldroid calendar styles -->
     <style name="CaldroidDefault">
         <item name="styleCaldroidViewLayout">@style/CaldroidDefaultCalendarViewLayout</item>
-        <item name="styleCaldroidLeftArrow">@style/CaldroidDefaultLeftButton</item>
-        <item name="styleCaldroidRightArrow">@style/CaldroidDefaultRightButton</item>
         <item name="styleCaldroidMonthName">@style/CaldroidDefaultMonthName</item>
         <item name="styleCaldroidGridView">@style/CaldroidDefaultGridView</item>
         <item name="styleCaldroidNormalCell">@style/CaldroidDefaultNormalCell</item>
@@ -70,21 +68,6 @@
     <style name="CaldroidDefaultCalendarViewLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="CaldroidDefaultArrowButton">
-        <item name="android:layout_width">44dp</item>
-        <item name="android:layout_height">44dp</item>
-    </style>
-
-    <style name="CaldroidDefaultLeftButton" parent="CaldroidDefaultArrowButton">
-        <item name="android:layout_alignParentLeft">true</item>
-        <item name="android:background">@drawable/left_arrow</item>
-    </style>
-
-    <style name="CaldroidDefaultRightButton" parent="CaldroidDefaultArrowButton">
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:background">@drawable/right_arrow</item>
     </style>
 
     <style name="CaldroidDefaultMonthName">

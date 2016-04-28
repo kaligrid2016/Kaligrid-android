@@ -17,13 +17,11 @@ import android.text.format.Time;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -35,7 +33,6 @@ import com.kaligrid.calendar.view.InfinitePagerAdapter;
 import com.kaligrid.calendar.view.InfiniteViewPager;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,14 +83,13 @@ public class CaldroidFragment extends DialogFragment {
     /**
      * Weekday conventions
      */
-    public static int
-            SUNDAY = 1,
-            MONDAY = 2,
-            TUESDAY = 3,
-            WEDNESDAY = 4,
-            THURSDAY = 5,
-            FRIDAY = 6,
-            SATURDAY = 7;
+    public static int SUNDAY = 1;
+//            MONDAY = 2,
+//            TUESDAY = 3,
+//            WEDNESDAY = 4,
+//            THURSDAY = 5,
+//            FRIDAY = 6,
+//            SATURDAY = 7;
 
     /**
      * Flags to display month
@@ -125,8 +121,6 @@ public class CaldroidFragment extends DialogFragment {
     /**
      * Caldroid view components
      */
-    private Button leftArrowButton;
-    private Button rightArrowButton;
     private TextView monthTitleTextView;
     private GridView weekdayGridView;
     private InfiniteViewPager dateViewPager;
@@ -142,7 +136,6 @@ public class CaldroidFragment extends DialogFragment {
             DIALOG_TITLE = "dialogTitle",
             MONTH = "month",
             YEAR = "year",
-            SHOW_NAVIGATION_ARROWS = "showNavigationArrows",
             DISABLE_DATES = "disableDates",
             SELECTED_DATE = "selectedDate",
             MIN_DATE = "minDate",
@@ -215,7 +208,6 @@ public class CaldroidFragment extends DialogFragment {
      * To control the navigation
      */
     protected boolean enableSwipe = false;
-    protected boolean showNavigationArrows = false;
     protected boolean enableClickOnDisabledDates = false;
 
     /**
@@ -279,73 +271,7 @@ public class CaldroidFragment extends DialogFragment {
     }
 
     /**
-     * For client to customize the weekDayGridView
-     */
-    public GridView getWeekdayGridView() {
-        return weekdayGridView;
-    }
-
-    /**
-     * For client to access array of rotating fragments
-     */
-    public ArrayList<DateGridFragment> getFragments() {
-        return fragments;
-    }
-
-    /**
-     * For client wants to access dateViewPager
-     */
-    public InfiniteViewPager getDateViewPager() {
-        return dateViewPager;
-    }
-
-    /*
-     * For client to access background and text color maps
-     */
-    public Map<DateTime, Drawable> getBackgroundForDateTimeMap() {
-        return backgroundForDateTimeMap;
-    }
-
-    public Map<DateTime, Integer> getTextColorForDateTimeMap() {
-        return textColorForDateTimeMap;
-    }
-
-    /**
-     * To let user customize the navigation buttons
-     */
-    public Button getLeftArrowButton() {
-        return leftArrowButton;
-    }
-
-    public Button getRightArrowButton() {
-        return rightArrowButton;
-    }
-
-    /**
-     * To let client customize month title textview
-     */
-    public TextView getMonthTitleTextView() {
-        return monthTitleTextView;
-    }
-
-    public void setMonthTitleTextView(TextView monthTitleTextView) {
-        this.monthTitleTextView = monthTitleTextView;
-    }
-
-    /**
-     * Get 4 adapters of the date grid views. Useful to set custom data and
-     * refresh date grid view
-     *
-     * @return
-     */
-    public ArrayList<CaldroidGridAdapter> getDatePagerAdapters() {
-        return datePagerAdapters;
-    }
-
-    /**
      * caldroidData return data belong to Caldroid
-     *
-     * @return
      */
     public Map<String, Object> getCaldroidData() {
         caldroidData.clear();
@@ -364,20 +290,6 @@ public class CaldroidFragment extends DialogFragment {
         caldroidData.put(_TEXT_COLOR_FOR_DATETIME_MAP, textColorForDateTimeMap);
 
         return caldroidData;
-    }
-
-    /**
-     * Extra data is data belong to Client
-     */
-    public Map<String, Object> getExtraData() {
-        return extraData;
-    }
-
-    /**
-     * Client can set custom data in this HashMap
-     */
-    public void setExtraData(Map<String, Object> extraData) {
-        this.extraData = extraData;
     }
 
     /**
@@ -514,7 +426,6 @@ public class CaldroidFragment extends DialogFragment {
             bundle.putString(MAX_DATE, maxDateTime.format("YYYY-MM-DD"));
         }
 
-        bundle.putBoolean(SHOW_NAVIGATION_ARROWS, showNavigationArrows);
         bundle.putBoolean(ENABLE_SWIPE, enableSwipe);
         bundle.putInt(START_DAY_OF_WEEK, startDayOfWeek);
         bundle.putBoolean(SIX_WEEKS_IN_CALENDAR, sixWeeksInCalendar);
@@ -743,27 +654,6 @@ public class CaldroidFragment extends DialogFragment {
         }
         DateTime dateTime = CalendarHelper.convertDateToDateTime(date);
         return dateTime.equals(this.selectedDate);
-    }
-
-    /**
-     * Check if the navigation arrow is shown
-     */
-    public boolean isShowNavigationArrows() {
-        return showNavigationArrows;
-    }
-
-    /**
-     * Show or hide the navigation arrows
-     */
-    public void setShowNavigationArrows(boolean showNavigationArrows) {
-        this.showNavigationArrows = showNavigationArrows;
-        if (showNavigationArrows) {
-            leftArrowButton.setVisibility(View.VISIBLE);
-            rightArrowButton.setVisibility(View.VISIBLE);
-        } else {
-            leftArrowButton.setVisibility(View.INVISIBLE);
-            rightArrowButton.setVisibility(View.INVISIBLE);
-        }
     }
 
     /**
@@ -1000,10 +890,6 @@ public class CaldroidFragment extends DialogFragment {
                 startDayOfWeek = startDayOfWeek % 7;
             }
 
-            // Should show arrow
-            showNavigationArrows = args
-                    .getBoolean(SHOW_NAVIGATION_ARROWS, true);
-
             // Should enable swipe to change month
             enableSwipe = args.getBoolean(ENABLE_SWIPE, true);
 
@@ -1142,32 +1028,6 @@ public class CaldroidFragment extends DialogFragment {
         // For the monthTitleTextView
         monthTitleTextView = (TextView) view
                 .findViewById(R.id.calendar_month_year_textview);
-
-        // For the left arrow button
-        leftArrowButton = (Button) view.findViewById(R.id.calendar_left_arrow);
-        rightArrowButton = (Button) view
-                .findViewById(R.id.calendar_right_arrow);
-
-        // Navigate to previous month when user click
-        leftArrowButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                prevMonth();
-            }
-        });
-
-        // Navigate to next month when user click
-        rightArrowButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                nextMonth();
-            }
-        });
-
-        // Show navigation arrows depend on initial arguments
-        setShowNavigationArrows(showNavigationArrows);
 
         // For the weekday gridview ("SUN, MON, TUE, WED, THU, FRI, SAT")
         weekdayGridView = (GridView) view.findViewById(R.id.weekday_gridview);
