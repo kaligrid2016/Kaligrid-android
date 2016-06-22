@@ -6,29 +6,17 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <!-- Placeholder for calendar -->
     <FrameLayout
-        android:id="@+id/calendar_wrapper"
+        android:id="@+id/calendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!-- Placeholder for calendar -->
-        <FrameLayout
-            android:id="@+id/calendar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/calendar_height_month_view" />
-
-        <View
-            android:id="@+id/calendar_swipe_area"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/calendar_height_month_view" />
-
-    </FrameLayout>
+        android:layout_height="@dimen/calendar_height_month_view" />
 
     <View
         android:id="@+id/calendar_border"
         android:layout_width="match_parent"
         android:layout_height="@dimen/border_line_height"
-        android:layout_below="@+id/calendar_wrapper"
+        android:layout_below="@+id/calendar"
         android:background="@drawable/line_solid" />
 
     <ListView

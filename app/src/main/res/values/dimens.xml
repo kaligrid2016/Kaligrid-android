@@ -2,8 +2,14 @@
     <dimen name="activity_horizontal_margin">24dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="calendar_swipe_area_margin_top">5dp</dimen>
+    <!-- calendar_height_month_view + toolbar_top_height - calendar_swipe_area_margin_top -->
+    <dimen name="calendar_swipe_area_height_expanded">243dp</dimen>
+    <!-- calendar_height_week_view + toolbar_top_height - calendar_swipe_area_margin_top -->
+    <dimen name="calendar_swipe_area_height_collapsed">103dp</dimen>
+
     <dimen name="calendar_height_month_view">200dp</dimen>
-    <dimen name="calendar_height_week_view">80dp</dimen>
+    <dimen name="calendar_height_week_view">60dp</dimen>
 
     <dimen name="new_button_size">36dp</dimen>
     <dimen name="new_button_margin">24dp</dimen>
@@ -22,7 +28,7 @@
 
     <dimen name="new_event_text_time_width">80dp</dimen>
 
-    <dimen name="border_line_height">2dp</dimen>
+    <dimen name="border_line_height">1dp</dimen>
 
     <dimen name="event_list_date_border_height">12dp</dimen>
     <dimen name="event_list_horizontal_padding">16dp</dimen>

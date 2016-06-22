@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -29,7 +30,7 @@ public class InfiniteViewPager extends ViewPager {
 	/**
 	 * Enable swipe
 	 */
-	private boolean enabled = true;
+	private boolean enabled = false;
 
 	/**
 	 * A calendar height is not fixed, it may have 4, 5 or 6 rows. Set
@@ -87,16 +88,23 @@ public class InfiniteViewPager extends ViewPager {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (enabled) {
-			return super.onTouchEvent(event);
+			boolean result = super.onTouchEvent(event);
+			Log.d("TEST", "InfiniteViewPager.onTouchEvent.Action: " + event.getAction() + ", onTouchEvent: " + result);
+			return result;
 		}
+
+//		Log.d("TEST", "InfiniteViewPager.onTouchEvent.Action: " + event.getAction() + " (why?)");
 		return false;
 	}
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
 		if (enabled) {
-			return super.onInterceptTouchEvent(event);
+			boolean result = super.onInterceptTouchEvent(event);
+			Log.d("TEST", "InfiniteViewPager.onInterceptTouchEvent.Action: " + event.getAction() + ", onIntercepTouchEvent: " + result);
+			return result;
 		}
+//		Log.d("TEST", "InfiniteViewPager.onInterceptTouchEvent.Action: " + event.getAction() + " (why?)");
 		return false;
 	}
 

@@ -80,6 +80,7 @@ import hirondelle.date4j.DateTime;
 
 @SuppressLint("DefaultLocale")
 public class CaldroidFragment extends DialogFragment {
+
     /**
      * Weekday conventions
      */
@@ -208,7 +209,7 @@ public class CaldroidFragment extends DialogFragment {
      * To control the navigation
      */
     protected boolean enableSwipe = false;
-    protected boolean enableClickOnDisabledDates = false;
+    protected boolean enableClickOnDisabledDates = true;
 
     /**
      * To use SquareTextView to display Date cell.By default, it is true,
@@ -657,18 +658,6 @@ public class CaldroidFragment extends DialogFragment {
     }
 
     /**
-     * Enable / Disable swipe to navigate different months
-     */
-    public boolean isEnableSwipe() {
-        return enableSwipe;
-    }
-
-    public void setEnableSwipe(boolean enableSwipe) {
-        this.enableSwipe = enableSwipe;
-        dateViewPager.setEnabled(enableSwipe);
-    }
-
-    /**
      * Set min date. This method does not refresh view
      */
     public void setMinDate(Date minDate) {
@@ -677,15 +666,6 @@ public class CaldroidFragment extends DialogFragment {
         } else {
             minDateTime = CalendarHelper.convertDateToDateTime(minDate);
         }
-    }
-
-    public boolean isSixWeeksInCalendar() {
-        return sixWeeksInCalendar;
-    }
-
-    public void setSixWeeksInCalendar(boolean sixWeeksInCalendar) {
-        this.sixWeeksInCalendar = sixWeeksInCalendar;
-        dateViewPager.setSixWeeksInCalendar(sixWeeksInCalendar);
     }
 
     /**
@@ -954,23 +934,6 @@ public class CaldroidFragment extends DialogFragment {
     }
 
     /**
-     * To support faster init
-     */
-    public static CaldroidFragment newInstance(String dialogTitle, int month, int year) {
-        CaldroidFragment f = new CaldroidFragment();
-
-        // Supply num input as an argument.
-        Bundle args = new Bundle();
-        args.putString(DIALOG_TITLE, dialogTitle);
-        args.putInt(MONTH, month);
-        args.putInt(YEAR, year);
-
-        f.setArguments(args);
-
-        return f;
-    }
-
-    /**
      * Below code fixed the issue viewpager disappears in dialog mode on
      * orientation change
      * <p/>
@@ -986,22 +949,11 @@ public class CaldroidFragment extends DialogFragment {
         super.onDestroyView();
     }
 
-    public void setThemeResource(int id) {
-        themeResource = id;
-    }
-
-    public int getThemeResource() {
-        return themeResource;
-    }
-
     public static LayoutInflater getThemeInflater(Context context, LayoutInflater origInflater, int themeResource) {
         Context wrapped = new ContextThemeWrapper(context, themeResource);
         return origInflater.cloneInContext(wrapped);
     }
 
-    /**
-     * Setup view
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -1141,8 +1093,7 @@ public class CaldroidFragment extends DialogFragment {
             dateGridFragment.setGridViewRes(getGridViewRes());
             dateGridFragment.setGridAdapter(adapter);
             dateGridFragment.setOnItemClickListener(getDateItemClickListener());
-            dateGridFragment
-                    .setOnItemLongClickListener(getDateItemLongClickListener());
+            dateGridFragment.setOnItemLongClickListener(getDateItemLongClickListener());
         }
 
         // Setup InfinitePagerAdapter to wrap around MonthPagerAdapter

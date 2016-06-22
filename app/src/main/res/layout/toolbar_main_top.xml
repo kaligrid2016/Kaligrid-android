@@ -43,6 +43,7 @@
         android:layout_alignBottom="@id/toolbar_top_today_image"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        style="@style/TodayCalendarText" />
+        style="@style/TodayCalendarText"
+        android:clickable="true" />
 
 </RelativeLayout>

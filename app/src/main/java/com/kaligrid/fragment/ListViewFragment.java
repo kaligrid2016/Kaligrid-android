@@ -22,6 +22,7 @@ import com.kaligrid.adapter.EventListItemAdapter;
 import com.kaligrid.animation.HeightResizeAnimation;
 import com.kaligrid.app.App;
 import com.kaligrid.calendar.CaldroidFragment;
+import com.kaligrid.calendar.CaldroidListener;
 import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.EventListDateHeaderItem;
@@ -32,6 +33,7 @@ import com.kaligrid.util.ViewHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +55,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
     private static int CALENDAR_HEIGHT_MONTH_VIEW;
     private static DateTime TODAY;
 
-    @Bind(R.id.calendar_wrapper) FrameLayout calendarFrameLayout;
-    @Bind(R.id.calendar_swipe_area) View calendarSwipeArea;
+    @Bind(R.id.calendar) FrameLayout calendarFrameLayout;
     @Bind(R.id.event_list) ListView eventList;
 
     @Inject EventService eventService;
@@ -62,8 +63,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
     private Context context;
     private CaldroidFragment calendarFragment;
     private boolean isMonthView = true;
-    private float initialXTouchPoint;
-    private float initialYTouchPoint;
     private List<EventListItem> eventListItems;
     boolean isEventListListenersInitialized = false;
 
@@ -92,7 +91,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
         initializeConstants();
         initializeCalendar();
         initializeEventList();
-        initializeCalendarTouchListener();
 
         selectedDate = TODAY;
 
@@ -135,51 +133,20 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
     private void initializeCalendar() {
         calendarFragment = new CaldroidFragment();
+
+        calendarFragment.setCaldroidListener(new CaldroidListener() {
+            @Override
+            public void onSelectDate(Date date, View view) {
+                Log.d("TEST", "onSelectDate: " + date.toString());
+            }
+        });
+
         FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.calendar, calendarFragment);
         transaction.commit();
     }
 
-    private void initializeCalendarTouchListener() {
-        calendarSwipeArea.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.d("TEST", "onTouch: " + event.getAction());
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    initialXTouchPoint = event.getX();
-                    initialYTouchPoint = event.getY();
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    final float xTouchPoint = event.getX();
-                    final float yTouchPoint = event.getY();
-
-                    // If X touch point change is within margin, it's either swipe up or down.
-                    // If Y touch point change is within margin, it's either swipe left or right.
-                    if (Math.abs(xTouchPoint - initialXTouchPoint) < SWIPE_MARGIN) {
-                        if (isMonthView && (yTouchPoint < initialYTouchPoint)) {
-                            // Swipe up
-                            showWeekView();
-                        } else if (!isMonthView && (yTouchPoint > initialYTouchPoint)) {
-                            // Swipe down
-                            showMonthView();
-                        }
-                    } else if (isMonthView && (Math.abs(yTouchPoint - initialYTouchPoint) < SWIPE_MARGIN)) {
-                        if (xTouchPoint < initialXTouchPoint) {
-                            // Swipe left
-                            calendarFragment.nextMonth();
-                        } else if (xTouchPoint > initialXTouchPoint) {
-                            // Swipe right
-                            calendarFragment.prevMonth();
-                        }
-                    }
-                }
-
-                return false;
-            }
-        });
-    }
-
-    private void showMonthView() {
+    public void showMonthView() {
         HeightResizeAnimation animation = new HeightResizeAnimation(calendarFrameLayout,
                 CALENDAR_HEIGHT_WEEK_VIEW,
                 CALENDAR_HEIGHT_MONTH_VIEW,
@@ -187,7 +154,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         calendarFragment.showMonthView(selectedDate);
-                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_MONTH_VIEW);
+//                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_MONTH_VIEW);
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_MONTH_VIEW);
                     }
 
@@ -204,7 +171,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
         isMonthView = true;
     }
 
-    private void showWeekView() {
+    public void showWeekView() {
         HeightResizeAnimation animation = new HeightResizeAnimation(calendarFrameLayout,
                 CALENDAR_HEIGHT_MONTH_VIEW,
                 CALENDAR_HEIGHT_WEEK_VIEW,
@@ -215,7 +182,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         calendarFragment.showWeekView(selectedDate);
-                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_WEEK_VIEW);
+//                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_WEEK_VIEW);
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_WEEK_VIEW);
                     }
 
@@ -227,6 +194,10 @@ public class ListViewFragment extends TypedBaseViewFragment {
         calendarFrameLayout.startAnimation(animation);
 
         isMonthView = false;
+    }
+
+    public boolean isMonthViewShown() {
+        return isMonthView;
     }
 
     private void initializeEventList() {
@@ -333,6 +304,14 @@ public class ListViewFragment extends TypedBaseViewFragment {
                 }
             }
         });
+    }
+
+    public void nextMonth() {
+        calendarFragment.nextMonth();
+    }
+
+    public void prevMonth() {
+        calendarFragment.nextMonth();
     }
 
     private class EventListSourceItem {

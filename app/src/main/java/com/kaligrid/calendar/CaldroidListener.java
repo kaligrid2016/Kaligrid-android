@@ -2,6 +2,7 @@ package com.kaligrid.calendar;
 
 import java.util.Date;
 
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -14,20 +15,15 @@ import android.view.View;
  * @author thomasdao
  */
 public abstract class CaldroidListener {
+
     /**
      * Inform client user has clicked on a date
-     *
-     * @param date
-     * @param view
      */
     public abstract void onSelectDate(Date date, View view);
 
 
     /**
      * Inform client user has long clicked on a date
-     *
-     * @param date
-     * @param view
      */
     public void onLongClickDate(Date date, View view) {
         // Do nothing
@@ -36,16 +32,10 @@ public abstract class CaldroidListener {
 
     /**
      * Inform client that calendar has changed month
-     *
-     * @param month
-     * @param year
      */
     public void onChangeMonth(int month, int year) {
         // Do nothing
     }
-
-    ;
-
 
     /**
      * Inform client that CaldroidFragment view has been created and views are
