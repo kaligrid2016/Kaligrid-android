@@ -6,11 +6,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
+import com.kaligrid.calendar.CalendarGestureListener;
+
 public class CalendarLayoutView extends LinearLayout {
 
     private static final float MOVE_IGNORED_CHANGE_IN_X = 50f;
     private static final float MOVE_IGNORED_CHANGE_IN_Y = 20f;
 
+    private CalendarGestureListener calendarGestureListener;
     private boolean isDownPressed;
     private float initialX;
     private float initialY;
@@ -42,15 +45,19 @@ public class CalendarLayoutView extends LinearLayout {
             if (!isXChanged && isYChanged) {
                 if (changeInY > 0) {
                     Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Down (%f, %f)", changeInX, changeInY));
+                    calendarGestureListener.onExpandCalendar();
                 } else {
                     Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Up (%f, %f)", changeInX, changeInY));
+                    calendarGestureListener.onCollapseCalendar();
                 }
                 return true;
             } else if (isXChanged && !isYChanged) {
                 if (changeInX > 0) {
                     Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Right (%f, %f)", changeInX, changeInY));
+                    calendarGestureListener.onShowPrevMonth();
                 } else {
                     Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Left (%f, %f)", changeInX, changeInY));
+                    calendarGestureListener.onShowNextMonth();
                 }
                 return true;
             }
@@ -69,5 +76,9 @@ public class CalendarLayoutView extends LinearLayout {
         isDownPressed = false;
         initialX = 0;
         initialY = 0;
+    }
+
+    public void setCalendarGestureListener(CalendarGestureListener calendarGestureListener) {
+        this.calendarGestureListener = calendarGestureListener;
     }
 }

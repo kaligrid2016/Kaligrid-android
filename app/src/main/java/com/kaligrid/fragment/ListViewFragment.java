@@ -23,6 +23,7 @@ import com.kaligrid.animation.HeightResizeAnimation;
 import com.kaligrid.app.App;
 import com.kaligrid.calendar.CaldroidFragment;
 import com.kaligrid.calendar.CaldroidListener;
+import com.kaligrid.calendar.CalendarGestureListener;
 import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.EventListDateHeaderItem;
@@ -133,6 +134,31 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
     private void initializeCalendar() {
         calendarFragment = new CaldroidFragment();
+        calendarFragment.setCalendarGestureListener(new CalendarGestureListener() {
+            @Override
+            public void onExpandCalendar() {
+                showMonthView();
+            }
+
+            @Override
+            public void onCollapseCalendar() {
+                showWeekView();
+            }
+
+            @Override
+            public void onShowPrevMonth() {
+                if (isMonthView) {
+                    prevMonth();
+                }
+            }
+
+            @Override
+            public void onShowNextMonth() {
+                if (isMonthView) {
+                    nextMonth();
+                }
+            }
+        });
 
         calendarFragment.setCaldroidListener(new CaldroidListener() {
             @Override

@@ -29,6 +29,7 @@ import com.kaligrid.R;
 import com.kaligrid.calendar.adapter.CaldroidGridAdapter;
 import com.kaligrid.calendar.adapter.MonthPagerAdapter;
 import com.kaligrid.calendar.adapter.WeekdayArrayAdapter;
+import com.kaligrid.calendar.view.CalendarLayoutView;
 import com.kaligrid.calendar.view.InfinitePagerAdapter;
 import com.kaligrid.calendar.view.InfiniteViewPager;
 
@@ -234,6 +235,12 @@ public class CaldroidFragment extends DialogFragment {
     private CaldroidListener caldroidListener;
 
     private boolean isShowingWeekView;
+
+    private CalendarGestureListener calendarGestureListener;
+
+    public void setCalendarGestureListener(CalendarGestureListener calendarGestureListener) {
+        this.calendarGestureListener = calendarGestureListener;
+    }
 
     /**
      * Retrieve current month
@@ -976,6 +983,9 @@ public class CaldroidFragment extends DialogFragment {
         getActivity().setTheme(themeResource);
 
         View view = localInflater.inflate(R.layout.calendar_view, container, false);
+        if (view instanceof CalendarLayoutView) {
+            ((CalendarLayoutView) view).setCalendarGestureListener(calendarGestureListener);
+        }
 
         // For the monthTitleTextView
         monthTitleTextView = (TextView) view
