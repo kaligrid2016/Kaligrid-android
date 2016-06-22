@@ -8,33 +8,30 @@ import android.widget.LinearLayout;
 
 public class CalendarLayoutView extends LinearLayout {
 
+    private static final float MOVE_IGNORED_CHANGE_IN_X = 50f;
+    private static final float MOVE_IGNORED_CHANGE_IN_Y = 20f;
+
+    private boolean isDownPressed;
+    private float initialX;
+    private float initialY;
+
     public CalendarLayoutView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    private boolean isDownPressed = false;
-    private float initialX = 0;
-    private float initialY = 0;
-    private static final float MOVE_IGNORED_CHANGE_IN_X = 50f;
-    private static final float MOVE_IGNORED_CHANGE_IN_Y = 20f;
-
+    /**
+     * Down -> Up, return false to call select date
+     * Down -> Move, analyze swipe coordinates and return true
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            isDownPressed = true;
-            initialX = event.getX();
-            initialY = event.getY();
             Log.d("TEST", String.format("onInterceptTouchEvent: Down (%f, %f)", initialX, initialY));
-            return false;
-        }
-
-        if (isDownPressed && (event.getAction() == MotionEvent.ACTION_UP)) {
+            startCapturingMotionEvent(event);
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
             Log.d("TEST", "onInterceptTouchEvent: Up");
-            isDownPressed = false;
-            return false;
-        }
-
-        if (isDownPressed && (event.getAction() == MotionEvent.ACTION_MOVE)) {
+            stopCapturingMotionEvent();
+        } else if (isDownPressed && (event.getAction() == MotionEvent.ACTION_MOVE)) {
             Log.d("TEST", "onInterceptTouchEvent: Move " + event.getX() + " " + event.getY());
 
             float changeInX = event.getX() - initialX;
@@ -42,16 +39,14 @@ public class CalendarLayoutView extends LinearLayout {
             boolean isXChanged = Math.abs(changeInX) > MOVE_IGNORED_CHANGE_IN_X;
             boolean isYChanged = Math.abs(changeInY) > MOVE_IGNORED_CHANGE_IN_Y;
 
-            if (!isXChanged && !isYChanged) {
-                Log.d("TEST", String.format("onInterceptTouchEvent: Move (ignore change; %f, %f)", changeInX, changeInY));
-            } else if (!isXChanged) {
+            if (!isXChanged && isYChanged) {
                 if (changeInY > 0) {
                     Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Down (%f, %f)", changeInX, changeInY));
                 } else {
                     Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Up (%f, %f)", changeInX, changeInY));
                 }
                 return true;
-            } else if (!isYChanged) {
+            } else if (isXChanged && !isYChanged) {
                 if (changeInX > 0) {
                     Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Right (%f, %f)", changeInX, changeInY));
                 } else {
@@ -59,13 +54,20 @@ public class CalendarLayoutView extends LinearLayout {
                 }
                 return true;
             }
-
-            return false;
         }
 
         return false;
+    }
 
-        // Down -> Up, return false to call select date
-        // Down -> Move, analyze swipe coordinates and return true
+    private void startCapturingMotionEvent(MotionEvent event) {
+        isDownPressed = true;
+        initialX = event.getX();
+        initialY = event.getY();
+    }
+
+    private void stopCapturingMotionEvent() {
+        isDownPressed = false;
+        initialX = 0;
+        initialY = 0;
     }
 }
