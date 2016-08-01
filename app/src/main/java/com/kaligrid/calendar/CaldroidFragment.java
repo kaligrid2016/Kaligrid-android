@@ -1312,6 +1312,7 @@ public class CaldroidFragment extends DialogFragment {
         clearSelectedDates();
         setSelectedDate(selectedDate);
         refreshView();
+        moveToDateTime(selectedDate);
     }
 
     public void showWeekView(DateTime selectedDate) {
@@ -1319,5 +1320,6 @@ public class CaldroidFragment extends DialogFragment {
         clearSelectedDates();
         setSelectedDate(selectedDate);
         refreshView();
+        moveToDateTime(selectedDate);
     }
 }

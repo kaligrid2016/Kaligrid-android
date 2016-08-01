@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -50,7 +49,6 @@ import hirondelle.date4j.DateTime;
 public class ListViewFragment extends TypedBaseViewFragment {
 
     private static final int RESIZE_ANIMATION_DURATION = 200;
-    private static final int SWIPE_MARGIN = 120;
 
     private static int CALENDAR_HEIGHT_WEEK_VIEW;
     private static int CALENDAR_HEIGHT_MONTH_VIEW;
@@ -65,7 +63,9 @@ public class ListViewFragment extends TypedBaseViewFragment {
     private CaldroidFragment calendarFragment;
     private boolean isMonthView = true;
     private List<EventListItem> eventListItems;
+    private Map<DateTime, Integer> eventListItemDateMap;
     boolean isEventListListenersInitialized = false;
+    private DateTime selectedDate = null;
 
     public static ListViewFragment newInstance(Context context) {
         ListViewFragment fragment = new ListViewFragment();
@@ -148,14 +148,14 @@ public class ListViewFragment extends TypedBaseViewFragment {
             @Override
             public void onShowPrevMonth() {
                 if (isMonthView) {
-                    prevMonth();
+                    calendarFragment.nextMonth();
                 }
             }
 
             @Override
             public void onShowNextMonth() {
                 if (isMonthView) {
-                    nextMonth();
+                    calendarFragment.nextMonth();
                 }
             }
         });
@@ -164,6 +164,9 @@ public class ListViewFragment extends TypedBaseViewFragment {
             @Override
             public void onSelectDate(Date date, View view) {
                 Log.d("TEST", "onSelectDate: " + date.toString());
+                DateTime key = DateTime.forInstant(date.getTime(), TimeZone.getDefault()).truncate(DateTime.Unit.DAY);
+                Integer selectedDateItemIndex = eventListItemDateMap.get(key);
+                eventList.setSelection(selectedDateItemIndex);
             }
         });
 
@@ -180,7 +183,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         calendarFragment.showMonthView(selectedDate);
-//                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_MONTH_VIEW);
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_MONTH_VIEW);
                     }
 
@@ -208,7 +210,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         calendarFragment.showWeekView(selectedDate);
-//                        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_HEIGHT_WEEK_VIEW);
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_WEEK_VIEW);
                     }
 
@@ -222,14 +223,12 @@ public class ListViewFragment extends TypedBaseViewFragment {
         isMonthView = false;
     }
 
-    public boolean isMonthViewShown() {
-        return isMonthView;
-    }
-
     private void initializeEventList() {
         List<Event> events = loadEvents();
         Map<DateTime, EventListSourceItem> eventListSource = buildEventListSource(events);
         eventListItems = new ArrayList<>();
+        eventListItemDateMap = new LinkedHashMap<>();
+
         int firstItemIndex = -1;
 
         for (Map.Entry<DateTime, EventListSourceItem> entry : eventListSource.entrySet()) {
@@ -241,6 +240,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
             }
 
             eventListItems.add(new EventListDateHeaderItem(date, context));
+            eventListItemDateMap.put(date, eventListItems.size() - 1);
             addAllDayEventListItems(eventListItems, entry.getValue().allDayEvents);
             addTimedEventListItems(eventListItems, entry.getValue().timedEvents);
         }
@@ -300,8 +300,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
         }
     }
 
-    private DateTime selectedDate = null;
-
     private void initializeEventListTouchListener() {
         eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -326,18 +324,9 @@ public class ListViewFragment extends TypedBaseViewFragment {
                     } else {
                         calendarFragment.showWeekView(selectedDate);
                     }
-
                 }
             }
         });
-    }
-
-    public void nextMonth() {
-        calendarFragment.nextMonth();
-    }
-
-    public void prevMonth() {
-        calendarFragment.nextMonth();
     }
 
     private class EventListSourceItem {
