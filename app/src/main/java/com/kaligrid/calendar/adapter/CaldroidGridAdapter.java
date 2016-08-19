@@ -120,11 +120,11 @@ public class CaldroidGridAdapter extends BaseAdapter {
         return caldroidData;
     }
 
-    public void setCaldroidData(Map<String, Object> caldroidData, boolean isWeekView) {
+    public void setCaldroidData(Map<String, Object> caldroidData, CaldroidFragment.ViewMode viewMode) {
         this.caldroidData = caldroidData;
 
         // Reset parameters
-        populateFromCaldroidData(isWeekView);
+        populateFromCaldroidData(viewMode);
     }
 
     public Map<String, Object> getExtraData() {
@@ -147,7 +147,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
         this.resources = context.getResources();
 
         // Get data from caldroidData
-        populateFromCaldroidData(false);
+        populateFromCaldroidData(CaldroidFragment.ViewMode.MONTH_VIEW);
 
 	    LayoutInflater inflater = (LayoutInflater) context
 			    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -158,7 +158,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
      * Retrieve internal parameters from caldroid data
      */
     @SuppressWarnings("unchecked")
-    private void populateFromCaldroidData(boolean isWeekView) {
+    private void populateFromCaldroidData(CaldroidFragment.ViewMode viewMode) {
         disableDates = (ArrayList<DateTime>) caldroidData
                 .get(CaldroidFragment.DISABLE_DATES);
         if (disableDates != null) {
@@ -185,7 +185,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
         themeResource = (Integer) caldroidData
                 .get(CaldroidFragment.THEME_RESOURCE);
 
-        if (isWeekView) {
+        if (viewMode == CaldroidFragment.ViewMode.WEEK_VIEW) {
             this.datetimeList = CalendarHelper.getSingleWeek(selectedDate);
         } else {
             this.datetimeList = CalendarHelper.getFullWeeks(this.month, this.year, startDayOfWeek, sixWeeksInCalendar);

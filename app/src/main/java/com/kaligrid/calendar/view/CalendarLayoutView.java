@@ -29,14 +29,10 @@ public class CalendarLayoutView extends LinearLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            Log.d("TEST", String.format("onInterceptTouchEvent: Down (%f, %f)", initialX, initialY));
             startCapturingMotionEvent(event);
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            Log.d("TEST", "onInterceptTouchEvent: Up");
             stopCapturingMotionEvent();
         } else if (isDownPressed && (event.getAction() == MotionEvent.ACTION_MOVE)) {
-            Log.d("TEST", "onInterceptTouchEvent: Move " + event.getX() + " " + event.getY());
-
             float changeInX = event.getX() - initialX;
             float changeInY = event.getY() - initialY;
             boolean isXChanged = Math.abs(changeInX) > MOVE_IGNORED_CHANGE_IN_X;
@@ -44,19 +40,15 @@ public class CalendarLayoutView extends LinearLayout {
 
             if (!isXChanged && isYChanged) {
                 if (changeInY > 0) {
-                    Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Down (%f, %f)", changeInX, changeInY));
                     calendarGestureListener.onExpandCalendar();
                 } else {
-                    Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Up (%f, %f)", changeInX, changeInY));
                     calendarGestureListener.onCollapseCalendar();
                 }
                 return true;
             } else if (isXChanged && !isYChanged) {
                 if (changeInX > 0) {
-                    Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Right (%f, %f)", changeInX, changeInY));
                     calendarGestureListener.onShowPrevMonth();
                 } else {
-                    Log.d("TEST", String.format("onInterceptTouchEvent: Swipe Left (%f, %f)", changeInX, changeInY));
                     calendarGestureListener.onShowNextMonth();
                 }
                 return true;

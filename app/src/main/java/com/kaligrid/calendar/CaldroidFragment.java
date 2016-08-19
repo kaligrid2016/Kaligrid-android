@@ -82,6 +82,8 @@ import hirondelle.date4j.DateTime;
 @SuppressLint("DefaultLocale")
 public class CaldroidFragment extends DialogFragment {
 
+    public enum ViewMode { WEEK_VIEW, MONTH_VIEW }
+
     /**
      * Weekday conventions
      */
@@ -234,7 +236,7 @@ public class CaldroidFragment extends DialogFragment {
      */
     private CaldroidListener caldroidListener;
 
-    private boolean isShowingWeekView;
+    private ViewMode currentViewMode;
 
     private CalendarGestureListener calendarGestureListener;
 
@@ -557,7 +559,7 @@ public class CaldroidFragment extends DialogFragment {
             caldroidListener.onChangeMonth(month, year);
         }
 
-        refreshView();
+        refreshView(currentViewMode);
     }
 
     /**
@@ -628,12 +630,8 @@ public class CaldroidFragment extends DialogFragment {
         }
     }
 
-    /**
-     * To clear selectedDates. This method does not refresh view, need to
-     * explicitly call refreshView()
-     */
-    public void clearSelectedDates() {
-        selectedDate = null;
+    public DateTime getSelectedDate() {
+        return this.selectedDate;
     }
 
     /**
@@ -710,6 +708,10 @@ public class CaldroidFragment extends DialogFragment {
             maxDateTime = CalendarHelper.getDateTimeFromString(maxDateString,
                     dateFormat);
         }
+    }
+
+    public ViewMode getCurrentViewMode() {
+        return this.currentViewMode;
     }
 
     /**
@@ -813,7 +815,7 @@ public class CaldroidFragment extends DialogFragment {
      * Refresh view when parameter changes. You should always change all
      * parameters first, then call this method.
      */
-    public void refreshView() {
+    public void refreshView(ViewMode viewMode) {
         // If month and year is not yet initialized, refreshView doesn't do
         // anything
         if (month == -1 || year == -1) {
@@ -824,14 +826,11 @@ public class CaldroidFragment extends DialogFragment {
 
         // Refresh the date grid views
         for (CaldroidGridAdapter adapter : datePagerAdapters) {
-            if (isShowingWeekView) {
-                if (selectedDate.getMonth() != adapter.getMonth()) {
-                    continue;
-                }
-                adapter.setCaldroidData(getCaldroidData(), isShowingWeekView);
-            } else {
-                adapter.setCaldroidData(getCaldroidData(), false);
+            if ((viewMode == ViewMode.WEEK_VIEW) && (selectedDate.getMonth() != adapter.getMonth())) {
+                continue;
             }
+
+            adapter.setCaldroidData(getCaldroidData(), viewMode);
 
             // Reset extra data
             adapter.setExtraData(extraData);
@@ -842,6 +841,14 @@ public class CaldroidFragment extends DialogFragment {
             // Refresh view
             adapter.notifyDataSetChanged();
         }
+
+        currentViewMode = viewMode;
+    }
+
+    public void refreshView(ViewMode viewMode, DateTime selectedDate) {
+        setSelectedDate(selectedDate);
+        refreshView(viewMode);
+        moveToDateTime(selectedDate);
     }
 
     /**
@@ -1000,7 +1007,7 @@ public class CaldroidFragment extends DialogFragment {
         setupDateGridPages(view);
 
         // Refresh view
-        refreshView();
+        refreshView(ViewMode.MONTH_VIEW);
 
         return view;
     }
@@ -1305,21 +1312,5 @@ public class CaldroidFragment extends DialogFragment {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void showMonthView(DateTime selectedDate) {
-        isShowingWeekView = false;
-        clearSelectedDates();
-        setSelectedDate(selectedDate);
-        refreshView();
-        moveToDateTime(selectedDate);
-    }
-
-    public void showWeekView(DateTime selectedDate) {
-        isShowingWeekView = true;
-        clearSelectedDates();
-        setSelectedDate(selectedDate);
-        refreshView();
-        moveToDateTime(selectedDate);
     }
 }

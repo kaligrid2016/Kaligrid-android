@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,11 +60,10 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
     private Context context;
     private CaldroidFragment calendarFragment;
-    private boolean isMonthView = true;
+    private boolean isEventListListenersInitialized;
+
     private List<EventListItem> eventListItems;
     private Map<DateTime, Integer> eventListItemDateMap;
-    boolean isEventListListenersInitialized = false;
-    private DateTime selectedDate = null;
 
     public static ListViewFragment newInstance(Context context) {
         ListViewFragment fragment = new ListViewFragment();
@@ -92,8 +90,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
         initializeConstants();
         initializeCalendar();
         initializeEventList();
-
-        selectedDate = TODAY;
 
         return view;
     }
@@ -134,6 +130,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
     private void initializeCalendar() {
         calendarFragment = new CaldroidFragment();
+        calendarFragment.setSelectedDate(TODAY);
         calendarFragment.setCalendarGestureListener(new CalendarGestureListener() {
             @Override
             public void onExpandCalendar() {
@@ -147,14 +144,14 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
             @Override
             public void onShowPrevMonth() {
-                if (isMonthView) {
+                if (calendarFragment.getCurrentViewMode() == CaldroidFragment.ViewMode.MONTH_VIEW) {
                     calendarFragment.nextMonth();
                 }
             }
 
             @Override
             public void onShowNextMonth() {
-                if (isMonthView) {
+                if (calendarFragment.getCurrentViewMode() == CaldroidFragment.ViewMode.MONTH_VIEW) {
                     calendarFragment.nextMonth();
                 }
             }
@@ -163,10 +160,11 @@ public class ListViewFragment extends TypedBaseViewFragment {
         calendarFragment.setCaldroidListener(new CaldroidListener() {
             @Override
             public void onSelectDate(Date date, View view) {
-                Log.d("TEST", "onSelectDate: " + date.toString());
                 DateTime key = DateTime.forInstant(date.getTime(), TimeZone.getDefault()).truncate(DateTime.Unit.DAY);
                 Integer selectedDateItemIndex = eventListItemDateMap.get(key);
-                eventList.setSelection(selectedDateItemIndex);
+                if (selectedDateItemIndex != null) {
+                    eventList.setSelection(selectedDateItemIndex);
+                }
             }
         });
 
@@ -182,7 +180,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
                 new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        calendarFragment.showMonthView(selectedDate);
+                        calendarFragment.refreshView(CaldroidFragment.ViewMode.MONTH_VIEW, calendarFragment.getSelectedDate());
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_MONTH_VIEW);
                     }
 
@@ -195,8 +193,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
         );
         animation.setDuration(RESIZE_ANIMATION_DURATION);
         calendarFrameLayout.startAnimation(animation);
-
-        isMonthView = true;
     }
 
     public void showWeekView() {
@@ -209,7 +205,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        calendarFragment.showWeekView(selectedDate);
+                        calendarFragment.refreshView(CaldroidFragment.ViewMode.WEEK_VIEW, calendarFragment.getSelectedDate());
                         ViewHelper.setHeight(calendarFrameLayout, CALENDAR_HEIGHT_WEEK_VIEW);
                     }
 
@@ -219,8 +215,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
         );
         animation.setDuration(RESIZE_ANIMATION_DURATION);
         calendarFrameLayout.startAnimation(animation);
-
-        isMonthView = false;
     }
 
     private void initializeEventList() {
@@ -304,7 +298,10 @@ public class ListViewFragment extends TypedBaseViewFragment {
         eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (isMonthView) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    eventList.smoothScrollToPosition(eventList.getFirstVisiblePosition());
+                }
+                if (calendarFragment.getCurrentViewMode() == CaldroidFragment.ViewMode.MONTH_VIEW) {
                     showWeekView();
                 }
             }
@@ -316,14 +313,18 @@ public class ListViewFragment extends TypedBaseViewFragment {
                 }
 
                 EventListItem item = eventListItems.get(firstVisibleItem);
+
+                // If the next item is header of next event date group, show the next one.
+                EventListItem nextItem = (firstVisibleItem + 1 < eventListItems.size()) ? eventListItems.get(firstVisibleItem + 1) : null;
+                if (nextItem instanceof EventListDateHeaderItem) {
+                    item = nextItem;
+                }
+
+                DateTime selectedDate = calendarFragment.getSelectedDate();
                 DateTime newSelectedDate = item.getDate();
                 if (!newSelectedDate.isSameDayAs(selectedDate)) {
                     selectedDate = newSelectedDate.truncate(DateTime.Unit.DAY);
-                    if (isMonthView) {
-                        calendarFragment.showMonthView(selectedDate);
-                    } else {
-                        calendarFragment.showWeekView(selectedDate);
-                    }
+                    calendarFragment.refreshView(calendarFragment.getCurrentViewMode(), selectedDate);
                 }
             }
         });

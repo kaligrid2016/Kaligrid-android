@@ -107,10 +107,14 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         });
     }
 
-
     @OnClick(R.id.button_cancel)
     public void onCancelButtonClick(View v) {
         finish();
+    }
+
+    @OnClick(R.id.save_button)
+    public void onSaveButtonClick(View v) {
+        Toast.makeText(this, "This feature is not implemented yet...", Toast.LENGTH_LONG).show();
     }
 
     @OnClick(R.id.picture_button)
@@ -168,10 +172,16 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     private void handleOnDateSet(TextView dateText, int year, int month, int day) {
         // Android month starts from 0 but Date4J starts from 1.
         dateText.setText(DateTime.forDateOnly(year, month + 1, day).format(DATE_WRITE_FORMAT, Locale.getDefault()));
+        if (!isDateRangeValid()) {
+            showDateRangeError();
+        }
     }
 
     private void handleOnTimeSet(TextView timeText, int hourOfDay, int minute) {
         timeText.setText(DateTime.forTimeOnly(hourOfDay, minute, 0, 0).format(TIME_WRITE_FORMAT, Locale.getDefault()));
+        if (!isDateRangeValid()) {
+            showDateRangeError();
+        }
     }
 
     private static DateTime readDate(TextView dateText) {

@@ -87,25 +87,12 @@ public class InfiniteViewPager extends ViewPager {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (enabled) {
-			boolean result = super.onTouchEvent(event);
-			Log.d("TEST", "InfiniteViewPager.onTouchEvent.Action: " + event.getAction() + ", onTouchEvent: " + result);
-			return result;
-		}
-
-//		Log.d("TEST", "InfiniteViewPager.onTouchEvent.Action: " + event.getAction() + " (why?)");
-		return false;
+		return enabled ? super.onTouchEvent(event) : false;
 	}
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
-		if (enabled) {
-			boolean result = super.onInterceptTouchEvent(event);
-			Log.d("TEST", "InfiniteViewPager.onInterceptTouchEvent.Action: " + event.getAction() + ", onIntercepTouchEvent: " + result);
-			return result;
-		}
-//		Log.d("TEST", "InfiniteViewPager.onInterceptTouchEvent.Action: " + event.getAction() + " (why?)");
-		return false;
+		return enabled ? super.onInterceptTouchEvent(event) : false;
 	}
 
 	/**
