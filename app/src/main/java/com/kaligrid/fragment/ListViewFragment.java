@@ -27,6 +27,7 @@ import com.kaligrid.model.Event;
 import com.kaligrid.model.EventListDateHeaderItem;
 import com.kaligrid.model.EventListEventItem;
 import com.kaligrid.model.EventListItem;
+import com.kaligrid.model.EventListViewSource;
 import com.kaligrid.service.EventService;
 import com.kaligrid.util.ViewHelper;
 
@@ -60,10 +61,8 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
     private Context context;
     private CaldroidFragment calendarFragment;
+    private EventListViewSource eventListViewSource;
     private boolean isEventListListenersInitialized;
-
-    private List<EventListItem> eventListItems;
-    private Map<DateTime, Integer> eventListItemDateMap;
 
     public static ListViewFragment newInstance(Context context) {
         ListViewFragment fragment = new ListViewFragment();
@@ -161,7 +160,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
             @Override
             public void onSelectDate(Date date, View view) {
                 DateTime key = DateTime.forInstant(date.getTime(), TimeZone.getDefault()).truncate(DateTime.Unit.DAY);
-                Integer selectedDateItemIndex = eventListItemDateMap.get(key);
+                Integer selectedDateItemIndex = eventListViewSource.getPositionByDate(key);
                 if (selectedDateItemIndex != null) {
                     eventList.setSelection(selectedDateItemIndex);
                 }
@@ -220,8 +219,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
     private void initializeEventList() {
         List<Event> events = loadEvents();
         Map<DateTime, EventListSourceItem> eventListSource = buildEventListSource(events);
-        eventListItems = new ArrayList<>();
-        eventListItemDateMap = new LinkedHashMap<>();
+        eventListViewSource = new EventListViewSource();
 
         int firstItemIndex = -1;
 
@@ -230,16 +228,15 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
             // First event that's today or later should be the first event shown.
             if ((firstItemIndex < 0) && date.gteq(TODAY)) {
-                firstItemIndex = eventListItems.size();
+                firstItemIndex = eventListViewSource.size();
             }
 
-            eventListItems.add(new EventListDateHeaderItem(date, context));
-            eventListItemDateMap.put(date, eventListItems.size() - 1);
-            addAllDayEventListItems(eventListItems, entry.getValue().allDayEvents);
-            addTimedEventListItems(eventListItems, entry.getValue().timedEvents);
+            eventListViewSource.addDateHeaderItem(new EventListDateHeaderItem(date, context));
+            addAllDayEventListItems(eventListViewSource, entry.getValue().allDayEvents);
+            addTimedEventListItems(eventListViewSource, entry.getValue().timedEvents);
         }
 
-        eventList.setAdapter(new EventListItemAdapter(context, eventListItems));
+        eventList.setAdapter(new EventListItemAdapter(context, eventListViewSource.getAll()));
         eventList.setSelection(firstItemIndex);
     }
 
@@ -266,15 +263,15 @@ public class ListViewFragment extends TypedBaseViewFragment {
         return events;
     }
 
-    private void addAllDayEventListItems(List<EventListItem> eventListItems, List<Event> events) {
+    private void addAllDayEventListItems(EventListViewSource eventListViewSource, List<Event> events) {
         boolean showAllDayText = true;
         for (Event event : events) {
-            eventListItems.add(new EventListEventItem(event, context, showAllDayText));
+            eventListViewSource.addEventItem(new EventListEventItem(event, context, showAllDayText));
             showAllDayText = false;
         }
     }
 
-    private void addTimedEventListItems(List<EventListItem> eventListItems, List<Event> events) {
+    private void addTimedEventListItems(EventListViewSource eventListViewSource, List<Event> events) {
         boolean showEventTimeText = true;
         DateTime oldEventTime = new DateTime(1, 1, 1, 0, 0, 0, 0);
 
@@ -287,7 +284,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
                 showEventTimeText = true;
             }
 
-            eventListItems.add(new EventListEventItem(event, context, showEventTimeText));
+            eventListViewSource.addEventItem(new EventListEventItem(event, context, showEventTimeText));
 
             showEventTimeText = false;
             oldEventTime = newEventTime;
@@ -298,9 +295,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
         eventList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    eventList.smoothScrollToPosition(eventList.getFirstVisiblePosition());
-                }
                 if (calendarFragment.getCurrentViewMode() == CaldroidFragment.ViewMode.MONTH_VIEW) {
                     showWeekView();
                 }
@@ -312,10 +306,10 @@ public class ListViewFragment extends TypedBaseViewFragment {
                     return;
                 }
 
-                EventListItem item = eventListItems.get(firstVisibleItem);
+                EventListItem item = eventListViewSource.get(firstVisibleItem);
 
                 // If the next item is header of next event date group, show the next one.
-                EventListItem nextItem = (firstVisibleItem + 1 < eventListItems.size()) ? eventListItems.get(firstVisibleItem + 1) : null;
+                EventListItem nextItem = (firstVisibleItem + 1 < eventListViewSource.size()) ? eventListViewSource.get(firstVisibleItem + 1) : null;
                 if (nextItem instanceof EventListDateHeaderItem) {
                     item = nextItem;
                 }
