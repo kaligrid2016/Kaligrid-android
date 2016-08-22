@@ -1,5 +1,6 @@
 package com.kaligrid.service;
 
+import com.kaligrid.data.DBHelper;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.EventType;
 import com.kaligrid.util.RandomEventRecipientGenerator;
@@ -8,9 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
+import javax.inject.Inject;
+
 import hirondelle.date4j.DateTime;
 
 public class EventService {
+
+    private final DBHelper dbHelper;
+
+    public EventService(DBHelper dbHelper) {
+        this.dbHelper = dbHelper;
+    }
 
     public List<Event> getTestEvents() {
         DateTime today = DateTime.now(TimeZone.getDefault());

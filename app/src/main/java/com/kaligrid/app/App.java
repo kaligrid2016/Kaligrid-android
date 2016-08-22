@@ -14,7 +14,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        objectGraph = ObjectGraph.Initializer.init();
+        objectGraph = ObjectGraph.Initializer.init(this.getApplicationContext());
     }
 
     public static ObjectGraph getObjectGraph() {

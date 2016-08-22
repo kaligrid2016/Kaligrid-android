@@ -3,10 +3,6 @@ package com.kaligrid.activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,9 +23,6 @@ import hirondelle.date4j.DateTime;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int CALENDAR_SWIPE_AREA_HEIGHT_EXPANDED;
-    private static int CALENDAR_SWIPE_AREA_HEIGHT_COLLAPSED;
-
     @Bind(R.id.top_toolbar_today_text) TextView topToolbarTodayText;
     @Bind(R.id.bottom_toolbar_list_image) ImageView bottomToolbarListImage;
     @Bind(R.id.bottom_toolbar_discover_image) ImageView bottomToolbarDiscoverImage;
@@ -37,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.bottom_toolbar_profile_image) ImageView bottomToolbarProfileImage;
 
     private ContentViewType currentView;
-    private ListViewFragment listViewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        initializeConstants();
         loadInitialView();
     }
 
@@ -91,11 +82,6 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(v, R.drawable.icon_bottom_me_selected, new ProfileViewFragment());
     }
 
-    private void initializeConstants() {
-        CALENDAR_SWIPE_AREA_HEIGHT_EXPANDED = getResources().getDimensionPixelSize(R.dimen.calendar_swipe_area_height_expanded);
-        CALENDAR_SWIPE_AREA_HEIGHT_COLLAPSED = getResources().getDimensionPixelSize(R.dimen.calendar_swipe_area_height_collapsed);
-    }
-
     private void loadInitialView() {
         if (findViewById(R.id.content_fragment_container) != null) {
             loadListViewFragment();
@@ -105,18 +91,13 @@ public class MainActivity extends AppCompatActivity {
     private void loadListViewFragment() {
         resetBottomToolbarImages();
         bottomToolbarListImage.setImageResource(R.drawable.icon_bottom_list_selected);
-
-        listViewFragment = ListViewFragment.newInstance(this);
-        loadViewFragment(listViewFragment);
-
-//        calendarSwipeArea.setVisibility(View.VISIBLE);
+        loadViewFragment(ListViewFragment.newInstance(this));
     }
 
     private void loadFragment(ImageView toolbarImage, int imageResource, TypedBaseViewFragment fragment) {
         resetBottomToolbarImages();
         toolbarImage.setImageResource(imageResource);
         loadViewFragment(fragment);
-//        calendarSwipeArea.setVisibility(View.GONE);
     }
 
     private void resetBottomToolbarImages() {
@@ -130,19 +111,5 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.content_fragment_container, fragment).commit();
         currentView = fragment.getType();
-    }
-
-    private void expandCalendar() {
-        if (listViewFragment != null) {
-            listViewFragment.showMonthView();
-        }
-//        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_SWIPE_AREA_HEIGHT_EXPANDED);
-    }
-
-    private void collapseCalendar() {
-        if (listViewFragment != null) {
-            listViewFragment.showWeekView();
-        }
-//        ViewHelper.setHeight(calendarSwipeArea, CALENDAR_SWIPE_AREA_HEIGHT_COLLAPSED);
     }
 }
