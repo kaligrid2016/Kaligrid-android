@@ -1,4 +1,4 @@
-package com.kaligrid.model;
+package com.kaligrid.model.eventlist;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -11,6 +11,7 @@ public class EventListViewSource {
 
     private List<EventListItem> eventListItems;
     private Map<DateTime, Integer> eventListItemDateMap;
+    private int firstVisibleItem;
 
     public EventListViewSource() {
         this.eventListItems = new ArrayList<>();
@@ -40,5 +41,13 @@ public class EventListViewSource {
 
     public int size() {
         return eventListItems.size();
+    }
+
+    public int getFirstVisibleItem() {
+        return firstVisibleItem;
+    }
+
+    public void setFirstVisibleItem(int firstVisibleItem) {
+        this.firstVisibleItem = firstVisibleItem;
     }
 }

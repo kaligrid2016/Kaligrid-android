@@ -4,13 +4,12 @@ import android.content.Context;
 
 import com.kaligrid.activity.NewEventBaseActivity;
 import com.kaligrid.fragment.ListViewFragment;
-import com.kaligrid.service.EventService;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = ServiceModule.class)
+@Component(modules = DepedencyModule.class)
 @Singleton
 public interface ObjectGraph {
 
@@ -20,7 +19,7 @@ public interface ObjectGraph {
     final class Initializer {
         public static ObjectGraph init(Context context) {
             return DaggerObjectGraph.builder()
-                    .serviceModule(new ServiceModule(context))
+                    .depedencyModule(new DepedencyModule(context))
                     .build();
         }
     }

@@ -1,4 +1,4 @@
-package com.kaligrid.model;
+package com.kaligrid.model.eventlist;
 
 import hirondelle.date4j.DateTime;
 

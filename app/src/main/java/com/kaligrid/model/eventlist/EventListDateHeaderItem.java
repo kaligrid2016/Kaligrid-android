@@ -1,4 +1,4 @@
-package com.kaligrid.model;
+package com.kaligrid.model.eventlist;
 
 import android.content.Context;
 

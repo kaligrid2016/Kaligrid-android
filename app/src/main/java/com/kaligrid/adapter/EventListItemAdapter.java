@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kaligrid.R;
-import com.kaligrid.model.EventListDateHeaderItem;
-import com.kaligrid.model.EventListEventItem;
-import com.kaligrid.model.EventListItem;
+import com.kaligrid.model.eventlist.EventListDateHeaderItem;
+import com.kaligrid.model.eventlist.EventListEventItem;
+import com.kaligrid.model.eventlist.EventListItem;
 
 import java.util.List;
 

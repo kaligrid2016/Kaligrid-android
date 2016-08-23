@@ -11,11 +11,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class ServiceModule {
+public class DepedencyModule {
 
     private final Context context;
 
-    public ServiceModule(Context context) {
+    public DepedencyModule(Context context) {
         this.context = context;
     }
 

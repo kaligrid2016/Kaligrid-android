@@ -24,19 +24,15 @@ import com.kaligrid.calendar.CaldroidListener;
 import com.kaligrid.calendar.CalendarGestureListener;
 import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
-import com.kaligrid.model.EventListDateHeaderItem;
-import com.kaligrid.model.EventListEventItem;
-import com.kaligrid.model.EventListItem;
-import com.kaligrid.model.EventListViewSource;
+import com.kaligrid.model.converter.EventsToEventListViewSourceConverter;
+import com.kaligrid.model.eventlist.EventListDateHeaderItem;
+import com.kaligrid.model.eventlist.EventListItem;
+import com.kaligrid.model.eventlist.EventListViewSource;
 import com.kaligrid.service.EventService;
 import com.kaligrid.util.ViewHelper;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -219,74 +215,13 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
     private void initializeEventList() {
         List<Event> events = loadEvents();
-        Map<DateTime, EventListSourceItem> eventListSource = buildEventListSource(events);
-        eventListViewSource = new EventListViewSource();
-
-        int firstItemIndex = -1;
-
-        for (Map.Entry<DateTime, EventListSourceItem> entry : eventListSource.entrySet()) {
-            DateTime date = entry.getKey();
-
-            // First event that's today or later should be the first event shown.
-            if ((firstItemIndex < 0) && date.gteq(TODAY)) {
-                firstItemIndex = eventListViewSource.size();
-            }
-
-            eventListViewSource.addDateHeaderItem(new EventListDateHeaderItem(date, context));
-            addAllDayEventListItems(eventListViewSource, entry.getValue().allDayEvents);
-            addTimedEventListItems(eventListViewSource, entry.getValue().timedEvents);
-        }
-
+        eventListViewSource = EventsToEventListViewSourceConverter.convert(events, context);
         eventList.setAdapter(new EventListItemAdapter(context, eventListViewSource.getAll()));
-        eventList.setSelection(firstItemIndex);
+        eventList.setSelection(eventListViewSource.getFirstVisibleItem());
     }
 
     private List<Event> loadEvents() {
         return eventService.getEvents();
-    }
-
-    private Map<DateTime, EventListSourceItem> buildEventListSource(List<Event> sortedEvents) {
-        Map<DateTime, EventListSourceItem> events = new LinkedHashMap<>();
-
-        for(Event event : sortedEvents) {
-            DateTime eventDate = DateTime.forInstant(event.getStartDateTime(), TimeZone.getDefault())
-                    .truncate(DateTime.Unit.DAY);
-
-            if (!events.containsKey(eventDate)) {
-                events.put(eventDate, new EventListSourceItem());
-            }
-            events.get(eventDate).addEvent(event);
-        }
-
-        return events;
-    }
-
-    private void addAllDayEventListItems(EventListViewSource eventListViewSource, List<Event> events) {
-        boolean showAllDayText = true;
-        for (Event event : events) {
-            eventListViewSource.addEventItem(new EventListEventItem(event, context, showAllDayText));
-            showAllDayText = false;
-        }
-    }
-
-    private void addTimedEventListItems(EventListViewSource eventListViewSource, List<Event> events) {
-        boolean showEventTimeText = true;
-        DateTime oldEventTime = new DateTime(1, 1, 1, 0, 0, 0, 0);
-
-        for (Event event : events) {
-            DateTime newEventTime = DateTime.forInstant(event.getStartDateTime(), TimeZone.getDefault());
-
-            // Show event time text is event time is different.
-            if (!oldEventTime.getHour().equals(newEventTime.getHour()) ||
-                    !oldEventTime.getMinute().equals(newEventTime.getMinute())) {
-                showEventTimeText = true;
-            }
-
-            eventListViewSource.addEventItem(new EventListEventItem(event, context, showEventTimeText));
-
-            showEventTimeText = false;
-            oldEventTime = newEventTime;
-        }
     }
 
     private void initializeEventListTouchListener() {
@@ -320,24 +255,5 @@ public class ListViewFragment extends TypedBaseViewFragment {
                 }
             }
         });
-    }
-
-    private class EventListSourceItem {
-
-        private List<Event> allDayEvents;
-        private List<Event> timedEvents;
-
-        public EventListSourceItem() {
-            allDayEvents = new ArrayList<>();
-            timedEvents = new ArrayList<>();
-        }
-
-        public void addEvent(Event event) {
-            if (event.isAllDayEvent()) {
-                allDayEvents.add(event);
-            } else {
-                timedEvents.add(event);
-            }
-        }
     }
 }

@@ -68,18 +68,6 @@ public class Event {
         return Collections.unmodifiableList(recipients);
     }
 
-    public ContentValues toContentValues() {
-        ContentValues values = new ContentValues();
-        values.put(EventTable.COLUMN_USER, user);
-        values.put(EventTable.COLUMN_TITLE, title);
-        values.put(EventTable.COLUMN_TYPE, type.toString());
-        values.put(EventTable.COLUMN_START_DATE_TIME, startDateTime);
-        values.put(EventTable.COLUMN_END_DATE_TIME, endDateTime);
-        values.put(EventTable.COLUMN_ALL_DAY_EVENT, isAllDayEvent);
-        values.put(EventTable.COLUMN_SELF_INCLUDED, isSelfIncluded);
-        return values;
-    }
-
     public static class Builder {
 
         private long id;

@@ -1,8 +1,9 @@
-package com.kaligrid.model;
+package com.kaligrid.model.eventlist;
 
 import android.content.Context;
 
 import com.kaligrid.R;
+import com.kaligrid.model.Event;
 import com.kaligrid.util.EventResourceHelper;
 import com.kaligrid.util.EventSummaryBuilder;
 
