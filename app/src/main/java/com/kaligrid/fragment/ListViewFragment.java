@@ -88,7 +88,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
         initializeConstants();
         initializeCalendar();
-        initializeEventList();
 
         return view;
     }
@@ -96,6 +95,8 @@ public class ListViewFragment extends TypedBaseViewFragment {
     @Override
     public void onResume() {
         super.onResume();
+        initializeEventList();
+
         if (!isEventListListenersInitialized) {
             initializeEventListTouchListener();
             isEventListListenersInitialized = true;
@@ -241,10 +242,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
     }
 
     private List<Event> loadEvents() {
-        List<Event> events = eventService.getTestEvents();
-        Collections.sort(events, new Event.EventStartDateComparator());
-
-        return events;
+        return eventService.getEvents();
     }
 
     private Map<DateTime, EventListSourceItem> buildEventListSource(List<Event> sortedEvents) {

@@ -4,6 +4,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.kaligrid.R;
+import com.kaligrid.model.Event;
+import com.kaligrid.model.EventType;
+
+import java.util.TimeZone;
 
 import butterknife.OnClick;
 
@@ -37,6 +41,19 @@ public class NewEventActivity extends NewEventBaseActivity {
     @Override
     protected int getLocationButtonImage() {
         return R.drawable.icon_location_event;
+    }
+
+    @Override
+    protected Event createEventFromFields() {
+        return new Event.Builder()
+                .user("Me")
+                .title(eventTitleText.getText().toString())
+                .type(EventType.EVENT)
+                .startDateTime(readDateTime(fromDateText, fromTimeText).getMilliseconds(TimeZone.getDefault()))
+                .endDateTime(readDateTime(toDateText, toTimeText).getMilliseconds(TimeZone.getDefault()))
+                .isAllDayEvent(allDaySwitch.isChecked())
+                .isSelfIncluded(true)
+                .build();
     }
 
     @OnClick(R.id.recipients_button)

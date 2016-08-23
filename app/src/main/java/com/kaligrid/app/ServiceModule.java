@@ -2,8 +2,10 @@ package com.kaligrid.app;
 
 import android.content.Context;
 
-import com.kaligrid.data.DBHelper;
+import com.kaligrid.dao.DBHelper;
 import com.kaligrid.service.EventService;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -18,11 +20,13 @@ public class ServiceModule {
     }
 
     @Provides
+    @Singleton
     public DBHelper provideDBHelper() {
         return new DBHelper(context);
     }
 
     @Provides
+    @Singleton
     public EventService provideEventService(DBHelper dbHelper) {
         return new EventService(dbHelper);
     }

@@ -87,6 +87,6 @@ public class EventSummaryBuilder {
     }
 
     private static boolean isMyEvent(Event event) {
-        return event.getUser().equalsIgnoreCase("Yong");
+        return event.getUser().equalsIgnoreCase("Me");
     }
 }

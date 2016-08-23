@@ -1,5 +1,7 @@
 package com.kaligrid.model;
 
+import android.content.ContentValues;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,8 +10,11 @@ import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
 
+import static com.kaligrid.dao.DataContract.EventTable;
+
 public class Event {
 
+    private final long id;
     private final String user;
     private final String title;
     private final EventType type;
@@ -19,16 +24,16 @@ public class Event {
     private final boolean isSelfIncluded;
     private final List<String> recipients;
 
-    private Event(String user, String title, EventType type, long eventStartDateTime, long eventEndDateTime,
-                  boolean isAllDayEvent, boolean isSelfIncluded, List<String> recipients) {
-        this.user = user;
-        this.title = title;
-        this.type = type;
-        this.startDateTime = eventStartDateTime;
-        this.endDateTime = eventEndDateTime;
-        this.isAllDayEvent = isAllDayEvent;
-        this.isSelfIncluded = isSelfIncluded;
-        this.recipients = recipients;
+    private Event(Builder builder) {
+        this.id = builder.id;
+        this.user = builder.user;
+        this.title = builder.title;
+        this.type = builder.type;
+        this.startDateTime = builder.startDateTime;
+        this.endDateTime = builder.endDateTime;
+        this.isAllDayEvent = builder.isAllDayEvent;
+        this.isSelfIncluded = builder.isSelfIncluded;
+        this.recipients = builder.recipients;
     }
 
     public String getUser() {
@@ -63,22 +68,57 @@ public class Event {
         return Collections.unmodifiableList(recipients);
     }
 
+    public ContentValues toContentValues() {
+        ContentValues values = new ContentValues();
+        values.put(EventTable.COLUMN_USER, user);
+        values.put(EventTable.COLUMN_TITLE, title);
+        values.put(EventTable.COLUMN_TYPE, type.toString());
+        values.put(EventTable.COLUMN_START_DATE_TIME, startDateTime);
+        values.put(EventTable.COLUMN_END_DATE_TIME, endDateTime);
+        values.put(EventTable.COLUMN_ALL_DAY_EVENT, isAllDayEvent);
+        values.put(EventTable.COLUMN_SELF_INCLUDED, isSelfIncluded);
+        return values;
+    }
+
     public static class Builder {
 
-        private final String user;
-        private final String title;
-        private final EventType type;
-        private final long startDateTime;
+        private long id;
+        private String user;
+        private String title;
+        private EventType type;
+        private long startDateTime;
         private long endDateTime;
         private boolean isAllDayEvent;
         private boolean isSelfIncluded;
         private List<String> recipients;
 
-        public Builder(String user, String title, EventType type, long startDateTime) {
+        public Builder() {
+            this.recipients = Collections.emptyList();
+        }
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder user(String user) {
             this.user = user;
+            return this;
+        }
+
+        public Builder title(String title) {
             this.title = title;
+            return this;
+        }
+
+        public Builder type(EventType type) {
             this.type = type;
+            return this;
+        }
+
+        public Builder startDateTime(long startDateTime) {
             this.startDateTime = startDateTime;
+            return this;
         }
 
         public Builder endDateTime(long endDateTime) {
@@ -107,10 +147,7 @@ public class Event {
         }
 
         public Event build() {
-            if (recipients == null) {
-                recipients = Collections.emptyList();
-            }
-            return new Event(user, title, type, startDateTime, endDateTime, isAllDayEvent, isSelfIncluded, recipients);
+            return new Event(this);
         }
     }
 

@@ -19,14 +19,19 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.kaligrid.R;
+import com.kaligrid.app.App;
 import com.kaligrid.fragment.DatePickerFragment;
 import com.kaligrid.fragment.TimePickerFragment;
+import com.kaligrid.model.Event;
+import com.kaligrid.service.EventService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,6 +56,8 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     @Bind(R.id.from_time_text) TextView fromTimeText;
     @Bind(R.id.to_date_text) TextView toDateText;
     @Bind(R.id.to_time_text) TextView toTimeText;
+
+    @Inject EventService eventService;
 
     private final DatePickerDialog.OnDateSetListener FROM_DATE_SET_LISTENER = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -86,12 +93,16 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     abstract protected String getEventTitleHint();
     abstract protected int getPictureButtonImage();
     abstract protected int getLocationButtonImage();
+    abstract protected Event createEventFromFields();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
+
         ButterKnife.bind(this);
+        App.getObjectGraph().inject(this);
+
         initializeTopToolbar();
         initializeDateTimeTextViews();
 
@@ -114,7 +125,8 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     @OnClick(R.id.save_button)
     public void onSaveButtonClick(View v) {
-        Toast.makeText(this, "This feature is not implemented yet...", Toast.LENGTH_LONG).show();
+        eventService.addEvent(createEventFromFields());
+        finish();
     }
 
     @OnClick(R.id.picture_button)
@@ -184,6 +196,12 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         }
     }
 
+    protected static DateTime readDateTime(TextView dateText, TextView timeTextView) {
+        DateTime date = readDate(dateText);
+        DateTime time = readTime(timeTextView);
+        return new DateTime(date.getYear(), date.getMonth(), date.getDay(), time.getHour(), time.getMinute(), 0, 0);
+    }
+
     private static DateTime readDate(TextView dateText) {
         try {
             Date dateRead = DATE_READ_FORMAT.parse(dateText.getText().toString());
@@ -205,17 +223,9 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     }
 
     private boolean isDateRangeValid() {
-        DateTime fromDate = readDate(fromDateText);
-        DateTime fromTime = readTime(fromTimeText);
-        DateTime fromDateTime = new DateTime(fromDate.getYear(), fromDate.getMonth(), fromDate.getDay(),
-                fromTime.getHour(), fromTime.getMinute(), 0, 0);
-
-        DateTime toDate = readDate(toDateText);
-        DateTime toTime = readTime(toTimeText);
-        DateTime toDateTime = new DateTime(toDate.getYear(), toDate.getMonth(), toDate.getDay(),
-                toTime.getHour(), toTime.getMinute(), 0, 0);
-
-        return fromDateTime.lteq(toDateTime);
+        DateTime from = readDateTime(fromDateText, fromTimeText);
+        DateTime to = readDateTime(toDateText, toTimeText);
+        return from.lteq(to);
     }
 
     private void showDateRangeError() {
