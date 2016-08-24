@@ -3,9 +3,9 @@ package com.kaligrid.model.eventlist;
 import android.content.Context;
 
 import com.kaligrid.R;
+import com.kaligrid.util.DateTimeUtil;
 
 import java.util.Locale;
-import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
 
@@ -28,10 +28,10 @@ public class EventListDateHeaderItem implements EventListItem {
 
     @Override
     public String toString() {
-        DateTime today = DateTime.today(TimeZone.getDefault());
+        DateTime today = DateTimeUtil.today();
         StringBuilder dateString = new StringBuilder(date.format(DATE_FORMAT, Locale.getDefault()));
 
-        if (date.isSameDayAs(DateTime.today(TimeZone.getDefault()))) {
+        if (date.isSameDayAs(today)) {
             dateString.append(" (").append(context.getResources().getString(R.string.date_today)).append(")");
         } else if (date.isSameDayAs(today.plusDays(1))) {
             dateString.append(" (").append(context.getResources().getString(R.string.date_tomorrow)).append(")");

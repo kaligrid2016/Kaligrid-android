@@ -29,11 +29,11 @@ import com.kaligrid.model.eventlist.EventListDateHeaderItem;
 import com.kaligrid.model.eventlist.EventListItem;
 import com.kaligrid.model.eventlist.EventListViewSource;
 import com.kaligrid.service.EventService;
+import com.kaligrid.util.DateTimeUtil;
 import com.kaligrid.util.ViewHelper;
 
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -48,7 +48,6 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
     private static int CALENDAR_HEIGHT_WEEK_VIEW;
     private static int CALENDAR_HEIGHT_MONTH_VIEW;
-    private static DateTime TODAY;
 
     @Bind(R.id.calendar) FrameLayout calendarFrameLayout;
     @Bind(R.id.event_list) ListView eventList;
@@ -121,12 +120,11 @@ public class ListViewFragment extends TypedBaseViewFragment {
     private void initializeConstants() {
         CALENDAR_HEIGHT_WEEK_VIEW = getResources().getDimensionPixelSize(R.dimen.calendar_height_week_view);
         CALENDAR_HEIGHT_MONTH_VIEW = getResources().getDimensionPixelSize(R.dimen.calendar_height_month_view);
-        TODAY = DateTime.today(TimeZone.getDefault());
     }
 
     private void initializeCalendar() {
         calendarFragment = new CaldroidFragment();
-        calendarFragment.setSelectedDate(TODAY);
+        calendarFragment.setSelectedDate(DateTimeUtil.today());
         calendarFragment.setCalendarGestureListener(new CalendarGestureListener() {
             @Override
             public void onExpandCalendar() {
@@ -156,7 +154,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
         calendarFragment.setCaldroidListener(new CaldroidListener() {
             @Override
             public void onSelectDate(Date date, View view) {
-                DateTime key = DateTime.forInstant(date.getTime(), TimeZone.getDefault()).truncate(DateTime.Unit.DAY);
+                DateTime key = DateTimeUtil.forInstant(date.getTime()).truncate(DateTime.Unit.DAY);
                 Integer selectedDateItemIndex = eventListViewSource.getPositionByDate(key);
                 if (selectedDateItemIndex != null) {
                     eventList.setSelection(selectedDateItemIndex);

@@ -2,17 +2,16 @@ package com.kaligrid.model.converter;
 
 import android.content.Context;
 
-import com.kaligrid.adapter.EventListItemAdapter;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.eventlist.EventListDateHeaderItem;
 import com.kaligrid.model.eventlist.EventListEventItem;
 import com.kaligrid.model.eventlist.EventListViewSource;
+import com.kaligrid.util.DateTimeUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
 
@@ -27,7 +26,7 @@ public class EventsToEventListViewSourceConverter {
             DateTime date = entry.getKey();
 
             // First event that's today or later should be the first event shown.
-            if ((firstItemIndex < 0) && date.gteq(DateTime.today(TimeZone.getDefault()))) {
+            if ((firstItemIndex < 0) && date.gteq(DateTimeUtil.today())) {
                 firstItemIndex = eventListViewSource.size();
             }
 
@@ -45,7 +44,7 @@ public class EventsToEventListViewSourceConverter {
         Map<DateTime, AllDayAndTimedEvents> eventsByDateAndType = new LinkedHashMap<>();
 
         for(Event event : events) {
-            DateTime eventDate = DateTime.forInstant(event.getStartDateTime(), TimeZone.getDefault())
+            DateTime eventDate = DateTimeUtil.forInstant(event.getStartDateTime())
                     .truncate(DateTime.Unit.DAY);
 
             if (!eventsByDateAndType.containsKey(eventDate)) {
@@ -70,7 +69,7 @@ public class EventsToEventListViewSourceConverter {
         DateTime oldEventTime = new DateTime(1, 1, 1, 0, 0, 0, 0);
 
         for (Event event : events) {
-            DateTime newEventTime = DateTime.forInstant(event.getStartDateTime(), TimeZone.getDefault());
+            DateTime newEventTime = DateTimeUtil.forInstant(event.getStartDateTime());
 
             // Show event time text is event time is different.
             if (!oldEventTime.getHour().equals(newEventTime.getHour()) ||

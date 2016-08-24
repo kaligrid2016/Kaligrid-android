@@ -32,6 +32,7 @@ import com.kaligrid.calendar.adapter.WeekdayArrayAdapter;
 import com.kaligrid.calendar.view.CalendarLayoutView;
 import com.kaligrid.calendar.view.InfinitePagerAdapter;
 import com.kaligrid.calendar.view.InfiniteViewPager;
+import com.kaligrid.util.DateTimeUtil;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -918,7 +919,7 @@ public class CaldroidFragment extends DialogFragment {
             // Get selected dates
             String selectedDateString = args.getString(SELECTED_DATE);
             if (selectedDateString == null) {
-                selectedDate = DateTime.today(TimeZone.getDefault());
+                selectedDate = DateTimeUtil.today();
             } else {
                 selectedDate = CalendarHelper.getDateTimeFromString(selectedDateString, null);
             }
@@ -940,10 +941,10 @@ public class CaldroidFragment extends DialogFragment {
             themeResource = args.getInt(THEME_RESOURCE, R.style.CaldroidDefault);
         }
         if (month == -1 || year == -1) {
-            DateTime dateTime = DateTime.today(TimeZone.getDefault());
+            DateTime dateTime = DateTimeUtil.today();
             month = dateTime.getMonth();
             year = dateTime.getYear();
-            selectedDate = DateTime.today(TimeZone.getDefault());
+            selectedDate = DateTimeUtil.today();
         }
     }
 

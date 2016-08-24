@@ -13,13 +13,11 @@ import com.kaligrid.fragment.ListViewFragment;
 import com.kaligrid.fragment.ProfileViewFragment;
 import com.kaligrid.fragment.TypedBaseViewFragment;
 import com.kaligrid.model.ContentViewType;
-
-import java.util.TimeZone;
+import com.kaligrid.util.DateTimeUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import hirondelle.date4j.DateTime;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        topToolbarTodayText.setText(String.valueOf(DateTime.today(TimeZone.getDefault()).getDay()));
+        topToolbarTodayText.setText(String.valueOf(DateTimeUtil.today().getDay()));
     }
 
     @OnClick(R.id.bottom_toolbar_list_image)

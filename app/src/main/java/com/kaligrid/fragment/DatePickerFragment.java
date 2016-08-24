@@ -6,8 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
-import java.util.Calendar;
-import java.util.TimeZone;
+import com.kaligrid.util.DateTimeUtil;
 
 import hirondelle.date4j.DateTime;
 
@@ -28,7 +27,7 @@ public class DatePickerFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use passed date or the current date.
         long initialDateRaw = getArguments().getLong(FIELD_INITIAL_DATE, System.currentTimeMillis());
-        DateTime initialDate = DateTime.forInstant(initialDateRaw, TimeZone.getDefault());
+        DateTime initialDate = DateTimeUtil.forInstant(initialDateRaw);
 
         // Android month starts from 0 but Date4J starts from 1.
         return new DatePickerDialog(getActivity(), onDateSetListener,

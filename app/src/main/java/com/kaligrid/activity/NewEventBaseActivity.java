@@ -24,12 +24,12 @@ import com.kaligrid.fragment.DatePickerFragment;
 import com.kaligrid.fragment.TimePickerFragment;
 import com.kaligrid.model.Event;
 import com.kaligrid.service.EventService;
+import com.kaligrid.util.DateTimeUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -142,7 +142,7 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     @OnClick({ R.id.from_date_text, R.id.to_date_text})
     public void onFromDateTextClick(TextView v) {
         Bundle bundle = new Bundle();
-        bundle.putLong(DatePickerFragment.FIELD_INITIAL_DATE, readDate(v).getMilliseconds(TimeZone.getDefault()));
+        bundle.putLong(DatePickerFragment.FIELD_INITIAL_DATE, DateTimeUtil.toMillis(readDate(v)));
 
         DialogFragment newFragment = DatePickerFragment.newInstance(
                 (v.getId() == R.id.from_date_text) ? FROM_DATE_SET_LISTENER : TO_DATE_SET_LISTENER);
@@ -153,7 +153,7 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     @OnClick({ R.id.from_time_text, R.id.to_time_text})
     public void onFromTimeTextClick(TextView v) {
         Bundle bundle = new Bundle();
-        bundle.putLong(TimePickerFragment.FIELD_INITIAL_TIME, readTime(v).getMilliseconds(TimeZone.getDefault()));
+        bundle.putLong(TimePickerFragment.FIELD_INITIAL_TIME, DateTimeUtil.toMillis(readTime(v)));
 
         DialogFragment newFragment = TimePickerFragment.newInstance(
                 (v.getId() == R.id.from_time_text) ? FROM_TIME_SET_LISTENER : TO_TIME_SET_LISTENER);
@@ -171,7 +171,7 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     private void initializeDateTimeTextViews() {
         // Create initial date without minutes and seconds.
-        DateTime now = DateTime.now(TimeZone.getDefault());
+        DateTime now = DateTimeUtil.now();
         now = now.minus(0, 0, 0, 0, now.getMinute(), now.getSecond(), now.getNanoseconds(), DateTime.DayOverflow.LastDay);
 
         fromDateText.setText(now.format(DATE_WRITE_FORMAT, Locale.getDefault()));
@@ -205,20 +205,20 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     private static DateTime readDate(TextView dateText) {
         try {
             Date dateRead = DATE_READ_FORMAT.parse(dateText.getText().toString());
-            return DateTime.forInstant(dateRead.getTime(), TimeZone.getDefault());
+            return DateTimeUtil.forInstant(dateRead.getTime());
         } catch (ParseException e) {
             Log.w(TAG, "Failed to parse date text: " + dateText.getText());
-            return DateTime.today(TimeZone.getDefault());
+            return DateTimeUtil.today();
         }
     }
 
     private static DateTime readTime(TextView timeTextView) {
         try {
             Date readTime = TIME_READ_FORMAT.parse(timeTextView.getText().toString());
-            return DateTime.forInstant(readTime.getTime(), TimeZone.getDefault());
+            return DateTimeUtil.forInstant(readTime.getTime());
         } catch (ParseException e) {
             Log.w(TAG, "Failed to parse time text: " + timeTextView.getText());
-            return DateTime.now(TimeZone.getDefault());
+            return DateTimeUtil.now();
         }
     }
 

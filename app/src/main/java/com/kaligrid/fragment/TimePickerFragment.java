@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 
-import java.util.TimeZone;
+import com.kaligrid.util.DateTimeUtil;
 
 import hirondelle.date4j.DateTime;
 
@@ -27,7 +27,7 @@ public class TimePickerFragment extends DialogFragment {
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         long initialTimeRaw = getArguments().getLong(FIELD_INITIAL_TIME, System.currentTimeMillis());
-        DateTime initialTime = DateTime.forInstant(initialTimeRaw, TimeZone.getDefault());
+        DateTime initialTime = DateTimeUtil.forInstant(initialTimeRaw);
 
         return new TimePickerDialog(getActivity(), onTimeSetListener, initialTime.getHour(),
                 initialTime.getMinute(), DateFormat.is24HourFormat(getActivity()));

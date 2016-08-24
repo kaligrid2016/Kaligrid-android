@@ -3,8 +3,7 @@ package com.kaligrid.activity;
 import com.kaligrid.R;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.EventType;
-
-import java.util.TimeZone;
+import com.kaligrid.util.DateTimeUtil;
 
 public class NewReminderActivity extends NewEventBaseActivity {
 
@@ -44,8 +43,8 @@ public class NewReminderActivity extends NewEventBaseActivity {
                 .user("Me")
                 .title(eventTitleText.getText().toString())
                 .type(EventType.REMINDER)
-                .startDateTime(readDateTime(fromDateText, fromTimeText).getMilliseconds(TimeZone.getDefault()))
-                .endDateTime(readDateTime(toDateText, toTimeText).getMilliseconds(TimeZone.getDefault()))
+                .startDateTime(DateTimeUtil.toMillis(readDateTime(fromDateText, fromTimeText)))
+                .endDateTime(DateTimeUtil.toMillis(readDateTime(toDateText, toTimeText)))
                 .isAllDayEvent(allDaySwitch.isChecked())
                 .isSelfIncluded(true)
                 .build();

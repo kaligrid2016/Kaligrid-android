@@ -2,6 +2,8 @@ package com.kaligrid.model;
 
 import android.content.ContentValues;
 
+import com.kaligrid.util.DateTimeUtil;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -146,8 +148,8 @@ public class Event {
          */
         @Override
         public int compare(Event lhs, Event rhs) {
-            DateTime lhsDateTime = DateTime.forInstant(lhs.getStartDateTime(), TimeZone.getDefault());
-            DateTime rhsDateTime = DateTime.forInstant(rhs.getStartDateTime(), TimeZone.getDefault());
+            DateTime lhsDateTime = DateTimeUtil.forInstant(lhs.getStartDateTime());
+            DateTime rhsDateTime = DateTimeUtil.forInstant(rhs.getStartDateTime());
 
             if (lhsDateTime.isSameDayAs(rhsDateTime)) {
                 if (lhs.isAllDayEvent() && rhs.isAllDayEvent()) {
