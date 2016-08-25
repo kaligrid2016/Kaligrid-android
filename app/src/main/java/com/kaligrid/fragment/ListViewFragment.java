@@ -11,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.kaligrid.R;
+import com.kaligrid.activity.NewEventActivity;
+import com.kaligrid.activity.NewEventBaseActivity;
 import com.kaligrid.activity.NewEventMenuActivity;
 import com.kaligrid.adapter.EventListItemAdapter;
 import com.kaligrid.animation.HeightResizeAnimation;
@@ -26,12 +29,14 @@ import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.converter.EventsToEventListViewSourceConverter;
 import com.kaligrid.model.eventlist.EventListDateHeaderItem;
+import com.kaligrid.model.eventlist.EventListEventItem;
 import com.kaligrid.model.eventlist.EventListItem;
 import com.kaligrid.model.eventlist.EventListViewSource;
 import com.kaligrid.service.EventService;
 import com.kaligrid.util.DateTimeUtil;
 import com.kaligrid.util.ViewHelper;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -219,7 +224,9 @@ public class ListViewFragment extends TypedBaseViewFragment {
     }
 
     private List<Event> loadEvents() {
-        return eventService.getEvents();
+        List<Event> events = eventService.getEvents();
+        Collections.sort(events, new Event.EventStartDateComparator());
+        return events;
     }
 
     private void initializeEventListTouchListener() {
@@ -251,6 +258,21 @@ public class ListViewFragment extends TypedBaseViewFragment {
                     selectedDate = newSelectedDate.truncate(DateTime.Unit.DAY);
                     calendarFragment.refreshView(calendarFragment.getCurrentViewMode(), selectedDate);
                 }
+            }
+        });
+
+        eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(context, NewEventActivity.class);
+                Object selected = eventList.getItemAtPosition(position);
+
+                if (selected instanceof EventListEventItem) {
+                    long selectedEventId = ((EventListEventItem) selected).getEventId();
+                    intent.putExtra(NewEventBaseActivity.EXTRA_KEY_EVENT_ID, selectedEventId);
+                }
+
+                startActivity(intent);
             }
         });
     }

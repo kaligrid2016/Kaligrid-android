@@ -8,6 +8,7 @@
     <include layout="@layout/toolbar_new_event_top" />
 
     <RelativeLayout
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/activity_vertical_margin"
@@ -78,6 +79,16 @@
             android:layout_marginTop="@dimen/new_activity_field_margin"
             android:layout_below="@+id/text_heading_visibility"
             android:text="@string/new_event_text_visibility_friends" />
+
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/delete_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/activity_main"
+        android:gravity="center"
+        android:text="@string/new_event_delete_text"
+        android:textColor="#F00" />
 
 </RelativeLayout>

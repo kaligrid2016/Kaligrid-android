@@ -40,11 +40,15 @@ import hirondelle.date4j.DateTime;
 
 public abstract class NewEventBaseActivity extends AppCompatActivity {
 
+    public static final String EXTRA_KEY_EVENT_ID = "eventId";
+
     private static final String TAG = NewEventBaseActivity.class.getSimpleName();
     private static final String DATE_WRITE_FORMAT = "WWW, MMMM D, YYYY";
     private static final String TIME_WRITE_FORMAT = "h12:mm a";
     private static final SimpleDateFormat DATE_READ_FORMAT = new SimpleDateFormat("EEE, MMMM d, yyyy", Locale.getDefault());
     private static final SimpleDateFormat TIME_READ_FORMAT = new SimpleDateFormat("h:mm a", Locale.getDefault());
+
+    protected enum Mode { CREATE, EDIT }
 
     @Bind(R.id.title_text) TextView titleText;
     @Bind(R.id.save_button) TextView saveButton;
@@ -56,8 +60,12 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
     @Bind(R.id.from_time_text) TextView fromTimeText;
     @Bind(R.id.to_date_text) TextView toDateText;
     @Bind(R.id.to_time_text) TextView toTimeText;
+    @Bind(R.id.delete_text) TextView deleteText;
 
     @Inject EventService eventService;
+
+    protected Mode mode = Mode.CREATE;
+    private long selectedEventId;
 
     private final DatePickerDialog.OnDateSetListener FROM_DATE_SET_LISTENER = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -103,12 +111,16 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         App.getObjectGraph().inject(this);
 
-        initializeTopToolbar();
-        initializeDateTimeTextViews();
+        if ((getIntent().getExtras() != null) && getIntent().getExtras().containsKey(EXTRA_KEY_EVENT_ID)) {
+            selectedEventId = getIntent().getExtras().getLong(EXTRA_KEY_EVENT_ID);
+            mode = Mode.EDIT;
+            // TODO: Handle error - selected event not found
+        }
 
         eventTitleText.setHint(getEventTitleHint());
         pictureButton.setImageResource(getPictureButtonImage());
         locationButton.setImageResource(getLocationButtonImage());
+        deleteText.setVisibility(View.GONE);
         allDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -116,6 +128,14 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
                 toTimeText.setVisibility(isChecked ? View.GONE : View.VISIBLE);
             }
         });
+
+        initializeTopToolbar();
+
+        if (mode == Mode.CREATE) {
+            initializeDateTimeTextViews();
+        } else {
+            initializeViewsForEdit(eventService.getEvent(selectedEventId));
+        }
     }
 
     @OnClick(R.id.button_cancel)
@@ -125,7 +145,15 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     @OnClick(R.id.save_button)
     public void onSaveButtonClick(View v) {
-        eventService.addEvent(createEventFromFields());
+        switch (mode) {
+            case CREATE:
+                eventService.addEvent(createEventFromFields());
+                break;
+            case EDIT:
+                eventService.updateEvent(createEventFromFields(selectedEventId));
+                break;
+        }
+
         finish();
     }
 
@@ -161,6 +189,11 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
+    @OnClick(R.id.delete_text)
+    public void onDeleteTextClick(TextView v) {
+        Toast.makeText(this, "This feature is not implemented yet...", Toast.LENGTH_LONG).show();
+    }
+
     private void initializeTopToolbar() {
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbar_new_event_top);
         setSupportActionBar(actionBar);
@@ -171,14 +204,26 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     private void initializeDateTimeTextViews() {
         // Create initial date without minutes and seconds.
-        DateTime now = DateTimeUtil.now();
-        now = now.minus(0, 0, 0, 0, now.getMinute(), now.getSecond(), now.getNanoseconds(), DateTime.DayOverflow.LastDay);
+        DateTime now = DateTimeUtil.clearMinutesAndSeconds(DateTimeUtil.now());
+        initializeDateTimeTextViews(now, DateTimeUtil.addHours(now, 1));
+    }
 
-        fromDateText.setText(now.format(DATE_WRITE_FORMAT, Locale.getDefault()));
-        fromTimeText.setText(now.format(TIME_WRITE_FORMAT, Locale.getDefault()));
+    private void initializeDateTimeTextViews(DateTime from, DateTime to) {
+        fromDateText.setText(DateTimeUtil.format(from, DATE_WRITE_FORMAT));
+        fromTimeText.setText(DateTimeUtil.format(from, TIME_WRITE_FORMAT));
 
-        toDateText.setText(now.format(DATE_WRITE_FORMAT, Locale.getDefault()));
-        toTimeText.setText(now.plus(0, 0, 0, 1, 0, 0, 0, DateTime.DayOverflow.FirstDay).format(TIME_WRITE_FORMAT, Locale.getDefault()));
+        toDateText.setText(DateTimeUtil.format(to, DATE_WRITE_FORMAT));
+        toTimeText.setText(DateTimeUtil.format(to, TIME_WRITE_FORMAT));
+    }
+
+    private void initializeViewsForEdit(Event event) {
+        initializeDateTimeTextViews(
+                DateTimeUtil.forInstant(event.getStartDateTime()),
+                DateTimeUtil.forInstant(event.getEndDateTime()));
+
+        eventTitleText.setText(event.getTitle());
+        allDaySwitch.setChecked(event.isAllDayEvent());
+        deleteText.setVisibility(View.VISIBLE);
     }
 
     private void handleOnDateSet(TextView dateText, int year, int month, int day) {
@@ -194,6 +239,12 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         if (!isDateRangeValid()) {
             showDateRangeError();
         }
+    }
+
+    private Event createEventFromFields(long eventId) {
+        Event event = createEventFromFields();
+        event.setId(eventId);
+        return event;
     }
 
     protected static DateTime readDateTime(TextView dateText, TextView timeTextView) {

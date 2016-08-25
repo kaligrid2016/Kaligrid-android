@@ -19,7 +19,8 @@ public class NewFyiActivity extends NewEventBaseActivity {
 
     @Override
     protected String getActivityTitle() {
-        return getResources().getString(R.string.new_fyi_activity_title);
+        return getResources().getString((mode == Mode.CREATE) ?
+                R.string.new_fyi_activity_title : R.string.new_fyi_activity_title_edit);
     }
 
     @Override

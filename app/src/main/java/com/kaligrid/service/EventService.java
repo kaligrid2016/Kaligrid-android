@@ -9,8 +9,9 @@ import com.kaligrid.model.EventType;
 import com.kaligrid.model.converter.EventToContentValuesConverter;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.kaligrid.dao.DataContract.EventTable;
 
@@ -28,7 +29,7 @@ public class EventService {
     };
 
     private final DBHelper dbHelper;
-    private List<Event> events;
+    private Map<Long, Event> events;
 
     public EventService(DBHelper dbHelper) {
         this.dbHelper = dbHelper;
@@ -36,38 +37,47 @@ public class EventService {
 
     public void addEvent(Event event) {
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-        db.insert(EventTable.TABLE_NAME, null, EventToContentValuesConverter.convert(event));
+        long id = db.insert(EventTable.TABLE_NAME, null, EventToContentValuesConverter.convert(event));
         db.close();
 
-        events.add(event);
+        event.setId(id);
+        events.put(id, event);
     }
 
     public void updateEvent(Event event) {
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
-        db.replace(EventTable.TABLE_NAME, null, EventToContentValuesConverter.convert(event));
+        long id = db.replace(EventTable.TABLE_NAME, null, EventToContentValuesConverter.convert(event));
         db.close();
 
-        events.add(event);
+        event.setId(id);
+        events.put(id, event);
+    }
+
+    public Event getEvent(long id) {
+        if (events == null) {
+            events = loadEventsFromDB();
+        }
+        return events.get(id);
     }
 
     public List<Event> getEvents() {
         if (events == null) {
             events = loadEventsFromDB();
         }
-
-        return Collections.unmodifiableList(events);
+        return new ArrayList<>(events.values());
     }
 
-    private List<Event> loadEventsFromDB() {
+    private Map<Long, Event> loadEventsFromDB() {
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
         Cursor cursor = db.query(EventTable.TABLE_NAME, COLUMNS, null, null, null, null, null);
-        List<Event> events = new ArrayList<>();
+        Map<Long, Event> events = new LinkedHashMap<>();
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                events.add(new Event.Builder()
-                        .id(cursor.getLong(cursor.getColumnIndexOrThrow(EventTable._ID)))
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(EventTable._ID));
+                events.put(id, new Event.Builder()
+                        .id(id)
                         .user(cursor.getString(cursor.getColumnIndexOrThrow(EventTable.COLUMN_USER)))
                         .title(cursor.getString(cursor.getColumnIndexOrThrow(EventTable.COLUMN_TITLE)))
                         .type(EventType.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(EventTable.COLUMN_TYPE))))
@@ -80,7 +90,6 @@ public class EventService {
         }
         cursor.close();
 
-        Collections.sort(events, new Event.EventStartDateComparator());
         return events;
     }
 }

@@ -1,22 +1,17 @@
 package com.kaligrid.model;
 
-import android.content.ContentValues;
-
 import com.kaligrid.util.DateTimeUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
 
-import static com.kaligrid.dao.DataContract.EventTable;
-
 public class Event {
 
-    private final long id;
+    private long id;
     private final String user;
     private final String title;
     private final EventType type;
@@ -36,6 +31,14 @@ public class Event {
         this.isAllDayEvent = builder.isAllDayEvent;
         this.isSelfIncluded = builder.isSelfIncluded;
         this.recipients = builder.recipients;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUser() {

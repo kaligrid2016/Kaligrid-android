@@ -29,16 +29,22 @@
     <string name="new_event_text_visibility_friends">Friends</string>
 
     <string name="new_event_activity_title">New Event</string>
+    <string name="new_event_activity_title_edit">Edit Event</string>
     <string name="new_event_save_button_text">SAVE</string>
     <string name="new_event_title_hint">Enter title e.g. Lunch Meeting</string>
+    <string name="new_event_delete_text">Delete This Event</string>
 
     <string name="new_reminder_activity_title">New Reminder</string>
+    <string name="new_reminder_activity_title_edit">Edit Reminder</string>
     <string name="new_reminder_save_button_text">DONE</string>
     <string name="new_reminder_title_hint">Enter title e.g. Joey\'s birthday</string>
+    <string name="new_reminder_delete_text">Delete This Reminder</string>
 
     <string name="new_fyi_activity_title">New FYI</string>
+    <string name="new_fyi_activity_title_edit">Edit FYI</string>
     <string name="new_fyi_save_button_text">SEND</string>
     <string name="new_fyi_title_hint">Enter title e.g. Hey, FYI I\'m on vacation</string>
+    <string name="new_fyi_delete_text">Delete This FYI</string>
 
     <string name="error_invalid_date_range_title">Cannot Use Selected Date</string>
     <string name="error_invalid_date_range_message">The start date must be before the end date.</string>

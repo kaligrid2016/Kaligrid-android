@@ -31,6 +31,10 @@ public class EventListEventItem implements EventListItem {
         return DateTimeUtil.forInstant(event.getStartDateTime());
     }
 
+    public long getEventId() {
+        return event.getId();
+    }
+
     public String getTimeText() {
         if (!showEventTime) {
             return "";
