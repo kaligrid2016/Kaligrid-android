@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.kaligrid.R;
 import com.kaligrid.model.Event;
+import com.kaligrid.model.EventType;
 import com.kaligrid.util.DateTimeUtil;
 import com.kaligrid.util.EventResourceHelper;
 import com.kaligrid.util.EventSummaryBuilder;
@@ -33,6 +34,10 @@ public class EventListEventItem implements EventListItem {
 
     public long getEventId() {
         return event.getId();
+    }
+
+    public EventType getEventType() {
+        return event.getType();
     }
 
     public String getTimeText() {

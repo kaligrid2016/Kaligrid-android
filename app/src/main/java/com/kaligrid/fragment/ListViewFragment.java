@@ -19,6 +19,8 @@ import com.kaligrid.R;
 import com.kaligrid.activity.NewEventActivity;
 import com.kaligrid.activity.NewEventBaseActivity;
 import com.kaligrid.activity.NewEventMenuActivity;
+import com.kaligrid.activity.NewFyiActivity;
+import com.kaligrid.activity.NewReminderActivity;
 import com.kaligrid.adapter.EventListItemAdapter;
 import com.kaligrid.animation.HeightResizeAnimation;
 import com.kaligrid.app.App;
@@ -27,6 +29,7 @@ import com.kaligrid.calendar.CaldroidListener;
 import com.kaligrid.calendar.CalendarGestureListener;
 import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
+import com.kaligrid.model.EventType;
 import com.kaligrid.model.converter.EventsToEventListViewSourceConverter;
 import com.kaligrid.model.eventlist.EventListDateHeaderItem;
 import com.kaligrid.model.eventlist.EventListEventItem;
@@ -264,15 +267,25 @@ public class ListViewFragment extends TypedBaseViewFragment {
         eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(context, NewEventActivity.class);
                 Object selected = eventList.getItemAtPosition(position);
 
                 if (selected instanceof EventListEventItem) {
                     long selectedEventId = ((EventListEventItem) selected).getEventId();
+                    Intent intent = new Intent(context, getEventActivityClass(((EventListEventItem) selected).getEventType()));
                     intent.putExtra(NewEventBaseActivity.EXTRA_KEY_EVENT_ID, selectedEventId);
+                    startActivity(intent);
                 }
+            }
 
-                startActivity(intent);
+            private Class<?> getEventActivityClass(EventType eventType) {
+                switch (eventType) {
+                    case FYI:
+                        return NewFyiActivity.class;
+                    case REMINDER:
+                        return NewReminderActivity.class;
+                    default:
+                        return NewEventActivity.class;
+                }
             }
         });
     }

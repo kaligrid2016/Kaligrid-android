@@ -2,6 +2,7 @@ package com.kaligrid.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -117,25 +118,7 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
             // TODO: Handle error - selected event not found
         }
 
-        eventTitleText.setHint(getEventTitleHint());
-        pictureButton.setImageResource(getPictureButtonImage());
-        locationButton.setImageResource(getLocationButtonImage());
-        deleteText.setVisibility(View.GONE);
-        allDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                fromTimeText.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-                toTimeText.setVisibility(isChecked ? View.GONE : View.VISIBLE);
-            }
-        });
-
-        initializeTopToolbar();
-
-        if (mode == Mode.CREATE) {
-            initializeDateTimeTextViews();
-        } else {
-            initializeViewsForEdit(eventService.getEvent(selectedEventId));
-        }
+        initializeViews();
     }
 
     @OnClick(R.id.button_cancel)
@@ -191,7 +174,49 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
 
     @OnClick(R.id.delete_text)
     public void onDeleteTextClick(TextView v) {
-        Toast.makeText(this, "This feature is not implemented yet...", Toast.LENGTH_LONG).show();
+        new AlertDialog.Builder(this)
+                .setMessage("Do you really want to delete this?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        eventService.deleteEvent(selectedEventId);
+                        finish();
+                    }})
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+    }
+
+    private void initializeViews() {
+        initializeTopToolbar();
+
+        eventTitleText.setHint(getEventTitleHint());
+        pictureButton.setImageResource(getPictureButtonImage());
+        locationButton.setImageResource(getLocationButtonImage());
+        allDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                fromTimeText.setVisibility(isChecked ? View.GONE : View.VISIBLE);
+                toTimeText.setVisibility(isChecked ? View.GONE : View.VISIBLE);
+            }
+        });
+
+        if (mode == Mode.CREATE) {
+            // Create initial date without minutes and seconds.
+            DateTime now = DateTimeUtil.clearMinutesAndSeconds(DateTimeUtil.now());
+            initializeDateTimeTextViews(now, DateTimeUtil.addHours(now, 1));
+
+            deleteText.setVisibility(View.GONE);
+        } else {
+            Event event = eventService.getEvent(selectedEventId);
+
+            initializeDateTimeTextViews(
+                    DateTimeUtil.forInstant(event.getStartDateTime()),
+                    DateTimeUtil.forInstant(event.getEndDateTime()));
+
+            eventTitleText.setText(event.getTitle());
+            allDaySwitch.setChecked(event.isAllDayEvent());
+            deleteText.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initializeTopToolbar() {
@@ -202,28 +227,12 @@ public abstract class NewEventBaseActivity extends AppCompatActivity {
         saveButton.setText(getSaveButtonText());
     }
 
-    private void initializeDateTimeTextViews() {
-        // Create initial date without minutes and seconds.
-        DateTime now = DateTimeUtil.clearMinutesAndSeconds(DateTimeUtil.now());
-        initializeDateTimeTextViews(now, DateTimeUtil.addHours(now, 1));
-    }
-
     private void initializeDateTimeTextViews(DateTime from, DateTime to) {
         fromDateText.setText(DateTimeUtil.format(from, DATE_WRITE_FORMAT));
         fromTimeText.setText(DateTimeUtil.format(from, TIME_WRITE_FORMAT));
 
         toDateText.setText(DateTimeUtil.format(to, DATE_WRITE_FORMAT));
         toTimeText.setText(DateTimeUtil.format(to, TIME_WRITE_FORMAT));
-    }
-
-    private void initializeViewsForEdit(Event event) {
-        initializeDateTimeTextViews(
-                DateTimeUtil.forInstant(event.getStartDateTime()),
-                DateTimeUtil.forInstant(event.getEndDateTime()));
-
-        eventTitleText.setText(event.getTitle());
-        allDaySwitch.setChecked(event.isAllDayEvent());
-        deleteText.setVisibility(View.VISIBLE);
     }
 
     private void handleOnDateSet(TextView dateText, int year, int month, int day) {

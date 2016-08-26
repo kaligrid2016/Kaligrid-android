@@ -86,6 +86,7 @@
         android:id="@+id/delete_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_alignBottom="@id/activity_main"
         android:gravity="center"
         android:text="@string/new_event_delete_text"

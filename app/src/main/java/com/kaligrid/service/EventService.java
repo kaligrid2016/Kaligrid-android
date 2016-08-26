@@ -35,6 +35,20 @@ public class EventService {
         this.dbHelper = dbHelper;
     }
 
+    public Event getEvent(long id) {
+        if (events == null) {
+            events = loadEventsFromDB();
+        }
+        return events.get(id);
+    }
+
+    public List<Event> getEvents() {
+        if (events == null) {
+            events = loadEventsFromDB();
+        }
+        return new ArrayList<>(events.values());
+    }
+
     public void addEvent(Event event) {
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
         long id = db.insert(EventTable.TABLE_NAME, null, EventToContentValuesConverter.convert(event));
@@ -53,18 +67,12 @@ public class EventService {
         events.put(id, event);
     }
 
-    public Event getEvent(long id) {
-        if (events == null) {
-            events = loadEventsFromDB();
-        }
-        return events.get(id);
-    }
+    public void deleteEvent(long eventId) {
+        SQLiteDatabase db = this.dbHelper.getWritableDatabase();
+        db.delete(EventTable.TABLE_NAME, EventTable._ID + " = ?", new String[] { String.valueOf(eventId) });
+        db.close();
 
-    public List<Event> getEvents() {
-        if (events == null) {
-            events = loadEventsFromDB();
-        }
-        return new ArrayList<>(events.values());
+        events.remove(eventId);
     }
 
     private Map<Long, Event> loadEventsFromDB() {
