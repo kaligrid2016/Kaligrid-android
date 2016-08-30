@@ -162,7 +162,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
         calendarFragment.setCaldroidListener(new CaldroidListener() {
             @Override
             public void onSelectDate(Date date, View view) {
-                DateTime key = DateTimeUtil.forInstant(date.getTime()).truncate(DateTime.Unit.DAY);
+                DateTime key = DateTimeUtil.dateOnly(date.getTime());
                 Integer selectedDateItemIndex = eventListViewSource.getPositionByDate(key);
                 if (selectedDateItemIndex != null) {
                     eventList.setSelection(selectedDateItemIndex);

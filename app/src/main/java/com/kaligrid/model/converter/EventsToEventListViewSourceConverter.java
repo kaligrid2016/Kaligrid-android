@@ -44,13 +44,17 @@ public class EventsToEventListViewSourceConverter {
         Map<DateTime, AllDayAndTimedEvents> eventsByDateAndType = new LinkedHashMap<>();
 
         for(Event event : events) {
-            DateTime eventDate = DateTimeUtil.forInstant(event.getStartDateTime())
-                    .truncate(DateTime.Unit.DAY);
+            DateTime eventStartDate = DateTimeUtil.dateOnly(event.getStartDateTime());
+            DateTime eventEndDate = DateTimeUtil.dateOnly(event.getEndDateTime());
 
-            if (!eventsByDateAndType.containsKey(eventDate)) {
-                eventsByDateAndType.put(eventDate, new AllDayAndTimedEvents());
+            List<DateTime> dates = DateTimeUtil.datesBetween(eventStartDate, eventEndDate);
+            for (DateTime d : dates) {
+                if (!eventsByDateAndType.containsKey(d)) {
+                    eventsByDateAndType.put(d, new AllDayAndTimedEvents());
+                }
+
+                eventsByDateAndType.get(d).addEvent(event);
             }
-            eventsByDateAndType.get(eventDate).addEvent(event);
         }
 
         return eventsByDateAndType;

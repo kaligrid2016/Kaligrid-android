@@ -1,5 +1,8 @@
 package com.kaligrid.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -22,6 +25,10 @@ public class DateTimeUtil {
         return DateTime.forInstant(milliseconds, DEFAULT_TIME_ZONE);
     }
 
+    public static DateTime dateOnly(long milliseconds) {
+        return DateTime.forInstant(milliseconds, DEFAULT_TIME_ZONE).truncate(DateTime.Unit.DAY);
+    }
+
     public static long toMillis(DateTime dateTime) {
         return dateTime.getMilliseconds(DEFAULT_TIME_ZONE);
     }
@@ -36,5 +43,21 @@ public class DateTimeUtil {
 
     public static DateTime clearMinutesAndSeconds(DateTime dateTime) {
         return dateTime.minus(0, 0, 0, 0, dateTime.getMinute(), dateTime.getSecond(), dateTime.getNanoseconds(), DateTime.DayOverflow.LastDay);
+    }
+
+    public static List<DateTime> datesBetween(DateTime from, DateTime to) {
+        if (from.isSameDayAs(to)) {
+            return Collections.singletonList(from);
+        }
+
+        List<DateTime> dates = new ArrayList<>();
+        DateTime date = from;
+
+        while(date.lteq(to)) {
+            dates.add(date);
+            date = date.plusDays(1);
+        }
+
+        return dates;
     }
 }
