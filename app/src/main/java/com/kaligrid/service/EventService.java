@@ -50,6 +50,8 @@ public class EventService {
     }
 
     public void addEvent(Event event) {
+        event.setId(Event.UNASSIGNED_ID);
+
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
         long id = db.insert(EventTable.TABLE_NAME, null, EventToContentValuesConverter.convert(event));
         db.close();

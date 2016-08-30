@@ -11,6 +11,8 @@ import hirondelle.date4j.DateTime;
 
 public class Event {
 
+    public static final long UNASSIGNED_ID = -1L;
+
     private long id;
     private final String user;
     private final String title;
@@ -86,6 +88,7 @@ public class Event {
         private List<String> recipients;
 
         public Builder() {
+            this.id = UNASSIGNED_ID;
             this.recipients = Collections.emptyList();
         }
 

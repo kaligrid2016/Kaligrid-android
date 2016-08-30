@@ -10,7 +10,9 @@ public class EventToContentValuesConverter {
 
     public static ContentValues convert(Event event) {
         ContentValues values = new ContentValues();
-        values.put(EventTable._ID, event.getId());
+        if (event.getId() >= 0) {
+            values.put(EventTable._ID, event.getId());
+        }
         values.put(EventTable.COLUMN_USER, event.getUser());
         values.put(EventTable.COLUMN_TITLE, event.getTitle());
         values.put(EventTable.COLUMN_TYPE, event.getType().toString());
