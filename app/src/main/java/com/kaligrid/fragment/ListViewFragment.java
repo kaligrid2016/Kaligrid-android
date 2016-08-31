@@ -39,7 +39,6 @@ import com.kaligrid.service.EventService;
 import com.kaligrid.util.DateTimeUtil;
 import com.kaligrid.util.ViewHelper;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -220,16 +219,10 @@ public class ListViewFragment extends TypedBaseViewFragment {
     }
 
     private void initializeEventList() {
-        List<Event> events = loadEvents();
+        List<Event> events = eventService.getEvents();
         eventListViewSource = EventsToEventListViewSourceConverter.convert(events, context);
         eventList.setAdapter(new EventListItemAdapter(context, eventListViewSource.getAll()));
         eventList.setSelection(eventListViewSource.getFirstVisibleItem());
-    }
-
-    private List<Event> loadEvents() {
-        List<Event> events = eventService.getEvents();
-        Collections.sort(events, new Event.EventStartDateComparator());
-        return events;
     }
 
     private void initializeEventListTouchListener() {

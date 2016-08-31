@@ -19,11 +19,13 @@ public class EventListEventItem implements EventListItem {
 
     private final Event event;
     private final Context context;
+    private final DateTime displayingDate;
     private final boolean showEventTime;
 
-    public EventListEventItem(Event event, Context context, boolean showEventTime) {
+    public EventListEventItem(Event event, Context context, DateTime displayingDate, boolean showEventTime) {
         this.event = event;
         this.context = context;
+        this.displayingDate = displayingDate;
         this.showEventTime = showEventTime;
     }
 
@@ -58,6 +60,16 @@ public class EventListEventItem implements EventListItem {
     }
 
     public String getEventSummary() {
-        return EventSummaryBuilder.build(event);
+        String summary = EventSummaryBuilder.build(event);
+
+        // If event is a timed-event that started before displaying date and ending on displaying
+        // date, append text that indicates it's ending this day.
+        if (!event.isAllDayEvent() && !event.isEndingSameDay()
+                && DateTimeUtil.dateOnly(event.getEndDateTime()).isSameDayAs(displayingDate)) {
+            String endTimeText = DateTimeUtil.forInstant(event.getEndDateTime()).format(TIME_FORMAT, Locale.getDefault());
+            summary = String.format("%s (Until %s)", summary, endTimeText);
+        }
+
+        return summary;
     }
 }

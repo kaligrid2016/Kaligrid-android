@@ -33,6 +33,10 @@ public class Event {
         this.recipients = builder.recipients;
     }
 
+    public boolean isEndingSameDay() {
+        return DateTimeUtil.dateOnly(startDateTime).isSameDayAs(DateTimeUtil.dateOnly(endDateTime));
+    }
+
     public Long getId() {
         return id;
     }
@@ -161,16 +165,10 @@ public class Event {
                     return -1;
                 } else if (rhs.isAllDayEvent()) {
                     return 1;
-                } else {
-                    // Copy of Long.compare() method
-                    return lhs.getStartDateTime() < rhs.getStartDateTime() ?
-                            -1 : (lhs.getStartDateTime() == rhs.getStartDateTime() ? 0 : 1);
                 }
-            } else {
-                // Copy of Long.compare() method
-                return lhs.getStartDateTime() < rhs.getStartDateTime() ?
-                        -1 : (lhs.getStartDateTime() == rhs.getStartDateTime() ? 0 : 1);
             }
+
+            return Long.compare(lhs.getStartDateTime(), rhs.getStartDateTime());
         }
     }
 }
