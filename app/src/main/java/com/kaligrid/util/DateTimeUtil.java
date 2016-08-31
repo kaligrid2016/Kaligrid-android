@@ -29,12 +29,20 @@ public class DateTimeUtil {
         return DateTime.forInstant(milliseconds, DEFAULT_TIME_ZONE).truncate(DateTime.Unit.DAY);
     }
 
+    public static DateTime dateOnly(DateTime dateTime) {
+        return dateTime.truncate(DateTime.Unit.DAY);
+    }
+
     public static long toMillis(DateTime dateTime) {
         return dateTime.getMilliseconds(DEFAULT_TIME_ZONE);
     }
 
     public static String format(DateTime dateTime, String format) {
         return dateTime.format(format, DEFAULT_LOCALE);
+    }
+
+    public static String format(long milliseconds, String format) {
+        return format(forInstant(milliseconds), format);
     }
 
     public static DateTime addHours(DateTime dateTime, int hours) {
@@ -45,15 +53,19 @@ public class DateTimeUtil {
         return dateTime.minus(0, 0, 0, 0, dateTime.getMinute(), dateTime.getSecond(), dateTime.getNanoseconds(), DateTime.DayOverflow.LastDay);
     }
 
-    public static List<DateTime> datesBetween(DateTime from, DateTime to) {
+    public static List<DateTime> daysBetween(long from, long to) {
+        return daysBetween(forInstant(from), forInstant(to));
+    }
+
+    public static List<DateTime> daysBetween(DateTime from, DateTime to) {
         if (from.isSameDayAs(to)) {
             return Collections.singletonList(from);
         }
 
         List<DateTime> dates = new ArrayList<>();
-        DateTime date = from;
+        DateTime date = dateOnly(from);
 
-        while(date.lteq(to)) {
+        while(date.lteq(dateOnly(to))) {
             dates.add(date);
             date = date.plusDays(1);
         }

@@ -147,28 +147,4 @@ public class Event {
             return new Event(this);
         }
     }
-
-    public static class EventStartDateComparator implements Comparator<Event> {
-
-        /**
-         * Sort order: all day events by title and then events by start time.
-         */
-        @Override
-        public int compare(Event lhs, Event rhs) {
-            DateTime lhsDateTime = DateTimeUtil.forInstant(lhs.getStartDateTime());
-            DateTime rhsDateTime = DateTimeUtil.forInstant(rhs.getStartDateTime());
-
-            if (lhsDateTime.isSameDayAs(rhsDateTime)) {
-                if (lhs.isAllDayEvent() && rhs.isAllDayEvent()) {
-                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                } else if (lhs.isAllDayEvent()) {
-                    return -1;
-                } else if (rhs.isAllDayEvent()) {
-                    return 1;
-                }
-            }
-
-            return Long.compare(lhs.getStartDateTime(), rhs.getStartDateTime());
-        }
-    }
 }

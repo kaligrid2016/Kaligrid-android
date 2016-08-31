@@ -30,7 +30,7 @@ public class EventsToEventListViewSourceConverter {
         for(Event event: events) {
             DateTime eventStartDate = DateTimeUtil.dateOnly(event.getStartDateTime());
             DateTime eventEndDate = DateTimeUtil.dateOnly(event.getEndDateTime());
-            List<DateTime> datesBetween = DateTimeUtil.datesBetween(eventStartDate, eventEndDate);
+            List<DateTime> datesBetween = DateTimeUtil.daysBetween(eventStartDate, eventEndDate);
 
             for (DateTime date : datesBetween) {
                 if (!categorizedEvents.containsKey(date)) {
