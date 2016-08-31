@@ -31,7 +31,6 @@ import com.kaligrid.model.ContentViewType;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.EventType;
 import com.kaligrid.model.converter.EventsToEventListViewSourceConverter;
-import com.kaligrid.model.eventlist.EventListDateHeaderItem;
 import com.kaligrid.model.eventlist.EventListEventItem;
 import com.kaligrid.model.eventlist.EventListItem;
 import com.kaligrid.model.eventlist.EventListViewSource;
@@ -241,15 +240,9 @@ public class ListViewFragment extends TypedBaseViewFragment {
                 }
 
                 EventListItem item = eventListViewSource.get(firstVisibleItem);
-
-                // If the next item is header of next event date group, show the next one.
-                EventListItem nextItem = (firstVisibleItem + 1 < eventListViewSource.size()) ? eventListViewSource.get(firstVisibleItem + 1) : null;
-                if (nextItem instanceof EventListDateHeaderItem) {
-                    item = nextItem;
-                }
-
                 DateTime selectedDate = calendarFragment.getSelectedDate();
                 DateTime newSelectedDate = item.getDate();
+
                 if (!newSelectedDate.isSameDayAs(selectedDate)) {
                     selectedDate = newSelectedDate.truncate(DateTime.Unit.DAY);
                     calendarFragment.refreshView(calendarFragment.getCurrentViewMode(), selectedDate);

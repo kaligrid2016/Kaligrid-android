@@ -31,7 +31,7 @@ public class EventListEventItem implements EventListItem {
 
     @Override
     public DateTime getDate() {
-        return DateTimeUtil.forInstant(event.getStartDateTime());
+        return displayingDate;
     }
 
     public long getEventId() {
