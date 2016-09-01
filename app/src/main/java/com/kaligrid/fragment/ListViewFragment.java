@@ -38,6 +38,9 @@ import com.kaligrid.service.EventService;
 import com.kaligrid.util.DateTimeUtil;
 import com.kaligrid.util.ViewHelper;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -96,6 +99,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
     @Override
     public void onResume() {
         super.onResume();
+
         initializeEventList();
 
         if (!isEventListListenersInitialized) {
@@ -219,9 +223,16 @@ public class ListViewFragment extends TypedBaseViewFragment {
 
     private void initializeEventList() {
         List<Event> events = eventService.getEvents();
+
         eventListViewSource = EventsToEventListViewSourceConverter.convert(events, context);
         eventList.setAdapter(new EventListItemAdapter(context, eventListViewSource.getAll()));
-        eventList.setSelection(eventListViewSource.getFirstVisibleItem());
+
+        // If there is no event, highlight today.
+        if (eventListViewSource.getFirstVisibleItem() >= 0) {
+            eventList.setSelection(eventListViewSource.getFirstVisibleItem());
+        } else {
+            calendarFragment.refreshView(calendarFragment.getCurrentViewMode(), DateTimeUtil.today());
+        }
     }
 
     private void initializeEventListTouchListener() {
