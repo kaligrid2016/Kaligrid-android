@@ -145,7 +145,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
             @Override
             public void onShowPrevMonth() {
                 if (calendarFragment.getCurrentViewMode() == CaldroidFragment.ViewMode.MONTH_VIEW) {
-                    calendarFragment.nextMonth();
+                    calendarFragment.prevMonth();
                 }
             }
 
