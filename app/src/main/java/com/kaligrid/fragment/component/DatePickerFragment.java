@@ -1,4 +1,4 @@
-package com.kaligrid.fragment;
+package com.kaligrid.fragment.component;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

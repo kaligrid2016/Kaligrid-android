@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.kaligrid.R;
 import com.kaligrid.fragment.DiscoverViewFragment;
 import com.kaligrid.fragment.FriendsViewFragment;
-import com.kaligrid.fragment.ListViewFragment;
+import com.kaligrid.fragment.EventListViewFragment;
 import com.kaligrid.fragment.ProfileViewFragment;
 import com.kaligrid.fragment.TypedBaseViewFragment;
 import com.kaligrid.model.ContentViewType;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadListViewFragment() {
         resetBottomToolbarImages();
         bottomToolbarListImage.setImageResource(R.drawable.icon_bottom_list_selected);
-        loadViewFragment(ListViewFragment.newInstance(this));
+        loadViewFragment(EventListViewFragment.newInstance(this));
     }
 
     private void loadFragment(ImageView toolbarImage, int imageResource, TypedBaseViewFragment fragment) {

@@ -1,4 +1,4 @@
-package com.kaligrid.fragment;
+package com.kaligrid.fragment.component;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;

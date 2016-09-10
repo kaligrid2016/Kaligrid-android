@@ -1,4 +1,4 @@
-package com.kaligrid.activity;
+package com.kaligrid.activity.event;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.kaligrid.R;
+import com.kaligrid.activity.event.edit.EditEventActivity;
+import com.kaligrid.activity.event.edit.EditFyiActivity;
+import com.kaligrid.activity.event.edit.EditReminderActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,19 +47,19 @@ public class NewEventMenuActivity extends Activity {
     @OnClick({R.id.new_fyi_button, R.id.new_fyi_button_text})
     public void onAddFyiButtonClick(View v) {
         finishActivity();
-        startActivity(new Intent(this, NewFyiActivity.class));
+        startActivity(new Intent(this, EditFyiActivity.class));
     }
 
     @OnClick({R.id.new_reminder_button, R.id.new_reminder_button_text})
     public void onAddReminderButtonClick(View v) {
         finishActivity();
-        startActivity(new Intent(this, NewReminderActivity.class));
+        startActivity(new Intent(this, EditReminderActivity.class));
     }
 
     @OnClick({R.id.new_event_button, R.id.new_event_button_text})
     public void onAddEventButtonClick(View v) {
         finishActivity();
-        startActivity(new Intent(this, NewEventActivity.class));
+        startActivity(new Intent(this, EditEventActivity.class));
     }
 
     private void finishActivity() {

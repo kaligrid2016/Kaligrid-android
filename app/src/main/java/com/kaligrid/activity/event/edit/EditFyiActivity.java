@@ -1,4 +1,4 @@
-package com.kaligrid.activity;
+package com.kaligrid.activity.event.edit;
 
 import android.view.View;
 import android.widget.Toast;
@@ -10,11 +10,11 @@ import com.kaligrid.util.DateTimeUtil;
 
 import butterknife.OnClick;
 
-public class NewFyiActivity extends NewEventBaseActivity {
+public class EditFyiActivity extends EditBaseActivity {
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_new_fyi;
+        return R.layout.activity_edit_fyi;
     }
 
     @Override

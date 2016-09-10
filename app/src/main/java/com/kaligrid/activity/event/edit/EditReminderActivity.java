@@ -1,15 +1,15 @@
-package com.kaligrid.activity;
+package com.kaligrid.activity.event.edit;
 
 import com.kaligrid.R;
 import com.kaligrid.model.Event;
 import com.kaligrid.model.EventType;
 import com.kaligrid.util.DateTimeUtil;
 
-public class NewReminderActivity extends NewEventBaseActivity {
+public class EditReminderActivity extends EditBaseActivity {
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_new_reminder;
+        return R.layout.activity_edit_reminder;
     }
 
     @Override

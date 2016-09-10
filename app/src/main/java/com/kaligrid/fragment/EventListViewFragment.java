@@ -16,11 +16,11 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.kaligrid.R;
-import com.kaligrid.activity.NewEventActivity;
-import com.kaligrid.activity.NewEventBaseActivity;
-import com.kaligrid.activity.NewEventMenuActivity;
-import com.kaligrid.activity.NewFyiActivity;
-import com.kaligrid.activity.NewReminderActivity;
+import com.kaligrid.activity.event.edit.EditBaseActivity;
+import com.kaligrid.activity.event.edit.EditEventActivity;
+import com.kaligrid.activity.event.NewEventMenuActivity;
+import com.kaligrid.activity.event.edit.EditFyiActivity;
+import com.kaligrid.activity.event.edit.EditReminderActivity;
 import com.kaligrid.adapter.EventListItemAdapter;
 import com.kaligrid.animation.HeightResizeAnimation;
 import com.kaligrid.app.App;
@@ -38,9 +38,6 @@ import com.kaligrid.service.EventService;
 import com.kaligrid.util.DateTimeUtil;
 import com.kaligrid.util.ViewHelper;
 
-import org.apache.commons.collections4.CollectionUtils;
-
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +48,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hirondelle.date4j.DateTime;
 
-public class ListViewFragment extends TypedBaseViewFragment {
+public class EventListViewFragment extends TypedBaseViewFragment {
 
     private static final int RESIZE_ANIMATION_DURATION = 200;
 
@@ -68,8 +65,8 @@ public class ListViewFragment extends TypedBaseViewFragment {
     private EventListViewSource eventListViewSource;
     private boolean isEventListListenersInitialized;
 
-    public static ListViewFragment newInstance(Context context) {
-        ListViewFragment fragment = new ListViewFragment();
+    public static EventListViewFragment newInstance(Context context) {
+        EventListViewFragment fragment = new EventListViewFragment();
         fragment.setContext(context);
         return fragment;
     }
@@ -86,7 +83,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_event_list_view, container, false);
         ButterKnife.bind(this, view);
         App.getObjectGraph().inject(this);
 
@@ -269,7 +266,7 @@ public class ListViewFragment extends TypedBaseViewFragment {
                 if (selected instanceof EventListEventItem) {
                     long selectedEventId = ((EventListEventItem) selected).getEventId();
                     Intent intent = new Intent(context, getEventActivityClass(((EventListEventItem) selected).getEventType()));
-                    intent.putExtra(NewEventBaseActivity.EXTRA_KEY_EVENT_ID, selectedEventId);
+                    intent.putExtra(EditBaseActivity.EXTRA_KEY_EVENT_ID, selectedEventId);
                     startActivity(intent);
                 }
             }
@@ -277,11 +274,11 @@ public class ListViewFragment extends TypedBaseViewFragment {
             private Class<?> getEventActivityClass(EventType eventType) {
                 switch (eventType) {
                     case FYI:
-                        return NewFyiActivity.class;
+                        return EditFyiActivity.class;
                     case REMINDER:
-                        return NewReminderActivity.class;
+                        return EditReminderActivity.class;
                     default:
-                        return NewEventActivity.class;
+                        return EditEventActivity.class;
                 }
             }
         });

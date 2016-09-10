@@ -24,24 +24,24 @@
         </activity>
 
         <activity
-            android:name=".activity.NewEventMenuActivity"
+            android:name=".activity.event.NewEventMenuActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.NewEventActivity"
+            android:name=".activity.event.edit.EditEventActivity"
             android:label="@string/new_event_activity_title"
             android:theme="@style/AppTheme.NewEvent"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.NewReminderActivity"
+            android:name=".activity.event.edit.EditReminderActivity"
             android:label="@string/new_reminder_activity_title"
             android:theme="@style/AppTheme.NewReminder"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.NewFyiActivity"
+            android:name=".activity.event.edit.EditFyiActivity"
             android:label="@string/new_fyi_activity_title"
             android:theme="@style/AppTheme.NewFyi"
             android:screenOrientation="portrait" />

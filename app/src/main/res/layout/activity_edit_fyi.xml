@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.NewFyiActivity">
+    tools:context=".activity.event.edit.EditFyiActivity">
 
     <include layout="@layout/toolbar_new_event_top" />
 
@@ -17,7 +17,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/toolbar_new_event_top">
 
-        <include layout="@layout/activity_new_event_base" />
+        <include layout="@layout/activity_edit_base" />
 
         <TextView
             android:id="@+id/text_heading_send_to"

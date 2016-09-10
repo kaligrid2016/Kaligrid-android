@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.NewEventActivity">
+    tools:context=".activity.event.edit.EditReminderActivity">
 
     <include layout="@layout/toolbar_new_event_top" />
 
@@ -17,69 +17,52 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/toolbar_new_event_top">
 
-        <include layout="@layout/activity_new_event_base" />
+        <include layout="@layout/activity_edit_base" />
 
         <TextView
-            android:id="@+id/text_heading_invite"
+            android:id="@+id/text_heading_reminder_for"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/new_activity_section_margin"
             android:layout_below="@+id/new_event_base_activity"
-            android:text="@string/new_event_heading_invite"
+            android:text="@string/new_event_heading_reminder_for"
             style="@style/HeadingNewEvent" />
 
         <TextView
-            android:id="@+id/recipients_button"
+            android:id="@+id/me_reminder_switch_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/new_activity_field_margin"
-            android:layout_below="@+id/text_heading_invite"
-            android:text="@string/new_event_text_recipients" />
-
-        <TextView
-            android:id="@+id/text_heading_reminder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/new_activity_section_margin"
-            android:layout_below="@+id/recipients_button"
-            android:text="@string/new_event_heading_reminder"
-            style="@style/HeadingNewEvent" />
-
-        <TextView
-            android:id="@+id/reminder_switch_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/new_activity_field_margin"
-            android:layout_below="@+id/text_heading_reminder"
-            android:text="@string/new_event_text_reminder_30min" />
+            android:layout_below="@+id/text_heading_reminder_for"
+            android:text="@string/new_event_text_reminder_me" />
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/reminder_switch"
+            android:id="@+id/me_reminder_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text_heading_reminder"
+            android:layout_below="@+id/text_heading_reminder_for"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="6dp"
             android:checked="true"/>
 
         <TextView
-            android:id="@+id/text_heading_visibility"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/new_activity_section_margin"
-            android:layout_below="@+id/reminder_switch_text"
-            android:text="@string/new_event_heading_visibility"
-            style="@style/HeadingNewEvent" />
-
-        <TextView
-            android:id="@+id/visibility_text"
+            android:id="@+id/friends_reminder_switch_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/new_activity_field_margin"
-            android:layout_below="@+id/text_heading_visibility"
-            android:text="@string/new_event_text_visibility_friends" />
+            android:layout_below="@+id/me_reminder_switch_text"
+            android:text="@string/new_event_text_reminder_friends" />
 
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/friends_reminder_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/me_reminder_switch_text"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="6dp"
+            android:checked="true"/>
     </RelativeLayout>
 
     <TextView
@@ -89,7 +72,7 @@
         android:layout_marginBottom="10dp"
         android:layout_alignBottom="@id/activity_main"
         android:gravity="center"
-        android:text="@string/new_event_delete_text"
-        android:textColor="#F00" />
+        android:text="@string/new_reminder_delete_text"
+        android:textColor="#F00"/>
 
 </RelativeLayout>

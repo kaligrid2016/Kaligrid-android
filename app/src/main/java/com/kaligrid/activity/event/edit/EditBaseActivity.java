@@ -1,4 +1,4 @@
-package com.kaligrid.activity;
+package com.kaligrid.activity.event.edit;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -21,8 +21,8 @@ import android.widget.Toast;
 
 import com.kaligrid.R;
 import com.kaligrid.app.App;
-import com.kaligrid.fragment.DatePickerFragment;
-import com.kaligrid.fragment.TimePickerFragment;
+import com.kaligrid.fragment.component.DatePickerFragment;
+import com.kaligrid.fragment.component.TimePickerFragment;
 import com.kaligrid.model.Event;
 import com.kaligrid.service.EventService;
 import com.kaligrid.util.DateTimeUtil;
@@ -39,11 +39,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hirondelle.date4j.DateTime;
 
-public abstract class NewEventBaseActivity extends AppCompatActivity {
+public abstract class EditBaseActivity extends AppCompatActivity {
 
     public static final String EXTRA_KEY_EVENT_ID = "eventId";
 
-    private static final String TAG = NewEventBaseActivity.class.getSimpleName();
+    private static final String TAG = EditBaseActivity.class.getSimpleName();
     private static final String DATE_WRITE_FORMAT = "WWW, MMMM D, YYYY";
     private static final String TIME_WRITE_FORMAT = "h12:mm a";
     private static final SimpleDateFormat DATE_READ_FORMAT = new SimpleDateFormat("EEE, MMMM d, yyyy", Locale.getDefault());
